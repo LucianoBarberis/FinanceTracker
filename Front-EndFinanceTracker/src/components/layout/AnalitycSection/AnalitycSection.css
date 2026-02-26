@@ -1,0 +1,19 @@
+.AnalitycSection {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr;
+    padding: 0 8vw;
+    gap: 40px;
+    margin-top: 40px;
+    width: 100vw;
+    max-height: 600px;
+    margin-bottom: 400px;
+}
+
+@media (max-width: 768px) {
+    .AnalitycSection {
+        grid-template-columns: 1fr;
+        padding: 0 4vw;
+        gap: 20px;
+    }
+}

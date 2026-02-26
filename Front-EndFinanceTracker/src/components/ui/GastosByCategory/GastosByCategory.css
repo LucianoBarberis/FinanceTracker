@@ -1,0 +1,16 @@
+.ExpenseContainer {
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray--100);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ExpenseContainer h3 {
+    color: var(--gray--900);
+    font-size: 20px;
+    font-weight: 600;
+}

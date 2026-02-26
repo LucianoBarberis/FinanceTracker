@@ -1,0 +1,8 @@
+.InfoCardsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0 8vw;
+    gap: 40px;
+    margin-top: 40px;
+    width: 100vw;
+}

@@ -1,0 +1,91 @@
+.CardTitle {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+}
+
+.tableBorder {
+    border-bottom: 1px solid var(--gray--100);
+}
+
+.CardTitle h3 {
+    color: var(--gray--900);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.CardTitle p {
+    color: var(--gray--600);
+    font-size: 16px;
+}
+
+.TransactionsCard {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray--100);
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+.Table {
+    width: 100%;
+    border: none;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.Table thead {
+    position: sticky;
+    top: 100px;
+}
+
+.Table thead tr{
+    background-color: var(--gray--50);
+    height: 40px;
+}
+
+.Table thead tr th {
+    text-align: start;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray--600);
+    border-bottom: 1px solid var(--gray--100) !important;
+}
+
+.Table tbody tr td {
+    padding: 10px 24px;
+    font-size: 13px;
+    color: var(--font--color);
+    border-bottom: 1px solid var(--gray--100) !important;
+}
+
+.Table tbody tr {
+    height: 50px;
+    transition: background-color 0.5s;
+}
+
+.Table tbody tr:hover {
+    background-color: var(--gray--50);
+}
+
+.Table tbody .TableAction .TableActionBtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25px;
+    border-radius: 6px;
+    border: var(--input-border);
+    box-shadow: 0 0 1px 1px #0000000e;
+}

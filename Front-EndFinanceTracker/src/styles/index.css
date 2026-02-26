@@ -1,0 +1,65 @@
+@font-face {
+    font-family: "Inter";
+    src: url(../assets/fonts/Inter-VariableFont_opsz\,wght.ttf);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter";
+}
+
+:root {
+    --brand--50: #EFF6FF;
+    --brand--100: #DAEBFF;
+    --brand--200: #BDDCFF;
+    --brand--300: #90C7FF;
+    --brand--400: #5CA9FE;
+    --brand--500: #3685FB;
+    --brand--600: #155EEF;
+    --brand--700: #1850DD;
+    --brand--800: #1B41B2;
+    --brand--900: #1B3B8D;
+    --brand--950: #162555;
+    --gray--50: #F9FAFB;
+    --gray--100: #ECEFF2;
+    --gray--200: #D5DDE2;
+    --gray--300: #B0BFC9;
+    --gray--400: #859BAB;
+    --gray--500: #668091;
+    --gray--600: #516778;
+    --gray--700: #425462;
+    --gray--800: #394753;
+    --gray--900: #333E47;
+    --gray--950: #22292F;
+    --success--50: #EDFCF3;
+    --success--100: #D3F8E0;
+    --success--200: #AAF0C7;
+    --success--300: #73E2A7;
+    --success--400: #3BCC84;
+    --success--500: #17B26A;
+    --success--600: #0B9055;
+    --success--700: #097347;
+    --success--800: #0A5B39;
+    --success--900: #094B31;
+    --success--950: #042A1C;
+    --font--color: #101828;
+    --shadow: 0 1px 6px 1px #10182806;
+    --border: 1px solid var(--gray--100);
+    --input-border: 1px solid var(--gray--300);
+    --error-border: 1px solid #c71616;
+}
+
+body {
+    background-color: var(--gray--50);
+    overflow-x: hidden;
+}
+
+input:focus {
+    outline: none;
+}
+
+.t_toasts {
+    z-index: 10000 !important;
+}

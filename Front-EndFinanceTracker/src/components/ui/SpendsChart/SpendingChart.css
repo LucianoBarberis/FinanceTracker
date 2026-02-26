@@ -1,0 +1,45 @@
+.chart-container {
+    width: 100%;
+}
+
+.recharts-legend-item-text {
+    font-size: 0.875rem;
+    color: #666 !important;
+    font-family: 'Inter';
+}
+
+.Legend {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Legend ul {
+    list-style: none;
+    width: 100%;
+
+}
+
+.Legend ul li {
+    color: var(--font--color);
+    font-weight: 400;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid var(--gray--100);
+}
+
+.Legend ul li .Icon {
+    border-radius: 10000px;
+    width: 30px;
+    height: 30px;
+    margin-right: 15px;
+}
+
+.Legend ul li span {
+    margin-left: auto;
+    color: var(--gray--500);
+}

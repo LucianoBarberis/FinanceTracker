@@ -1,0 +1,51 @@
+.hero {
+    width: 100vw;
+    display: flex;
+    padding: 0 8vw;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    align-items: center;
+    justify-content: space-between;
+    height: 100px;
+}
+
+.hero h1 {
+    font-size: 27px;
+    color: var(--font-color);
+}
+
+.ButtonsContainer button{
+    height: 40px;
+    min-width: 95px;
+    padding: 0 5px;
+    color: var(--gray--600);
+    background-color: #fff;
+    font-weight: 600;
+    border: none;
+    border-left: 1.5px solid var(--gray--200);
+    border-top: 1.5px solid var(--gray--200);
+    border-bottom: 1.5px solid var(--gray--200);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ButtonsContainer button:hover {
+    background-color: #e9f0fe;
+    color: var(--brand--600);
+}
+
+.ButtonsContainer .btnLeft {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.ButtonsContainer .btnRight {
+    border-right: 1.5px solid var(--gray--200);
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.ButtonsContainer .active {
+    background-color: #e9f0fe;
+    color: var(--brand--600);
+}

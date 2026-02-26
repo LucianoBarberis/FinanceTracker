@@ -1,0 +1,41 @@
+.infoCard {
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--gray--100);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.infoCard h3 {
+    color: var(--gray--500);
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.infoCard .dataContainer {
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.infoCard .dataContainer .data {
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--gray--950);
+}
+
+.infoCard .dataPer {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding: 4px;
+    background-color: #fff;
+    border: 1px solid var(--gray--200);
+    border-radius: 5px;
+    font-size: 14px;
+}
+

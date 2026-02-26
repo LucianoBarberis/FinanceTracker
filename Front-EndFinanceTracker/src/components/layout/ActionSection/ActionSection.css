@@ -1,0 +1,84 @@
+.ActionCardsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0 8vw;
+    gap: 40px;
+    margin-top: 40px;
+    width: 100vw;
+}
+
+.FormIncome {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.FormIncome input {
+    height: 30px;
+    border-radius: 7px;
+    padding: 0 10px;
+    border: var(--input-border);
+    font-size: 16px;
+}
+
+.FormIncome .formGroup {
+    display: flex;
+    gap: 20px;
+}
+
+.FormIncome .formGroup input {
+    width: 100%;
+}
+
+.FormIncome .submitIncome {
+    background-color: var(--brand--600);
+    color: #fff;
+    font-size: 16px;
+    border-radius: 7px;
+    height: 35px;
+    border: var(--border);
+    cursor: pointer;
+}
+
+.FormIncome .submitEgress {
+    background-color: var(--gray--800);
+    color: #fff;
+    font-size: 16px;
+    border-radius: 7px;
+    height: 35px;
+    border: var(--border);
+    cursor: pointer;
+}
+
+.FormIncome .formGroup .formField {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.label{
+    font-size: 12px;
+    margin: 0 0 2px 4px;
+    height: 15px;
+}
+
+.error {
+    font-size: 12px;
+    margin: 0 0 2px 4px;
+    color: #c71616;
+    height: 15px;
+}
+
+.errorInput {
+    border: var(--error-border) !important;
+    
+}
+
+.errorInput::placeholder {
+    color: #c71616b9;
+}
+
+.FormIncome .formField {
+    display: flex;
+    flex-direction: column;
+}

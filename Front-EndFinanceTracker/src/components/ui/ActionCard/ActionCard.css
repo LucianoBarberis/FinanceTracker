@@ -1,0 +1,36 @@
+.ActionCard {
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--gray--100);
+    box-shadow: var(--shadow);
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+    align-items: center;
+}
+
+.ActionCard .iconActionCard {
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+}
+
+.ActionCard .infoActionCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2.5px 0;
+}
+
+.ActionCard .infoActionCard h3 {
+    color: var(--gray--900);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.ActionCard .infoActionCard p {
+    font-size: 14px;
+    color: var(--gray--400);
+    font-weight: 400;
+}

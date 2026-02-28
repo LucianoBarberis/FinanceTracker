@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTransactions } from '../../../redux/actions/getTransactionAction';
 import { deleteTransaction } from '../../../redux/actions/deleteTransactionAction';
 import { putTransaction } from '../../../redux/actions/putTransactionAction';
+import { getBalances, getEgress, getIncomes } from '../../../redux/actions/getBalancesAction';
 import { toast } from '@pheralb/toast';
 import { transactionSchema } from '../../../validation/transactionSchema';
 import Modal from '../Modal/Modal';
@@ -28,9 +29,12 @@ const TransactionsCard = () => {
         categoryId: 3
     }, transactionSchema)
     
-    const handleDeleteBtn = (id) => {
-        dispatch(deleteTransaction(id));
+    const handleDeleteBtn = async (id) => {
+        await dispatch(deleteTransaction(id));
         setOpenMenuIndex(null)
+        dispatch(getBalances())
+        dispatch(getIncomes())
+        dispatch(getEgress())
         toast.success({
             text: `Transacción Eliminada`,
             description: `id: ${id}`
@@ -50,14 +54,17 @@ const TransactionsCard = () => {
         setOpenModalEdit(true);
     }
 
-    const handleSubmitEdit = (e) => {
+    const handleSubmitEdit = async (e) => {
         e.preventDefault()
         if(!editForm.validar()) return toast.error({
             text: "Error al validar los datos",
         });
         const { id, ...data } = editForm.valores;
-        dispatch(putTransaction({ id, data }))
         setOpenModalEdit(false)
+        await dispatch(putTransaction({ id, data }))
+        dispatch(getBalances())
+        dispatch(getIncomes())
+        dispatch(getEgress())
         toast.success({
             text: `Transacción Editada`,
             description: `id: ${id}`

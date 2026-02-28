@@ -41,6 +41,9 @@ export const transactionSlice = createSlice({
             state.loading = false
             state.transacciones = state.transacciones.filter(trans => trans.id !== action.payload.id)
         })
+            builder.addCase(putTransaction.pending, (state, action) => {
+            state.loading = true
+        })
         builder.addCase(putTransaction.fulfilled, (state, action) => {
             state.loading = false
             const transToUpdate = state.transacciones.find(trans => trans.id === action.payload.id)

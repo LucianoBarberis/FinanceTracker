@@ -21,6 +21,7 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddScoped<ITrasactionService, TransactionService>();
+builder.Services.AddScoped<IBalanceService, BalanceService>();
 
 // Validators
 builder.Services.AddScoped<IValidator<TransactionAddDTO>, TransactionAddValidations>();

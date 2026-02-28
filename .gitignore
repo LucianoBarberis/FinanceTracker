@@ -1,0 +1,40 @@
+# .NET (Binarios y archivos temporales)
+[Bb]in/
+[Oo]bj/
+[Tt]estResults/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio (Configuraciones de entorno)
+.vs/
+*.vstoken
+
+# Visual Studio Code (Configuraciones de entorno)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Node.js / Front-End
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.development
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db

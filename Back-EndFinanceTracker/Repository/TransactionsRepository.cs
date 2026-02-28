@@ -25,6 +25,18 @@ namespace Back_EndFinanceTracker.Repository
             return result;
         }
 
+        public async Task<IEnumerable<BalanceDTO>> GetAmounts()
+        {
+            return await _context.Transactions
+                                 .GroupBy(t => t.Type)
+                                 .Select(group => new BalanceDTO
+                                 {
+                                     Type = group.Key,
+                                     Total = group.Sum(t => t.Amount),
+                                 })
+                                 .ToListAsync();
+        }
+
         public async Task Add(Transaction entity)
         {
             await _context.AddAsync(entity);

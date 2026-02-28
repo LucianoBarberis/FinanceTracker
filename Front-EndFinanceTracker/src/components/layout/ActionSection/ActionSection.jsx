@@ -11,6 +11,7 @@ import { TfiStatsUp } from "react-icons/tfi";
 import { TfiStatsDown } from "react-icons/tfi";
 import { TfiMoney } from "react-icons/tfi";
 import { transactionSchema } from '../../../validation/transactionSchema'
+import { getBalances, getEgress, getIncomes } from '../../../redux/actions/getBalancesAction'
 
 const ActionSection = () => {
     const [isOpenAddIncome, setIsOpenIncome] = useState(false)
@@ -34,27 +35,33 @@ const ActionSection = () => {
 
     const dispatch = useDispatch()
 
-    const handleSubmitIncome = (e) => {
+    const handleSubmitIncome = async (e) => {
         e.preventDefault();
         if(!incomeForm.validar()) return toast.error({
             text: "Error al validar los datos",
         });
-        dispatch(postTransaction(incomeForm.valores))
-        incomeForm.resetForm()
         setIsOpenIncome(false)
+        await dispatch(postTransaction(incomeForm.valores))
+        dispatch(getBalances())
+        dispatch(getIncomes())
+        dispatch(getEgress())
+        incomeForm.resetForm()
         toast.success({
             text: "Transacción creada correctamente!",
         })
     };
 
-    const handleSubmitEgress = (e) => {
+    const handleSubmitEgress = async (e) => {
         e.preventDefault();
         if(!egressForm.validar()) return toast.error({
             text: "Error al validar los datos",
         });
-        dispatch(postTransaction(egressForm.valores))
-        egressForm.resetForm()
         setIsOpenEgress(false)
+        await dispatch(postTransaction(egressForm.valores))
+        dispatch(getBalances())
+        dispatch(getIncomes())
+        dispatch(getEgress())
+        egressForm.resetForm()
         toast.success({
             text: "Transacción creada correctamente!",
         })

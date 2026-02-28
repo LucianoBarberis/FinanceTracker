@@ -49,6 +49,9 @@
     --border: 1px solid var(--gray--100);
     --input-border: 1px solid var(--gray--300);
     --error-border: 1px solid #c71616;
+    --sb-track-color: var(--gray--200);
+    --sb-thumb-color: var(--brand--950);
+    --sb-size: 6px;
 }
 
 body {
@@ -62,4 +65,43 @@ input:focus {
 
 .t_toasts {
     z-index: 10000 !important;
+    border-radius: 20px !important;
+}
+
+body::-webkit-scrollbar {
+    width: var(--sb-size);
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 2px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 5px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    body {
+        scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    }
+}
+
+.inputSelect {
+    height: 30px;
+    border-radius: 7px;
+    padding: 0 10px;
+    border: var(--input-border);
+    font-size: 16px;
+}
+
+.inputSelect:focus {
+    outline: none;
+}
+
+.inputSelect option {
+    padding: 8px 10px;
+    background-color: white;
+    color: var(--font--color);
 }

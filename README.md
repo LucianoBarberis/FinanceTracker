@@ -65,6 +65,3 @@ Este es un proyecto personal desarrollado con el objetivo de practicar y mejorar
    ```bash
    npm run dev
    ```
-
-## 🎓 Enfoque Educativo
-Este proyecto se ha construido siguiendo principios de código limpio y separación de capas. El backend está diseñado para ser escalable, permitiendo cambiar el motor de base de datos o la lógica de negocio con un impacto mínimo en los controladores. El frontend aprovecha las últimas características de React 19 y Redux para mantener un flujo de datos predecible y una interfaz reactiva.

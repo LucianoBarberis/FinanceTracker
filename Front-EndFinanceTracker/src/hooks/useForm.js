@@ -10,8 +10,6 @@ export const useForm = (valoresIniciales = {}, ValidateSchema) => {
     const [valores, setValores] = useState(valoresIniciales);
     const [errores, setErrores] = useState({});
 
-
-
     // Manejar cambios en los inputs
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -88,6 +86,14 @@ export const useForm = (valoresIniciales = {}, ValidateSchema) => {
         }));
     };
 
+    // Actualizar múltiples valores
+    const setValues = (nuevosValores) => {
+        setValores((prevValores) => ({
+            ...prevValores,
+            ...nuevosValores,
+        }));
+    };
+
     // Obtener un valor específico
     const getFieldValue = (fieldName) => {
         return valores[fieldName];
@@ -104,6 +110,7 @@ export const useForm = (valoresIniciales = {}, ValidateSchema) => {
         handleChange,
         resetForm,
         setFieldValue,
+        setValues,
         getFieldValue,
         getFieldError,
         validar,

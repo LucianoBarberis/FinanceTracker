@@ -2,7 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const postTransaction = createAsyncThunk("postTransaction", async (data) => {
     try {
-        data.dateTime = data.dateTime + 'T00:00:00'
+        if (data.dateTime && !data.dateTime.includes('T')) {
+            data.dateTime = data.dateTime + 'T00:00:00Z';
+        }
         const response = await fetch("https://localhost:7277/api/Transaction", {
             method: "POST",
             headers: {

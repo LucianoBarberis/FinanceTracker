@@ -5,7 +5,6 @@ import './styles/index.css'
 import App from './App.jsx'
 import { Provider } from 'react-redux'
 import { store } from './redux/store.js'
-import ModalExample from './pages/ModalExample.jsx'
 import { Toaster } from '@pheralb/toast'
 
 createRoot(document.getElementById('root')).render(
@@ -14,10 +13,9 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<App />}/>
-          <Route path='modal' element={<ModalExample/>}/>
         </Routes>
       </BrowserRouter>
-      <Toaster theme='light'/>
+      <Toaster theme='light' position='bottom-center'/>
     </Provider>
   </StrictMode>,
 )

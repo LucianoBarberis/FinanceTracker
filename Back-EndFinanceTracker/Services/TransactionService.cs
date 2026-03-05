@@ -5,17 +5,19 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Back_EndFinanceTracker.Services
 {
-    public class TransactionService : ITrasactionService
+    public class TransactionService : ITransactionService
     {
-        private IRepository<Transaction> _repository;
-        public TransactionService(IRepository<Transaction> repository) 
+        private ITransactionRepository _repository;
+        private IRepository<Category> _cateRepository;
+        public TransactionService(ITransactionRepository repository, IRepository<Category> repository1) 
         {
             _repository = repository;
+            _cateRepository = repository1;
         }
 
         public async Task<TransactionDTO> Add(TransactionAddDTO transactionDTO)
         {
-            var category = await _repository.GetCategoryById(transactionDTO.CategoryId);
+            var category = await _cateRepository.GetById(transactionDTO.CategoryId);
 
             if (category == null)
             {
@@ -107,7 +109,7 @@ namespace Back_EndFinanceTracker.Services
         public async Task<TransactionDTO> Update(TransactionUpdateDTO transactionDTO, int id)
         {
             // Refactorizar: Validar
-            var category = await _repository.GetCategoryById(transactionDTO.CategoryId);
+            var category = await _cateRepository.GetById(transactionDTO.CategoryId);
 
             if (category == null)
             {

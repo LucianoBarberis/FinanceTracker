@@ -7,11 +7,9 @@ namespace Back_EndFinanceTracker.Repository
     {
         public Task<IEnumerable<TEntity>> Get();
         public Task<TEntity> GetById(int id);
-        public Task<IEnumerable<BalanceDTO>> GetAmounts();
         public Task Add(TEntity entity);
         public void Update(TEntity entity);
         public void Delete(TEntity entity);
-        public Task<Category> GetCategoryById(int categoryId);
         public Task Save();
     }
 }

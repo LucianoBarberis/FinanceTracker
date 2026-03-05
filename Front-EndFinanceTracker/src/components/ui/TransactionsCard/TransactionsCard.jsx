@@ -99,6 +99,7 @@ const TransactionsCard = () => {
                     <tr>
                         <th>Descripción</th>
                         <th>Método</th>
+                        <th>Categoria</th>
                         <th>Fecha</th>
                         <th>Monto</th>
                         <th>Acción</th>
@@ -114,6 +115,7 @@ const TransactionsCard = () => {
                             return <tr key={index}>
                                 <td>{d.description}</td>
                                 <td>{d.type == 1 ? "Egreso" : "Ingreso" }</td>
+                                <td>{d.categoryId}</td>
                                 <td>{d.dateTime.split('T')[0]}</td>
                                 <td>${d.amount}</td>
                                 <td className='TableAction'>

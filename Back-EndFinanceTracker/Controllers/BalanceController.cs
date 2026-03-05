@@ -23,7 +23,7 @@ namespace Back_EndFinanceTracker.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Error al calcular el balance total.");
+                return StatusCode(500, "Error al calcular el balance total." + ex);
             }
         }
 
@@ -37,7 +37,7 @@ namespace Back_EndFinanceTracker.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Error al obtener el total de ingresos.");
+                return StatusCode(500, "Error al obtener el total de ingresos." + ex);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Back_EndFinanceTracker.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Error al obtener el total de egresos.");
+                return StatusCode(500, "Error al obtener el total de egresos." + ex);
             }
         }
 

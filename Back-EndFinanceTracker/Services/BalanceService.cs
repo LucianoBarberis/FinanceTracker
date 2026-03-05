@@ -7,9 +7,9 @@ namespace Back_EndFinanceTracker.Services
 {
     public class BalanceService : IBalanceService
     {
-        private IRepository<Transaction> _repository;
+        private ITransactionRepository _repository;
 
-        public BalanceService(IRepository<Transaction> repository)
+        public BalanceService(ITransactionRepository repository)
         {
             _repository = repository;
         }

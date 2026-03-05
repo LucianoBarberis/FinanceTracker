@@ -2,7 +2,7 @@
 
 namespace Back_EndFinanceTracker.Services
 {
-    public interface ITrasactionService
+    public interface ITransactionService
     {
         public Task<IEnumerable<TransactionDTO>> GetAll();
         public Task<TransactionDTO> GetById(int id);

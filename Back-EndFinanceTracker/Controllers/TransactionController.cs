@@ -13,10 +13,10 @@ namespace Back_EndFinanceTracker.Controllers
     [ApiController]
     public class TransactionController : ControllerBase
     {
-        private ITrasactionService _transactionService;
+        private ITransactionService _transactionService;
         private IValidator<TransactionAddDTO> _validator;
         private IValidator<TransactionUpdateDTO> _validatorUpdate;
-        public TransactionController(ITrasactionService service, IValidator<TransactionAddDTO> validator, IValidator<TransactionUpdateDTO> validatorUpdate) 
+        public TransactionController(ITransactionService service, IValidator<TransactionAddDTO> validator, IValidator<TransactionUpdateDTO> validatorUpdate) 
         {
             _transactionService = service;
             _validator = validator;
@@ -61,7 +61,7 @@ namespace Back_EndFinanceTracker.Controllers
         {
             var result = await _transactionService.DeleteById(id);
 
-            if(result == null) return NotFound(result);
+            if(result == null) return NotFound();
             return Ok(result);
         }
 

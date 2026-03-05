@@ -8,21 +8,12 @@ using System.Threading.Tasks;
 
 namespace Back_EndFinanceTracker.Repository
 {
-    public class TransactionsRepository : IRepository<Transaction>
+    public class TransactionsRepository : ITransactionRepository
     {
         private FinanceContext _context;
         public TransactionsRepository(FinanceContext financeContext) 
         {
             _context = financeContext;
-        }
-
-        public async Task<Category> GetCategoryById(int CategoryId)
-        {
-            var result = await _context.Categories.FindAsync(CategoryId);
-
-            if (result == null) return null;
-
-            return result;
         }
 
         public async Task<IEnumerable<BalanceDTO>> GetAmounts()
@@ -54,7 +45,7 @@ namespace Back_EndFinanceTracker.Repository
 
         public async Task<Transaction> GetById(int id)
         {
-            return await _context.Transactions.FindAsync(id);
+            return await  _context.Transactions.FindAsync(id);
         }
 
         public async Task Save()

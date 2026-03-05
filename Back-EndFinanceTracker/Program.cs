@@ -20,12 +20,15 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
-builder.Services.AddScoped<ITrasactionService, TransactionService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IBalanceService, BalanceService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 // Validators
 builder.Services.AddScoped<IValidator<TransactionAddDTO>, TransactionAddValidations>();
 builder.Services.AddScoped<IValidator<TransactionUpdateDTO>, TransactionUpdateValidation>();
+builder.Services.AddScoped<IValidator<CategoryAddDTO>, CategoriesAddValidator>();
+builder.Services.AddScoped<IValidator<CategoryDto>, CategoriesUpdateValidator>();
 
 // Entity Framework
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -38,7 +41,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 // Repository's
-builder.Services.AddScoped<IRepository<Transaction>, TransactionsRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionsRepository>();
+builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
 
 var app = builder.Build();
 

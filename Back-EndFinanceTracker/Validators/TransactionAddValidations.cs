@@ -10,7 +10,7 @@ namespace Back_EndFinanceTracker.Validators
         {
             RuleFor(x => x.Description)
                 .NotEmpty().WithMessage("La descripción es obligatoria.")
-                .Length(3, 200).WithMessage("La descripción debe tener entre 3 y 200 caracteres.")
+                .Length(3, 40).WithMessage("La descripción debe tener entre 3 y 40 caracteres.")
                 .Must(d => d == null || !Regex.IsMatch(d, "<.*?>"))
                     .WithMessage("La descripción no puede contener etiquetas HTML.");
 

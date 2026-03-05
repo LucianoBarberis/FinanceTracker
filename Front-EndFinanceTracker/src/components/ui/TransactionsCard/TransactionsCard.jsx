@@ -11,6 +11,7 @@ import { toast } from '@pheralb/toast';
 import { transactionSchema } from '../../../validation/transactionSchema';
 import Modal from '../Modal/Modal';
 import ModalFormInput from '../ModalFormInput/ModalFormInput';
+import ModalFormSelect from '../ModalFormSelect/ModalFormSelect';
 
 const TransactionsCard = () => {
 
@@ -86,6 +87,17 @@ const TransactionsCard = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
 
+    const options = [
+        {
+            value: 0,
+            name: "Ingresos"
+        },
+        {
+            value: 1,
+            name: "Egresos"
+        }
+    ]
+
     return (
     <>
         <div className='TransactionsCard' ref={menuRef}>
@@ -160,23 +172,7 @@ const TransactionsCard = () => {
                     <ModalFormInput name={"Fecha"} type={"date"} value={"dateTime"} useForm={editForm} placeholder={""}/>
                 </div>
                 <ModalFormInput name={"Descripción"} type={"text"} value={"description"} useForm={editForm} placeholder={"Sueldo..."}/>
-                <div className='formField'>
-                    <span className='error' style={{ display: editForm.getFieldError("type") ? 'block' : 'none' }}>
-                        {editForm.getFieldError("type") || ''}
-                    </span>
-                    <span className='label' style={{ display: editForm.getFieldError("type") ? 'none' : 'block' }}>
-                        Tipo
-                    </span>
-                    <select 
-                        name="type" 
-                        className='inputSelect' 
-                        value={editForm.valores.type} 
-                        onChange={editForm.handleChange}
-                    >
-                        <option value="0">Ingreso</option>
-                        <option value="1">Egreso</option>
-                    </select>
-                </div>
+                <ModalFormSelect useForm={editForm} name={"type"} options={options}/>
                 <button className='submitIncome' type="submit">Editar</button>
             </form>
         </Modal>

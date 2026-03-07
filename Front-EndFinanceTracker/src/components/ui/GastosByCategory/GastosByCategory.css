@@ -1,5 +1,4 @@
 .ExpenseContainer {
-    padding: 24px;
     background-color: #fff;
     border-radius: 12px;
     box-shadow: var(--shadow);
@@ -13,4 +12,73 @@
     color: var(--gray--900);
     font-size: 20px;
     font-weight: 600;
+}
+
+.ExpenseContainer .CardTitle {
+    border-radius: 12px;
+    position: relative;
+}
+
+.btnNewCategory {
+    background-color: var(--brand--600);
+    color: #fff;
+    font-size: 16px;
+    border-radius: 7px;
+    height: 35px;
+    border: var(--border);
+    cursor: pointer;
+    width: 90%;
+    margin: 20px auto;
+}
+
+.colorPickerContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.colorInputWrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--gray--200);
+    border-radius: 6px;
+    padding: 4px 8px;
+    gap: 10px;
+    background: #fff;
+}
+
+.colorPreview {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.colorInput {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-family: monospace;
+    font-size: 14px;
+    color: var(--gray--700);
+    cursor: pointer;
+}
+
+.popover {
+    position: absolute;
+    z-index: 100;
+    top: calc(100% + 5px);
+    left: 0;
+    padding: 7px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px 3px #3d3d3d33;
+}
+
+.cover {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
 }

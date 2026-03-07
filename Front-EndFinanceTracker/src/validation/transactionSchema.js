@@ -7,7 +7,7 @@ export const transactionSchema = z.object({
         .string()
         .min(1, "La descripción es obligatoria.")
         .min(3, "Mínimo 3 caracteres.")
-        .max(200, "Máximo 200 caracteres.")
+        .max(40, "Máximo 40 caracteres.")
         .refine((val) => !/<.*?>/.test(val), "No se permite HTML."),
 
     amount: z.coerce

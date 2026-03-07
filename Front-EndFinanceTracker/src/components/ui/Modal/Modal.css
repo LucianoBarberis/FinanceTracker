@@ -18,7 +18,6 @@
 	color:var(--text, #1f2937);
 	border-radius:12px;
 	box-shadow:0 10px 30px rgba(2,6,23,0.2);
-	overflow:hidden;
 	display:flex;
 	flex-direction:column;
 }

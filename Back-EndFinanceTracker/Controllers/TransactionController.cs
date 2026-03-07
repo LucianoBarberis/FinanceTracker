@@ -68,7 +68,7 @@ namespace Back_EndFinanceTracker.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] TransactionUpdateDTO transactionDTO, int id)
         {
-            var result = _validatorUpdate.Validate(transactionDTO);
+            var result = await _validatorUpdate.ValidateAsync(transactionDTO);
 
             if (!result.IsValid) 
             {

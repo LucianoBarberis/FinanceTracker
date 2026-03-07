@@ -53,6 +53,9 @@ export const transactionSlice = createSlice({
             transToUpdate.type = action.payload.type
             transToUpdate.dateTime = action.payload.dateTime
         })
+        builder.addCase(putTransaction.rejected, (state, action) => {
+            state.loading = false
+        })
     }
 })
 

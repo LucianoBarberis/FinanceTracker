@@ -22,8 +22,12 @@ namespace Back_EndFinanceTracker.Validators
                             .Must(icon => Icons.AlowedIcons.Contains(icon))
                             .WithMessage("El Icono seleccionado no es valido");
             RuleFor(t => t.Type)
-                            .NotEmpty().WithMessage("El tipo es obligatorio")
                             .IsInEnum().WithMessage("El tipo no es valido");
+            RuleFor(t => t.Color)
+                            .NotEmpty().WithMessage("El color es obligatorio")
+                            .Length(4, 7).WithMessage("El color debe tener entre 4 y 7 caracteres")
+                            .Matches(@"^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$")
+                            .WithMessage("El color no cumple con el formato");
         }
     }
 }

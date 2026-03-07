@@ -7,9 +7,18 @@ namespace Back_EndFinanceTracker.Services
     public class CategoryService : ICategoryService
     {
         private IRepository<Category> _cateRepository;
-        public CategoryService(IRepository<Category> repository) 
+        private ITransactionRepository _transactionRepository;
+        private IBalanceService _balanceService;
+        public CategoryService(IRepository<Category> repository, ITransactionRepository repository1, IBalanceService balanceService) 
         {
             _cateRepository = repository;
+            _transactionRepository = repository1;
+            _balanceService = balanceService;
+        }
+
+        public async Task<decimal> TotalForCategory(int id)
+        {
+            return await _transactionRepository.GetCategoryTotals(id);
         }
 
         public async Task<CategoryDto> AddCategory(CategoryAddDTO category)
@@ -18,7 +27,8 @@ namespace Back_EndFinanceTracker.Services
             {
                 Name = category.Name,
                 Icon = category.Icon,
-                Type = category.Type
+                Type = category.Type,
+                Color = category.Color,
             };
             await _cateRepository.Add(categoryToAdd);
             await _cateRepository.Save();
@@ -28,7 +38,8 @@ namespace Back_EndFinanceTracker.Services
                 Name = category.Name,
                 Icon = category.Icon,
                 Type = category.Type,
-                Id = categoryToAdd.Id
+                Id = categoryToAdd.Id,
+                Color = categoryToAdd.Color,
             };
 
             return categoryDto;
@@ -50,7 +61,8 @@ namespace Back_EndFinanceTracker.Services
                 Name = catToDelete.Name,
                 Icon = catToDelete.Icon,
                 Type = catToDelete.Type,
-                Id = id
+                Id = id,
+                Color = catToDelete.Color,
             };
 
             return categoryDto;
@@ -59,29 +71,48 @@ namespace Back_EndFinanceTracker.Services
         public async Task<IEnumerable<CategoryDto>> GetCategories()
         {
             var categories = await _cateRepository.Get();
-            return categories.Select(category => new CategoryDto
+
+            var totalEgress = await _balanceService.GetEgress();
+
+            var categoryDtos = new List<CategoryDto>();
+
+            foreach (var category in categories) 
             {
-                Name = category.Name,
-                Icon = category.Icon,
-                Type = category.Type,
-                Id = category.Id
-            }).Reverse();
+                var categoryTotal = await TotalForCategory(category.Id);
+                categoryDtos.Add(new CategoryDto
+                {
+                    Name = category.Name,
+                    Icon = category.Icon,
+                    Type = category.Type,
+                    Id = category.Id,
+                    Color = category.Color,
+                    Percentaje = totalEgress > 0 ? (categoryTotal / totalEgress) * 100 : 0,
+                    Total = categoryTotal
+                });
+            }
+
+            return categoryDtos.AsEnumerable().Reverse();
         }
 
         public async Task<CategoryDto> GetCategoryById(int id)
         {
             var category = await _cateRepository.GetById(id);
-            if(category == null)
+            if (category == null)
             {
                 return null;
             }
+            var totalIncomes = await _balanceService.GetIncomes();
+            var categoryTotal = await TotalForCategory(id);
 
             return new CategoryDto
             {
                 Name = category.Name,
                 Icon = category.Icon,
                 Type= category.Type,
-                Id = category.Id
+                Id = category.Id,
+                Color = category.Color,
+                Total= totalIncomes,
+                Percentaje= totalIncomes > 0 ? (categoryTotal / totalIncomes) * 100 : 0,
             };
         }
 
@@ -93,6 +124,7 @@ namespace Back_EndFinanceTracker.Services
             categoryToUpdate.Name = category.Name;
             categoryToUpdate.Type = category.Type;
             categoryToUpdate.Icon = category.Icon;
+            categoryToUpdate.Color = category.Color;
 
             _cateRepository.Update(categoryToUpdate);
             await _cateRepository.Save();
@@ -102,7 +134,8 @@ namespace Back_EndFinanceTracker.Services
                 Name = categoryToUpdate.Name,
                 Icon = categoryToUpdate.Icon,
                 Type = categoryToUpdate.Type,
-                Id = categoryToUpdate.Id
+                Id = categoryToUpdate.Id,
+                Color = categoryToUpdate.Color,
             };
         }
     }

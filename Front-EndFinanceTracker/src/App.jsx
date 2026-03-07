@@ -1,4 +1,3 @@
-import { useSelector, useDispatch } from 'react-redux'
 import Header from './components/layout/Header/Header'
 import Hero from './components/layout/Hero/Hero'
 import InfoCards from './components/layout/InfoCards/InfoCards'

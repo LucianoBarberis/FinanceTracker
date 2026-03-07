@@ -18,9 +18,9 @@ const InfoCards = () => {
     }, [])
     return (
         <section className='InfoCardsContainer'>
-            <InfoCard title={"Balance"} data={Balance} />
-            <InfoCard title={"Ingresos"} data={Incomes} />
-            <InfoCard title={"Egresos"} data={Egress} />
+            <InfoCard title={"Balance"} data={Balance.toLocaleString("es-ES")} />
+            <InfoCard title={"Ingresos"} data={Incomes.toLocaleString("es-ES")} />
+            <InfoCard title={"Egresos"} data={Egress.toLocaleString("es-ES")} />
         </section>
     )
 }

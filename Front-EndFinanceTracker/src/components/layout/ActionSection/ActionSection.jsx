@@ -2,27 +2,35 @@ import { useEffect, useState } from 'react'
 import './ActionSection.css'
 import ActionCard from '../../ui/ActionCard/ActionCard'
 import Modal from '../../ui/Modal/Modal'
-import ModalFormInput from '../../ui/ModalFormInput/ModalFormInput'
+import ModalFormInput from '../../ui/ModalFormInput/ModalFormInput.jsx'
+import ModalFormSelect from '../../ui/ModalFormSelect/ModalFormSelect'
+import InputColorPicker from '../../ui/InputColorPicker/InputColorPicker.jsx'
 import { useForm } from '../../../hooks'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { postTransaction } from '../../../redux/actions/postTransactionAction'
-import { toast } from '@pheralb/toast'
-import { TfiStatsUp } from "react-icons/tfi";
-import { TfiStatsDown } from "react-icons/tfi";
-import { TfiMoney } from "react-icons/tfi";
-import { transactionSchema } from '../../../validation/transactionSchema'
+import { postCategories } from '../../../redux/actions/postCategoriesAction.js'
 import { getBalances, getEgress, getIncomes } from '../../../redux/actions/getBalancesAction'
+import { getCategories } from '../../../redux/actions/getCategoriesAction'
+import { toast } from '@pheralb/toast'
+import { TfiStatsUp, TfiStatsDown } from "react-icons/tfi";
+import { LuLayoutDashboard } from "react-icons/lu";
+import { transactionSchema } from '../../../validation/transactionSchema'
+import { categorySchema } from '../../../validation/categorySchema.js'
 
 const ActionSection = () => {
     const [isOpenAddIncome, setIsOpenIncome] = useState(false)
     const [isOpenAddEgress, setIsOpenEgress] = useState(false)
+    const [isOpenNewCat, setOpenNewCat] = useState(false)
+    const [showColorPicker, setShowColorPicker] = useState(false)
+    const optIncomes = useSelector((s) => s.categories.catIncomes)
+    const optEgress = useSelector((s) => s.categories.catEgress)
 
     const incomeForm = useForm({
         description: '',
         amount: '',
         dateTime: '',
         type: 0,
-        categoryId: 3
+        categoryId: -1
     }, transactionSchema);
 
     const egressForm = useForm({
@@ -30,8 +38,29 @@ const ActionSection = () => {
         amount: '',
         dateTime: '',
         type: 1,
-        categoryId: 3
+        categoryId: -1
     }, transactionSchema);
+
+    const addCategoryForm = useForm({
+        name: "",
+        icon: "",
+        color: "#ffffff",
+        type: -1
+    }, categorySchema)
+
+    const handlerSubmitNewCat = async (e) => {
+        e.preventDefault()
+        if(!addCategoryForm.validar()) return toast.error({
+            text: "Error al validar los datos",
+        });
+        await dispatch(postCategories(addCategoryForm.valores))
+        dispatch(getCategories())
+        addCategoryForm.resetForm()
+        toast.success({
+            text: "Categoria añadida!"
+        })
+        setOpenNewCat(false)
+    }
 
     const dispatch = useDispatch()
 
@@ -44,6 +73,7 @@ const ActionSection = () => {
         await dispatch(postTransaction(incomeForm.valores))
         dispatch(getBalances())
         dispatch(getIncomes())
+        dispatch(getCategories())
         dispatch(getEgress())
         incomeForm.resetForm()
         toast.success({
@@ -60,6 +90,7 @@ const ActionSection = () => {
         await dispatch(postTransaction(egressForm.valores))
         dispatch(getBalances())
         dispatch(getIncomes())
+        dispatch(getCategories())
         dispatch(getEgress())
         egressForm.resetForm()
         toast.success({
@@ -70,14 +101,19 @@ const ActionSection = () => {
     useEffect(() => {
         egressForm.resetForm()
         incomeForm.resetForm()
-    }, [isOpenAddEgress, isOpenAddIncome])
+        addCategoryForm.resetForm()
+    }, [isOpenAddEgress, isOpenAddIncome, isOpenNewCat])
+
+    useEffect(() => {
+        dispatch(getCategories())
+    }, [])
 
     return (
         <>
             <section className='ActionCardsContainer'>
                 <ActionCard onClick={() => setIsOpenIncome(true)} imgSrc={<TfiStatsUp/>} title={"Añadir un Ingreso"} description={"Crea un ingreso manualmente"} bgColor={"#DCFAE6"} />
                 <ActionCard onClick={() => setIsOpenEgress(true)} imgSrc={<TfiStatsDown/>} title={"Añadir un Egreso"} description={"Crea un egreso manualmente"} bgColor={"#FEE4E2"} />
-                <ActionCard onClick={() => setIsOpenTrans(true)} imgSrc={<TfiMoney/>} title={"Hacer una transferencia"} description={"Transferi dinero entre tus billeteras"} bgColor={"#e7f1fa"} />
+                <ActionCard onClick={() => setOpenNewCat(true)} imgSrc={<LuLayoutDashboard/>} title={"Añadir nueva categoria"} description={"Crea una nueva categoria"} bgColor={"#e7f1fa"} />
             </section>
 
             {/* Modal Añadir Ingresos */}
@@ -92,6 +128,7 @@ const ActionSection = () => {
                         <ModalFormInput name={"Monto"} type={"number"} value={"amount"} useForm={incomeForm} placeholder={"$"}/>
                         <ModalFormInput name={"Fecha"} type={"date"} value={"dateTime"} useForm={incomeForm} placeholder={""}/>
                     </div>
+                    <ModalFormSelect useForm={incomeForm} name={"categoryId"} label={"Categoría"} options={optIncomes}/>
                     <ModalFormInput name={"Descripción"} type={"text"} value={"description"} useForm={incomeForm} placeholder={"Sueldo..."}/>
                     <button className='submitIncome' type="submit">Añadir</button>
                 </form>
@@ -109,8 +146,30 @@ const ActionSection = () => {
                         <ModalFormInput name={"Monto"} type={"number"} value={"amount"} useForm={egressForm} placeholder={"$"}/>
                         <ModalFormInput name={"Fecha"} type={"date"} value={"dateTime"} useForm={egressForm} placeholder={""}/>
                     </div>
+                    <ModalFormSelect useForm={egressForm} name={"categoryId"} label={"Categoría"} options={optEgress}/>
                     <ModalFormInput name={"Descripción"} type={"text"} value={"description"} useForm={egressForm} placeholder={"Sueldo..."}/>
                     <button className='submitEgress' type="submit">Añadir</button>
+                </form>
+            </Modal>
+
+            {/* Modal New Category */}
+            <Modal
+                title="Añadir Categoría"
+                description="Configura una nueva categoría para tus transacciones"
+                isOpen={isOpenNewCat}
+                onClose={() => {
+                    setOpenNewCat(false)
+                    setShowColorPicker(false)
+                }}
+            >
+                <form onSubmit={handlerSubmitNewCat} className='FormIncome' autoComplete='off'>
+                    <div className='formGroup'>
+                        <ModalFormInput name={"Nombre"} type={"text"} value={"name"} useForm={addCategoryForm} placeholder={"Ventas..."}/>
+                        <ModalFormInput name={"Icono"} type={"text"} value={"icon"} useForm={addCategoryForm} placeholder={"icono"}/>
+                    </div>
+                    <ModalFormSelect useForm={addCategoryForm} name={"type"} label={"Tipo"} options={[{name: "Ingresos", value: 0}, {name: "Egresos", value:1}]}/>
+                    <InputColorPicker form={addCategoryForm} showColorPicker={showColorPicker} setShowColorPicker={setShowColorPicker}/>
+                    <button className='submitIncome' type="submit">Añadir</button>
                 </form>
             </Modal>
         </>

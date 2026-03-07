@@ -9,5 +9,6 @@ namespace Back_EndFinanceTracker.Services
         public Task<CategoryDto> AddCategory(CategoryAddDTO category);
         public Task<CategoryDto> UpdateCategory(int id, CategoryDto category);
         public Task<CategoryDto> DeleteCategory(int id);
+        public Task<decimal> TotalForCategory(int id);
     }
 }

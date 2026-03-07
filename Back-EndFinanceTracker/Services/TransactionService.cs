@@ -108,7 +108,6 @@ namespace Back_EndFinanceTracker.Services
 
         public async Task<TransactionDTO> Update(TransactionUpdateDTO transactionDTO, int id)
         {
-            // Refactorizar: Validar
             var category = await _cateRepository.GetById(transactionDTO.CategoryId);
 
             if (category == null)

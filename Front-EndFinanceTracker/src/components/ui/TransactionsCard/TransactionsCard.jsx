@@ -8,10 +8,11 @@ import { deleteTransaction } from '../../../redux/actions/deleteTransactionActio
 import { putTransaction } from '../../../redux/actions/putTransactionAction';
 import { getBalances, getEgress, getIncomes } from '../../../redux/actions/getBalancesAction';
 import { toast } from '@pheralb/toast';
-import { transactionSchema } from '../../../validation/transactionSchema';
 import Modal from '../Modal/Modal';
 import ModalFormInput from '../ModalFormInput/ModalFormInput';
 import ModalFormSelect from '../ModalFormSelect/ModalFormSelect';
+import { getCategories } from '../../../redux/actions/getCategoriesAction';
+import { transactionUpdateSchema } from '../../../validation/transactionUpdateSchema';
 
 const TransactionsCard = () => {
 
@@ -19,21 +20,28 @@ const TransactionsCard = () => {
     const dispatch = useDispatch()
     const [openMenuIndex, setOpenMenuIndex] = useState(null)
     const [isOpenModalEdit, setOpenModalEdit] = useState(false)
+    const catDictionary = useSelector(s => s.categories.catDictionary)
+    const optIncomes = useSelector((s) => s.categories.catIncomes)
+    const optEgress = useSelector((s) => s.categories.catEgress)
     const menuRef = useRef(null)
     const actionMenuRef = useRef(null)
+
+    const allCategories = [...optIncomes, ...optEgress];
+
     const editForm = useForm({
         id: null,
         description: '',
         amount: '',
         dateTime: '',
         type: 0,
-        categoryId: 3
-    }, transactionSchema)
+        categoryId: 0
+    }, transactionUpdateSchema(allCategories))
     
     const handleDeleteBtn = async (id) => {
         await dispatch(deleteTransaction(id));
         setOpenMenuIndex(null)
         dispatch(getBalances())
+        dispatch(getCategories())
         dispatch(getIncomes())
         dispatch(getEgress())
         toast.success({
@@ -65,6 +73,7 @@ const TransactionsCard = () => {
         await dispatch(putTransaction({ id, data }))
         dispatch(getBalances())
         dispatch(getIncomes())
+        dispatch(getCategories())
         dispatch(getEgress())
         toast.success({
             text: `Transacción Editada`,
@@ -82,6 +91,7 @@ const TransactionsCard = () => {
                 setOpenMenuIndex(null)
             }
         }
+        dispatch(getCategories())
 
         document.addEventListener('mousedown', handleClickOutside)
         return () => document.removeEventListener('mousedown', handleClickOutside)
@@ -127,9 +137,9 @@ const TransactionsCard = () => {
                             return <tr key={index}>
                                 <td>{d.description}</td>
                                 <td>{d.type == 1 ? "Egreso" : "Ingreso" }</td>
-                                <td>{d.categoryId}</td>
-                                <td>{d.dateTime.split('T')[0]}</td>
-                                <td>${d.amount}</td>
+                                <td>{catDictionary[d.categoryId]}</td>
+                                <td>{d.dateTime.split('T')[0].replaceAll("-", "/")}</td>
+                                <td>${d.amount.toLocaleString("es-ES")}</td>
                                 <td className='TableAction'>
                                     <button 
                                         className='TableActionBtn'
@@ -172,7 +182,8 @@ const TransactionsCard = () => {
                     <ModalFormInput name={"Fecha"} type={"date"} value={"dateTime"} useForm={editForm} placeholder={""}/>
                 </div>
                 <ModalFormInput name={"Descripción"} type={"text"} value={"description"} useForm={editForm} placeholder={"Sueldo..."}/>
-                <ModalFormSelect useForm={editForm} name={"type"} options={options}/>
+                <ModalFormSelect useForm={editForm} label={"Tipo"} name={"type"} options={options}/>
+                <ModalFormSelect useForm={editForm} label={"Categoria"} name={"categoryId"} options={editForm.valores.type == 0 ? optIncomes : optEgress}/>
                 <button className='submitIncome' type="submit">Editar</button>
             </form>
         </Modal>

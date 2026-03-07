@@ -9,7 +9,8 @@ export const putTransaction = createAsyncThunk("putTransactions", async ({ id, d
         const body = {
             ...data,
             id: Number(id),
-            type: Number(data.type)
+            type: Number(data.type),
+            categoryId: Number(data.categoryId)
         };
 
         const response = await fetch(`https://localhost:7277/api/Transaction/${id}`, {

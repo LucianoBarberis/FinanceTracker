@@ -59,7 +59,7 @@ body {
     overflow-x: hidden;
 }
 
-input:focus {
+*:focus {
     outline: none;
 }
 

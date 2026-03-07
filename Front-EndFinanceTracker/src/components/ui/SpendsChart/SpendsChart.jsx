@@ -1,19 +1,26 @@
-import React from 'react';
+import { useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { IconRender } from '../IconRender/iconRender';
 import './SpendingChart.css';
-
-const data = [
-    { name: 'Casa', value: 41.35, per: 41.35, color: '#9E77ED' },
-    { name: 'Targeta de Credito', value: 21.51, per: 21.51, color: '#F04438' },
-    { name: 'Transporte', value: 13.47, per: 13.47, color: '#0BA5EC'},
-    { name: 'Ocio', value: 9.97, per: 9.97, color: '#17B26A' },
-    { name: 'Shopping', value: 3.35, per: 3.35, color: '#4E5BA6' },
-    { name: 'Otros', value: 2.55, per: 2.55, color: '#ECEFF2' },
-];
-
-const COLORS = data.map(d => {return d.color});
+import { useSelector } from 'react-redux'
 
 const SpendingChart = () => {
+    const rawData = useSelector((s) => s.categories.catEgress)
+    const data = useMemo(()=> {
+        return [...rawData].sort((a, b)=> b.total - a.total)
+    }, [rawData])
+    const COLORS = data.map(d => {return d.color});
+
+    const getContrastColor = (hexColor) => {
+        if (!hexColor) return '#FFFFFF';
+        const hex = hexColor.replace('#', '');
+        const r = parseInt(hex.substr(0, 2), 16);
+        const g = parseInt(hex.substr(2, 2), 16);
+        const b = parseInt(hex.substr(4, 2), 16);
+        const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+        return yiq >= 128 ? '#1f1a1a' : '#fdfdf4';
+    };
+
     return (
         <div className='chart-container'>
             <ResponsiveContainer width="100%" height={300}>
@@ -24,7 +31,9 @@ const SpendingChart = () => {
                         cy="50%"
                         innerRadius={50}
                         outerRadius={100}
-                        dataKey="value"
+                        dataKey="total"
+                        stroke='#10182810'
+                        strokeWidth={1}
                     >
                         {data.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -38,7 +47,13 @@ const SpendingChart = () => {
             <div className='Legend'>
                 <ul>
                     {data.map((d) => {
-                        return <li key={d.name}><div style={{backgroundColor: d.color}} className='Icon'></div><p>{d.name}</p> <span className='per'>%{d.per}</span></li>
+                        return <li key={d.name}>
+                                    <div style={{backgroundColor: d.color}} className='Icon'>
+                                        <IconRender iconName={d.icon} color={getContrastColor(d.color)} />
+                                    </div>
+                                    <p>{d.name}</p>
+                                    <span className='per'>{d.percentaje.toFixed(2)}%</span>
+                                </li>
                     })}
                 </ul>
             </div>

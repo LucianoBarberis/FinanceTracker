@@ -15,7 +15,7 @@ namespace Back_EndFinanceTracker.Models
         public decimal Amount { get; set; }
         
         [Required]
-        [StringLength(200)]
+        [StringLength(40)]
         public string Description { get; set; }
         public DateTime DateTime { get; set; } = DateTime.Now;
 

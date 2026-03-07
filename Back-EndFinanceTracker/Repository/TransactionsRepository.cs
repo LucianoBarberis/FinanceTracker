@@ -28,6 +28,13 @@ namespace Back_EndFinanceTracker.Repository
                                  .ToListAsync();
         }
 
+        public async Task<decimal> GetCategoryTotals(int categoryId)
+        {
+            return await _context.Transactions
+                .Where(t => t.CategoryId == categoryId && t.Type == Enums.TransactionType.Egreso)
+                .SumAsync(t => t.Amount);
+        }
+
         public async Task Add(Transaction entity)
         {
             await _context.AddAsync(entity);

@@ -13,6 +13,8 @@ namespace Back_EndFinanceTracker.Models
         [Required]
         [StringLength(50)]
         public string Name { get; set; } = string.Empty;
+        [Required]
+        public string Color { get; set; } = "#FFFFFF";
 
         public string Icon { get; set; } = "default-icon";
 

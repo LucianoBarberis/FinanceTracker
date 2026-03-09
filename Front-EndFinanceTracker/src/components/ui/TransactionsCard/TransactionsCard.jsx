@@ -130,7 +130,7 @@ const TransactionsCard = () => {
                 <tbody>
                     {loading ? (
                         <tr>
-                            <td colSpan="5" style={{textAlign: 'center'}}>Cargando...</td>
+                            <td colSpan="6" style={{textAlign: 'center'}}>Cargando...</td>
                         </tr>
                     ) : transacciones && transacciones.length > 0 ? (
                         transacciones.map((d, index) => {
@@ -164,7 +164,7 @@ const TransactionsCard = () => {
                         })
                     ) : (
                         <tr>
-                            <td colSpan="5" style={{textAlign: 'center'}}>No hay transacciones</td>
+                            <td colSpan="6" style={{textAlign: 'center'}}>No hay transacciones</td>
                         </tr>
                     )}
                 </tbody>

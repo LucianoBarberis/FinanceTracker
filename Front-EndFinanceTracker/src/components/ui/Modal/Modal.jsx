@@ -3,7 +3,7 @@ import './Modal.css'
 
 const Modal = ({ title, description, children, isOpen = false, onClose = () => {}, className = '' }) => {
     const overlayRef = useRef(null)
-    const ANIMATION_DURATION = 400
+    const ANIMATION_DURATION = 100
 
     const [mounted, setMounted] = React.useState(isOpen)
     const [isAnimatingIn, setIsAnimatingIn] = React.useState(false)

@@ -18,20 +18,20 @@
     height: 40px;
     min-width: 95px;
     padding: 0 5px;
-    color: var(--gray--600);
-    background-color: #fff;
+    color: var(--text-secondary);
+    background-color: var(--bg-secondary);
     font-weight: 600;
     border: none;
-    border-left: 1.5px solid var(--gray--200);
-    border-top: 1.5px solid var(--gray--200);
-    border-bottom: 1.5px solid var(--gray--200);
+    border-left: 1.5px solid var(--border-color);
+    border-top: 1.5px solid var(--border-color);
+    border-bottom: 1.5px solid var(--border-color);
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .ButtonsContainer button:hover {
-    background-color: #e9f0fe;
-    color: var(--brand--600);
+    background-color: var(--active);
+    color: var(--active-font);
 }
 
 .ButtonsContainer .btnLeft {
@@ -40,12 +40,12 @@
 }
 
 .ButtonsContainer .btnRight {
-    border-right: 1.5px solid var(--gray--200);
+    border-right: 1.5px solid var(--border-color);
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
 }
 
 .ButtonsContainer .active {
-    background-color: #e9f0fe;
-    color: var(--brand--600);
+    background-color: var(--active);
+    color: var(--active-font);
 }

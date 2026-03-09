@@ -1,8 +1,8 @@
 .infoCard {
     padding: 24px;
-    background-color: #fff;
+    background-color: var(--bg-secondary);
     border-radius: 12px;
-    border: 1px solid var(--gray--100);
+    border: var(--border);
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
@@ -25,7 +25,7 @@
 .infoCard .dataContainer .data {
     font-size: 40px;
     font-weight: 500;
-    color: var(--gray--950);
+    color: var(--font-big--color);
 }
 
 .infoCard .dataPer {
@@ -33,7 +33,7 @@
     justify-content: center;
     align-items: baseline;
     padding: 4px;
-    background-color: #fff;
+    background-color: var(--bg-secondary);
     border: 1px solid var(--gray--200);
     border-radius: 5px;
     font-size: 14px;

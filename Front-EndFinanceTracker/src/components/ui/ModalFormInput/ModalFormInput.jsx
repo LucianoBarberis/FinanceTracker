@@ -13,7 +13,7 @@ const ModalFormInput = ({name, value, useForm, type, placeholder}) => {
                 type={type}
                 placeholder={placeholder}
                 name={value}
-                className={useForm.getFieldError(value)?.length > 0 ? "errorInput" : ""}
+                className={`inputBase ${useForm.getFieldError(value)?.length > 0 ? "errorInput" : ""}`}
             />
         </div>
     )

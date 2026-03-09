@@ -4,32 +4,32 @@
     flex-direction: column;
     gap: 10px;
     padding: 24px;
-    background-color: #fff;
+    background-color: var(--bg-secondary);
     position: sticky;
     top: 0;
     z-index: 101;
 }
 
 .tableBorder {
-    border-bottom: 1px solid var(--gray--100);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .CardTitle h3 {
-    color: var(--gray--900);
+    color: var(--text-primary);
     font-size: 20px;
     font-weight: 600;
 }
 
 .CardTitle p {
-    color: var(--gray--600);
+    color: var(--text-secondary);
     font-size: 16px;
 }
 
 .TransactionsCard {
-    background-color: #fff;
+    background-color: var(--bg-secondary);
     border-radius: 12px;
     box-shadow: var(--shadow);
-    border: 1px solid var(--gray--100);
+    border: var(--border);
     max-height: 600px;
     overflow-y: scroll;
 }
@@ -53,19 +53,20 @@
 }
 
 .Table thead tr th {
+    background-color: var(--bg-secondary);
     text-align: start;
     padding: 10px 24px;
     font-size: 14px;
     font-weight: 600;
-    color: var(--gray--600);
-    border-bottom: 1px solid var(--gray--100) !important;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color) !important;
 }
 
 .Table tbody tr td {
     padding: 10px 24px;
     font-size: 13px;
-    color: var(--font--color);
-    border-bottom: 1px solid var(--gray--100) !important;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color) !important;
 }
 
 .Table tbody tr {
@@ -74,7 +75,7 @@
 }
 
 .Table tbody tr:hover {
-    background-color: var(--gray--50);
+    background-color: var(--table-row-hover);
 }
 
 .Table tbody .TableAction .TableActionBtn {
@@ -101,7 +102,7 @@
     position: absolute;
     top: 10%;
     right: 0;
-    background-color: #fff;
+    background-color: var(--bg-secondary);
     border: 1px solid var(--gray--100);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -133,5 +134,5 @@
 }
 
 .ActionMenuButton.delete:hover {
-    background-color: #fee2e2;
+    background-color: var(--bg-secondary);
 }

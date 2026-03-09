@@ -16,14 +16,36 @@ import { TfiStatsUp, TfiStatsDown } from "react-icons/tfi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { transactionSchema } from '../../../validation/transactionSchema'
 import { categorySchema } from '../../../validation/categorySchema.js'
+import { useTheme } from '../../../hooks/useTheme'
 
 const ActionSection = () => {
+    const { theme } = useTheme();
     const [isOpenAddIncome, setIsOpenIncome] = useState(false)
     const [isOpenAddEgress, setIsOpenEgress] = useState(false)
     const [isOpenNewCat, setOpenNewCat] = useState(false)
     const [showColorPicker, setShowColorPicker] = useState(false)
+    const [isDark, setIsDark] = useState(false)
     const optIncomes = useSelector((s) => s.categories.catIncomes)
     const optEgress = useSelector((s) => s.categories.catEgress)
+
+    useEffect(() => {
+        setIsDark(theme === 'dark')
+    }, [theme])
+    
+    const colors = {
+        income: {
+            icon: isDark ? '#17B26A' : '#0B9055',
+            bg: isDark ? '#042A1C' : '#DCFAE6'
+        },
+        egress: {
+            icon: isDark ? '#F04438' : '#B42318',
+            bg: isDark ? '#441010' : '#FEE4E2'
+        },
+        category: {
+            icon: isDark ? '#5CA9FE' : '#155EEF',
+            bg: isDark ? '#162555' : '#e7f1fa'
+        }
+    }
 
     const incomeForm = useForm({
         description: '',
@@ -111,9 +133,27 @@ const ActionSection = () => {
     return (
         <>
             <section className='ActionCardsContainer'>
-                <ActionCard onClick={() => setIsOpenIncome(true)} imgSrc={<TfiStatsUp/>} title={"Añadir un Ingreso"} description={"Crea un ingreso manualmente"} bgColor={"#DCFAE6"} />
-                <ActionCard onClick={() => setIsOpenEgress(true)} imgSrc={<TfiStatsDown/>} title={"Añadir un Egreso"} description={"Crea un egreso manualmente"} bgColor={"#FEE4E2"} />
-                <ActionCard onClick={() => setOpenNewCat(true)} imgSrc={<LuLayoutDashboard/>} title={"Añadir nueva categoria"} description={"Crea una nueva categoria"} bgColor={"#e7f1fa"} />
+                <ActionCard 
+                    onClick={() => setIsOpenIncome(true)} 
+                    imgSrc={<TfiStatsUp color={colors.income.icon}/>} 
+                    title={"Añadir un Ingreso"} 
+                    description={"Crea un ingreso manualmente"} 
+                    bgColor={colors.income.bg} 
+                />
+                <ActionCard 
+                    onClick={() => setIsOpenEgress(true)} 
+                    imgSrc={<TfiStatsDown color={colors.egress.icon}/>} 
+                    title={"Añadir un Egreso"} 
+                    description={"Crea un egreso manualmente"} 
+                    bgColor={colors.egress.bg} 
+                />
+                <ActionCard 
+                    onClick={() => setOpenNewCat(true)} 
+                    imgSrc={<LuLayoutDashboard color={colors.category.icon}/>} 
+                    title={"Añadir nueva categoria"} 
+                    description={"Crea una nueva categoria"} 
+                    bgColor={colors.category.bg} 
+                />
             </section>
 
             {/* Modal Añadir Ingresos */}

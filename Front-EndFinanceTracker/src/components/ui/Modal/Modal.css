@@ -14,7 +14,7 @@
 .ft-modal{
 	width:100%;
 	max-width:640px;
-	background:var(--bg, #ffffff);
+	background-color: var(--bg-primary);
 	color:var(--text, #1f2937);
 	border-radius:12px;
 	box-shadow:0 10px 30px rgba(2,6,23,0.2);
@@ -36,13 +36,14 @@
 	align-items: self-start;
 	justify-content:space-between;
 	padding:20px;
-	border-bottom:1px solid rgba(0,0,0,0.06);
+	border-bottom: var(--border);
 }
 
 .ft-modal-header h3{
 	margin:0;
 	font-size:1.125rem;
 	font-weight:600;
+	color: var(--text-primary);
 }
 
 .ft-modal-close{
@@ -51,11 +52,11 @@
 	font-size:1.25rem;
 	line-height:1;
 	cursor:pointer;
-	color:var(--muted, #6b7280);
+	color:var(--text-secondary);
 }
 
 .ft-modal-desc{
-	color:var(--muted, #6b7280);
+	color:var(--text-secondary);
 	font-size:0.95rem;
 	margin-top: 5px;
 }

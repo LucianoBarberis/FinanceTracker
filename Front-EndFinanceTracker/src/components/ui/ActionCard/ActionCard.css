@@ -1,8 +1,8 @@
 .ActionCard {
     padding: 24px;
-    background-color: #fff;
+    background-color: var(--bg-secondary);
     border-radius: 12px;
-    border: 1px solid var(--gray--100);
+    border: var(--border);
     box-shadow: var(--shadow);
     display: flex;
     gap: 15px;
@@ -31,7 +31,7 @@
 }
 
 .ActionCard .infoActionCard h3 {
-    color: var(--gray--900);
+    color: var(--text-primary);
     font-size: 20px;
     font-weight: 600;
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { VscGear, VscBell, VscAccount } from "react-icons/vsc";
+import ThemeToggle from '../../ui/ThemeToggle/ThemeToggle';
 import './Header.css'
 
 const Header = () => {
@@ -29,6 +30,7 @@ const Header = () => {
                 </ul>
             </nav>
             <div className='accountMenu'>
+                <ThemeToggle />
                 <button><VscGear /></button>
                 <button><VscBell /></button>
                 <button><VscAccount /></button>

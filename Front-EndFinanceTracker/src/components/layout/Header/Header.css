@@ -14,7 +14,7 @@ header {
 
 .menu {
     padding: 20px;
-    background: rgba(255, 255, 255, 0.58);
+    background: var(--header-bg-color);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(7.2px);
@@ -32,7 +32,7 @@ header {
 }
 
 .menu ul li a{
-    color: var(--gray--600);
+    color: var(--text-secondary);
     text-decoration: none;
     padding: 10px;
     border-radius: 10px;
@@ -40,18 +40,18 @@ header {
 }
 
 .menu ul li a:hover {
-    background-color: #e9f0fe;
-    color: var(--brand--600);
+    background-color: var(--active);
+    color: var(--active-font);
 
 }
 
 .menu ul li .active {
-    color: var(--brand--600);
-    background-color: #e9f0fe;
+    background-color: var(--active);
+    color: var(--active-font);
 }
 
 .logo h1 {
-    color: var(--gray--900);
+    color: var(--brand-color);
     font-size: 30px;
     font-weight: 400;
     letter-spacing: -1px;
@@ -65,7 +65,7 @@ header {
 .logo {
     padding: 10px 25px;
     height: 60px;
-    background: rgba(255, 255, 255, 0.58);
+    background: var(--header-bg-color);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(7.2px);
@@ -79,7 +79,7 @@ header {
     align-items: center;
     padding: 10px 25px;
     height: 60px;
-    background: rgba(255, 255, 255, 0.58);
+    background: var(--header-bg-color);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(7.2px);

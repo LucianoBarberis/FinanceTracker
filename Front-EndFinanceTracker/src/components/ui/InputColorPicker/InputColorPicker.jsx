@@ -1,5 +1,6 @@
 import React from 'react'
 import { HexColorPicker } from 'react-colorful'
+import './InputColorPicker.css'
 
 const InputColorPicker = ({form, showColorPicker, setShowColorPicker}) => {
     return (

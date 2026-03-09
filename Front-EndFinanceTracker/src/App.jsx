@@ -3,8 +3,10 @@ import Hero from './components/layout/Hero/Hero'
 import InfoCards from './components/layout/InfoCards/InfoCards'
 import ActionSection from './components/layout/ActionSection/ActionSection'
 import AnalitycSection from './components/layout/AnalitycSection/AnalitycSection'
+import { useTheme } from './hooks/useTheme'
 
 function App() {
+  useTheme(); // Initialize theme logic
 
   return (
     <>

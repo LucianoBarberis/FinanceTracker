@@ -23,13 +23,17 @@
 }
 
 .Legend ul li {
-    color: var(--font--color);
+    color: var(--text-primary);
     font-weight: 400;
     font-size: 18px;
     display: flex;
     align-items: center;
     padding: 12px;
-    border-bottom: 1px solid var(--gray--100);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.Legend ul li:last-child {
+    border-bottom: none;
 }
 
 .Legend ul li .Icon {
@@ -45,5 +49,5 @@
 
 .Legend ul li span {
     margin-left: auto;
-    color: var(--gray--500);
+    color: var(--text-secondary);
 }

@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import './ActionSection.css'
 import ActionCard from '../ActionCard/ActionCard'
 import Modal from '../../../../components/ui/Modal/Modal'
-import ModalFormInput from '../ModalFormInput/ModalFormInput.jsx'
-import ModalFormSelect from '../ModalFormSelect/ModalFormSelect'
-import InputColorPicker from '../../../categories/components/InputColorPicker/InputColorPicker.jsx'
+import FormInput from '../../../../components/ui/FormInput/FormInput';
+import FormSelect from '../../../../components/ui/FormSelect/FormSelect';
+import InputColorPicker from '../../../../components/ui/InputColorPicker/InputColorPicker'
+import InputIconPicker from '../../../../components/ui/InputIconPicker/InputIconPicker.jsx';
 import { useForm } from '../../../../hooks'
 import { useDispatch, useSelector } from 'react-redux'
 import { postTransaction } from '../../redux/postTransactionAction'
@@ -24,6 +25,7 @@ const ActionSection = () => {
     const [isOpenAddEgress, setIsOpenEgress] = useState(false)
     const [isOpenNewCat, setOpenNewCat] = useState(false)
     const [showColorPicker, setShowColorPicker] = useState(false)
+    const [showIconPicker, setIconPicker] = useState(false)
     const [isDark, setIsDark] = useState(false)
     const optIncomes = useSelector((s) => s.categories.catIncomes)
     const optEgress = useSelector((s) => s.categories.catEgress)
@@ -165,11 +167,11 @@ const ActionSection = () => {
             >
                 <form onSubmit={handleSubmitIncome} className='FormIncome' autoComplete='off'>
                     <div className='formGroup'>
-                        <ModalFormInput name={"Monto"} type={"number"} value={"amount"} useForm={incomeForm} placeholder={"$"}/>
-                        <ModalFormInput name={"Fecha"} type={"date"} value={"dateTime"} useForm={incomeForm} placeholder={""}/>
+                        <FormInput name={"Monto"} type={"number"} value={"amount"} useForm={incomeForm} placeholder={"$"}/>
+                        <FormInput name={"Fecha"} type={"date"} value={"dateTime"} useForm={incomeForm} placeholder={""}/>
                     </div>
-                    <ModalFormSelect useForm={incomeForm} name={"categoryId"} label={"Categoría"} options={optIncomes}/>
-                    <ModalFormInput name={"Descripción"} type={"text"} value={"description"} useForm={incomeForm} placeholder={"Sueldo..."}/>
+                    <FormSelect useForm={incomeForm} name={"categoryId"} label={"Categoría"} options={optIncomes}/>
+                    <FormInput name={"Descripción"} type={"text"} value={"description"} useForm={incomeForm} placeholder={"Sueldo..."}/>
                     <button className='submitIncome' type="submit">Añadir</button>
                 </form>
             </Modal>
@@ -183,11 +185,11 @@ const ActionSection = () => {
             >
                 <form onSubmit={handleSubmitEgress} className='FormIncome' autoComplete='off'>
                     <div className='formGroup'>
-                        <ModalFormInput name={"Monto"} type={"number"} value={"amount"} useForm={egressForm} placeholder={"$"}/>
-                        <ModalFormInput name={"Fecha"} type={"date"} value={"dateTime"} useForm={egressForm} placeholder={""}/>
+                        <FormInput name={"Monto"} type={"number"} value={"amount"} useForm={egressForm} placeholder={"$"}/>
+                        <FormInput name={"Fecha"} type={"date"} value={"dateTime"} useForm={egressForm} placeholder={""}/>
                     </div>
-                    <ModalFormSelect useForm={egressForm} name={"categoryId"} label={"Categoría"} options={optEgress}/>
-                    <ModalFormInput name={"Descripción"} type={"text"} value={"description"} useForm={egressForm} placeholder={"Sueldo..."}/>
+                    <FormSelect useForm={egressForm} name={"categoryId"} label={"Categoría"} options={optEgress}/>
+                    <FormInput name={"Descripción"} type={"text"} value={"description"} useForm={egressForm} placeholder={"Sueldo..."}/>
                     <button className='submitEgress' type="submit">Añadir</button>
                 </form>
             </Modal>
@@ -204,11 +206,10 @@ const ActionSection = () => {
             >
                 <form onSubmit={handlerSubmitNewCat} className='FormIncome' autoComplete='off'>
                     <div className='formGroup'>
-                        <ModalFormInput name={"Nombre"} type={"text"} value={"name"} useForm={addCategoryForm} placeholder={"Ventas..."}/>
-                        <ModalFormInput name={"Icono"} type={"text"} value={"icon"} useForm={addCategoryForm} placeholder={"icono"}/>
-                        
+                        <FormInput name={"Nombre"} type={"text"} value={"name"} useForm={addCategoryForm} placeholder={"Ventas..."}/>
+                        <InputIconPicker form={addCategoryForm} setShowIconPicker={setIconPicker} showIconPicker={showIconPicker}/>
                     </div>
-                    <ModalFormSelect useForm={addCategoryForm} name={"type"} label={"Tipo"} options={[{name: "Ingresos", value: 0}, {name: "Egresos", value:1}]}/>
+                    <FormSelect useForm={addCategoryForm} name={"type"} label={"Tipo"} options={[{name: "Ingresos", value: 0}, {name: "Egresos", value:1}]}/>
                     <InputColorPicker form={addCategoryForm} showColorPicker={showColorPicker} setShowColorPicker={setShowColorPicker}/>
                     <button className='submitIncome' type="submit">Añadir</button>
                 </form>

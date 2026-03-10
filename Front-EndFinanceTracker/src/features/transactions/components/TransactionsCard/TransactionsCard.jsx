@@ -9,8 +9,8 @@ import { putTransaction } from '../../redux/putTransactionAction';
 import { getBalances, getEgress, getIncomes } from '../../../analytics/redux/getBalancesAction';
 import { toast } from '@pheralb/toast';
 import Modal from '../../../../components/ui/Modal/Modal';
-import ModalFormInput from '../ModalFormInput/ModalFormInput';
-import ModalFormSelect from '../ModalFormSelect/ModalFormSelect';
+import FormInput from '../../../../components/ui/FormInput/FormInput';
+import FormSelect from '../../../../components/ui/FormSelect/FormSelect';
 import { getCategories } from '../../../categories/redux/getCategoriesAction';
 import { transactionUpdateSchema } from '../../validation/transactionUpdateSchema';
 
@@ -178,12 +178,12 @@ const TransactionsCard = () => {
         >
             <form onSubmit={handleSubmitEdit} className='FormIncome' autoComplete='off'>
                 <div className='formGroup'>
-                    <ModalFormInput name={"Monto"} type={"number"} value={"amount"} useForm={editForm} placeholder={"$"}/>
-                    <ModalFormInput name={"Fecha"} type={"date"} value={"dateTime"} useForm={editForm} placeholder={""}/>
+                    <FormInput name={"Monto"} type={"number"} value={"amount"} useForm={editForm} placeholder={"$"}/>
+                    <FormInput name={"Fecha"} type={"date"} value={"dateTime"} useForm={editForm} placeholder={""}/>
                 </div>
-                <ModalFormInput name={"Descripción"} type={"text"} value={"description"} useForm={editForm} placeholder={"Sueldo..."}/>
-                <ModalFormSelect useForm={editForm} label={"Tipo"} name={"type"} options={options}/>
-                <ModalFormSelect useForm={editForm} label={"Categoria"} name={"categoryId"} options={editForm.valores.type == 0 ? optIncomes : optEgress}/>
+                <FormInput name={"Descripción"} type={"text"} value={"description"} useForm={editForm} placeholder={"Sueldo..."}/>
+                <FormSelect useForm={editForm} label={"Tipo"} name={"type"} options={options}/>
+                <FormSelect useForm={editForm} label={"Categoria"} name={"categoryId"} options={editForm.valores.type == 0 ? optIncomes : optEgress}/>
                 <button className='submitIncome' type="submit">Editar</button>
             </form>
         </Modal>

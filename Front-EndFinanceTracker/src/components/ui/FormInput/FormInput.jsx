@@ -1,4 +1,4 @@
-const ModalFormInput = ({name, value, useForm, type, placeholder}) => {
+const FormInput = ({name, value, useForm, type, placeholder}) => {
     return (
         <div className='formField'>
             <span className='error' style={{ display: useForm.getFieldError(value) ? 'block' : 'none' }}>
@@ -19,4 +19,4 @@ const ModalFormInput = ({name, value, useForm, type, placeholder}) => {
     )
 }
 
-export default ModalFormInput
+export default FormInput

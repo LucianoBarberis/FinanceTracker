@@ -1,4 +1,4 @@
-const ModalFormSelect = ({useForm, options, name, label}) => {
+const FormSelect = ({useForm, options, name, label}) => {
     return (
         <div className='formField'>
             <span className='error' style={{ display: useForm.getFieldError(name) ? 'block' : 'none' }}>
@@ -24,4 +24,4 @@ const ModalFormSelect = ({useForm, options, name, label}) => {
     )
 }
 
-export default ModalFormSelect
+export default FormSelect

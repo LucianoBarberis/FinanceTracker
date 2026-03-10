@@ -1,12 +1,12 @@
 .hero {
-    width: 100vw;
+    width: 100%;
     display: flex;
-    padding: 0 8vw;
+    padding: 0 var(--container-padding);
     padding-top: 40px;
     padding-bottom: 40px;
     align-items: center;
     justify-content: space-between;
-    height: 100px;
+    min-height: 100px;
 }
 
 .hero h1 {
@@ -14,10 +14,22 @@
     color: var(--font-color);
 }
 
+.ButtonsContainer {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+}
+
+.ButtonsContainer::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
 .ButtonsContainer button{
     height: 40px;
     min-width: 95px;
-    padding: 0 5px;
+    padding: 0 15px;
     color: var(--text-secondary);
     background-color: var(--bg-secondary);
     font-weight: 600;
@@ -27,6 +39,7 @@
     border-bottom: 1.5px solid var(--border-color);
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
 }
 
 .ButtonsContainer button:hover {
@@ -48,4 +61,27 @@
 .ButtonsContainer .active {
     background-color: var(--active);
     color: var(--active-font);
+}
+
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        height: auto;
+    }
+
+    .hero h1 {
+        font-size: 22px;
+    }
+
+    .ButtonsContainer {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 20px;
+    }
 }

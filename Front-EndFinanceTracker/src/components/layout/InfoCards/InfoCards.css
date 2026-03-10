@@ -1,8 +1,22 @@
 .InfoCardsContainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    padding: 0 8vw;
+    padding: 0 var(--container-padding);
     gap: 40px;
     margin-top: 40px;
-    width: 100vw;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .InfoCardsContainer {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .InfoCardsContainer {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
 }

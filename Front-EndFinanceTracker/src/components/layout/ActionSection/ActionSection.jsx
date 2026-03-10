@@ -206,6 +206,7 @@ const ActionSection = () => {
                     <div className='formGroup'>
                         <ModalFormInput name={"Nombre"} type={"text"} value={"name"} useForm={addCategoryForm} placeholder={"Ventas..."}/>
                         <ModalFormInput name={"Icono"} type={"text"} value={"icon"} useForm={addCategoryForm} placeholder={"icono"}/>
+                        
                     </div>
                     <ModalFormSelect useForm={addCategoryForm} name={"type"} label={"Tipo"} options={[{name: "Ingresos", value: 0}, {name: "Egresos", value:1}]}/>
                     <InputColorPicker form={addCategoryForm} showColorPicker={showColorPicker} setShowColorPicker={setShowColorPicker}/>

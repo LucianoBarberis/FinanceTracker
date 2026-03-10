@@ -1,15 +1,16 @@
 .theme-toggle {
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    background-color: var(--theme-swicher-bg);
+    border: var(--border);
     border-radius: 50px;
-    width: 60px;
-    height: 30px;
+    width: 50px;
+    height: 24px;
     cursor: pointer;
     display: flex;
     align-items: center;
     padding: 2px;
     position: relative;
     transition: background-color 0.3s ease;
+
 }
 
 .theme-toggle.dark {
@@ -18,8 +19,8 @@
 
 .toggle-circle {
     background-color: var(--bg-primary);
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -29,9 +30,5 @@
 }
 
 .theme-toggle.dark .toggle-circle {
-    transform: translateX(30px);
-}
-
-.theme-toggle:hover {
-    box-shadow: var(--shadow);
+    transform: translateX(24px);
 }

@@ -8,6 +8,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Inter";
+    scrollbar-gutter: stable;
 }
 
 /* Semantic Palette - Light Mode (Default) */
@@ -66,6 +67,21 @@
     --sb-track-color: var(--gray--200);
     --sb-thumb-color: var(--brand--950);
     --sb-size: 6px;
+    --hover-edit: var(--brand--100);
+    --theme-swicher-bg: #c7c7c7;
+    --container-padding: 8vw;
+}
+
+@media (max-width: 1024px) {
+    :root {
+        --container-padding: 4vw;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --container-padding: 1rem;
+    }
 }
 
 /* Dark Mode Variables */
@@ -87,6 +103,8 @@ body.dark {
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     --sb-track-color: var(--gray--800);
     --sb-thumb-color: var(--brand--400);
+    --theme-swicher-bg: var(--bg-secondary);
+    --hover-edit: var(--brand--500)
 }
 
 @media (prefers-color-scheme: dark) {

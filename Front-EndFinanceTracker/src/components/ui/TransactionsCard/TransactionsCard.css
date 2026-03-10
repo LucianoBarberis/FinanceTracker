@@ -25,13 +25,18 @@
     font-size: 16px;
 }
 
+.TransactionsCardContainer {
+    max-height: 600px;
+    
+}
+
 .TransactionsCard {
     background-color: var(--bg-secondary);
     border-radius: 12px;
     box-shadow: var(--shadow);
     border: var(--border);
-    max-height: 600px;
     overflow-y: scroll;
+    height: 600px;
 }
 
 .Table {
@@ -94,6 +99,11 @@
     position: relative;
 }
 
+.Table tbody .TableAction .TableActionBtn svg {
+    fill: var(--text-primary);
+    color: var(--text-primary);
+}
+
 .Table tbody .TableAction {
     position: relative;
 }
@@ -103,7 +113,7 @@
     top: 10%;
     right: 0;
     background-color: var(--bg-secondary);
-    border: 1px solid var(--gray--100);
+    border: var(--border);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 100;
@@ -120,19 +130,19 @@
     cursor: pointer;
     text-align: left;
     font-size: 14px;
-    color: var(--font--color);
-    transition: background-color 0.2s;
-}
-
-.ActionMenuButton:hover {
-    background-color: var(--gray--50);
+    color: var(--text-primary);
+    transition: background-color 0.5s;
 }
 
 .ActionMenuButton.delete {
     color: #dc2626;
-    border-top: 1px solid var(--gray--100);
+    border-top: var(--border);
 }
 
 .ActionMenuButton.delete:hover {
-    background-color: var(--bg-secondary);
+    background-color: #dc262639;
+}
+
+.ActionMenuButton.edit:hover {
+    background-color: var(--hover-edit);
 }

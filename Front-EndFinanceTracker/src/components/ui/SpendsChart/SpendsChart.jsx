@@ -23,14 +23,14 @@ const SpendingChart = () => {
 
     return (
         <div className='chart-container'>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
                     <Pie
                         data={data}
                         cx="50%"
                         cy="50%"
-                        innerRadius={50}
-                        outerRadius={100}
+                        innerRadius={45}
+                        outerRadius={85}
                         dataKey="total"
                         stroke='#10182810'
                         strokeWidth={1}

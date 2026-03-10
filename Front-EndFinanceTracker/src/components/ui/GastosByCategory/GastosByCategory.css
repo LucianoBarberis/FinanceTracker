@@ -6,18 +6,36 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 20px;
 }
 
 .ExpenseContainer h3 {
-    color: var(--gray--900);
+    color: var(--text-primary);
     font-size: 20px;
     font-weight: 600;
+}
+
+.ExpenseContainer p {
+    color: var(--text-secondary);
+    font-size: 14px;
 }
 
 .ExpenseContainer .CardTitle {
     border-radius: 12px;
     position: relative;
+    margin-bottom: 20px;
 }
+
+@media (max-width: 480px) {
+    .ExpenseContainer {
+        padding: 15px;
+    }
+    
+    .ExpenseContainer h3 {
+        font-size: 18px;
+    }
+}
+
 
 .btnNewCategory {
     background-color: var(--brand--600);

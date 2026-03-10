@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTheme } from '../../../hooks/useTheme';
+import { LuMoon, LuSun } from "react-icons/lu";
+
 import './ThemeToggle.css';
 
 const ThemeToggle = () => {
@@ -12,7 +14,7 @@ const ThemeToggle = () => {
             aria-label="Toggle Dark Mode"
         >
             <div className="toggle-circle">
-                {theme === 'light' ? '☀️' : '🌙'}
+                {theme === 'light' ? <LuSun /> : <LuMoon color='#fff'/>}
             </div>
         </button>
     );

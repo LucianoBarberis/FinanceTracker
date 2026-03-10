@@ -1,7 +1,7 @@
 import './TransactionsCard.css'
 import { useEffect, useState, useRef } from 'react'
 import { useForm } from '../../../hooks';
-import { GrMoreVertical } from "react-icons/gr";
+import { LuEllipsisVertical } from "react-icons/lu";
 import { useDispatch, useSelector } from 'react-redux';
 import { getTransactions } from '../../../redux/actions/getTransactionAction';
 import { deleteTransaction } from '../../../redux/actions/deleteTransactionAction';
@@ -109,7 +109,7 @@ const TransactionsCard = () => {
     ]
 
     return (
-    <>
+    <div className='TransactionsCardContainer'>
         <div className='TransactionsCard' ref={menuRef}>
             <div className="CardTitle">
                 <h3>Últimas Transacciones</h3>
@@ -145,7 +145,7 @@ const TransactionsCard = () => {
                                         className='TableActionBtn'
                                         onClick={() => setOpenMenuIndex(openMenuIndex === index ? null : index)}
                                     >
-                                        <GrMoreVertical />
+                                        <LuEllipsisVertical />
                                     </button>
                                     {openMenuIndex === index && (
                                         <div ref={actionMenuRef}>
@@ -187,7 +187,7 @@ const TransactionsCard = () => {
                 <button className='submitIncome' type="submit">Editar</button>
             </form>
         </Modal>
-    </>
+    </div>
     )
 }
 

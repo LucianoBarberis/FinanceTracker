@@ -5,8 +5,7 @@
     border: var(--border);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 20px;
+    justify-content: center;;
 }
 
 .ExpenseContainer h3 {

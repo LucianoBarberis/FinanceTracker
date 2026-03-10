@@ -1,18 +1,18 @@
 import './TransactionsCard.css'
 import { useEffect, useState, useRef } from 'react'
-import { useForm } from '../../../hooks';
+import { useForm } from '../../../../hooks';
 import { LuEllipsisVertical } from "react-icons/lu";
 import { useDispatch, useSelector } from 'react-redux';
-import { getTransactions } from '../../../redux/actions/getTransactionAction';
-import { deleteTransaction } from '../../../redux/actions/deleteTransactionAction';
-import { putTransaction } from '../../../redux/actions/putTransactionAction';
-import { getBalances, getEgress, getIncomes } from '../../../redux/actions/getBalancesAction';
+import { getTransactions } from '../../redux/getTransactionAction';
+import { deleteTransaction } from '../../redux/deleteTransactionAction';
+import { putTransaction } from '../../redux/putTransactionAction';
+import { getBalances, getEgress, getIncomes } from '../../../analytics/redux/getBalancesAction';
 import { toast } from '@pheralb/toast';
-import Modal from '../Modal/Modal';
+import Modal from '../../../../components/ui/Modal/Modal';
 import ModalFormInput from '../ModalFormInput/ModalFormInput';
 import ModalFormSelect from '../ModalFormSelect/ModalFormSelect';
-import { getCategories } from '../../../redux/actions/getCategoriesAction';
-import { transactionUpdateSchema } from '../../../validation/transactionUpdateSchema';
+import { getCategories } from '../../../categories/redux/getCategoriesAction';
+import { transactionUpdateSchema } from '../../validation/transactionUpdateSchema';
 
 const TransactionsCard = () => {
 

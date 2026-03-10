@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBalances, getEgress, getIncomes } from "../actions/getBalancesAction";
+import { getBalances, getEgress, getIncomes } from "./getBalancesAction";
 
 const initialState = {
     balance: 0,

@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getTransactions } from "../actions/getTransactionAction";
-import { postTransaction } from "../actions/postTransactionAction";
-import { deleteTransaction } from "../actions/deleteTransactionAction";
-import { putTransaction } from "../actions/putTransactionAction";
+import { getTransactions } from "./getTransactionAction";
+import { postTransaction } from "./postTransactionAction";
+import { deleteTransaction } from "./deleteTransactionAction";
+import { putTransaction } from "./putTransactionAction";
 
 const initialState = {
     transacciones: [],

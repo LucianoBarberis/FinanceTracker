@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from '../../../hooks/useTheme';
+import { useTheme } from '../../hooks/useTheme';
 import { LuMoon, LuSun } from "react-icons/lu";
 
 import './ThemeToggle.css';

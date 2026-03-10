@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleTheme as toggleThemeAction } from "../redux/reducers/themeReducer";
+import { toggleTheme as toggleThemeAction } from "../redux/themeReducer";
 
 export const useTheme = () => {
     const theme = useSelector((state) => state.theme.mode);

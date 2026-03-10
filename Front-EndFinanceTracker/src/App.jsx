@@ -1,12 +1,12 @@
 import Header from './components/layout/Header/Header'
 import Hero from './components/layout/Hero/Hero'
-import InfoCards from './components/layout/InfoCards/InfoCards'
-import ActionSection from './components/layout/ActionSection/ActionSection'
-import AnalitycSection from './components/layout/AnalitycSection/AnalitycSection'
-import { useTheme } from './hooks/useTheme'
+import InfoCards from './features/analytics/components/InfoCards/InfoCards'
+import ActionSection from './features/transactions/components/ActionSection/ActionSection'
+import AnalitycSection from './features/analytics/components/AnalitycSection/AnalitycSection'
+import { useTheme } from './features/theme/hooks/useTheme'
 
 function App() {
-  useTheme(); // Initialize theme logic
+  useTheme();
 
   return (
     <>

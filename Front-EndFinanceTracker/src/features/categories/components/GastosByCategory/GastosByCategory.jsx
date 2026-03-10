@@ -1,4 +1,4 @@
-import SpendingChart from '../SpendsChart/SpendsChart.jsx'
+import SpendingChart from '../../../analytics/components/SpendsChart/SpendsChart.jsx'
 import './GastosByCategory.css'
 
 const GastosByCategory = () => {

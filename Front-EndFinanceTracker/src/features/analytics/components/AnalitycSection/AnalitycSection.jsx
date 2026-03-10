@@ -1,6 +1,6 @@
 import React from 'react'
-import GastosByCategory from '../../ui/GastosByCategory/GastosByCategory'
-import TransactionsCard from '../../ui/TransactionsCard/TransactionsCard'
+import GastosByCategory from '../../../categories/components/GastosByCategory/GastosByCategory'
+import TransactionsCard from '../../../transactions/components/TransactionsCard/TransactionsCard'
 import './AnalitycSection.css'
 
 const AnalitycSection = () => {

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCategories } from "../actions/getCategoriesAction";
-import { postCategories } from "../actions/postCategoriesAction";
+import { getCategories } from "./getCategoriesAction";
+import { postCategories } from "./postCategoriesAction";
 
 const initialState = {
     catIncomes: [],

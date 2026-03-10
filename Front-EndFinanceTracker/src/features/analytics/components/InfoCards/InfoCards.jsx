@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import InfoCard from '../../ui/InfoCard/InfoCard'
+import InfoCard from '../InfoCard/InfoCard'
 import './InfoCards.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { getBalances, getEgress, getIncomes } from '../../../redux/actions/getBalancesAction'
+import { getBalances, getEgress, getIncomes } from '../../redux/getBalancesAction'
 
 const InfoCards = () => {
     const Balance = useSelector((s) => s.balance.balance)

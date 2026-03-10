@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router'
 import { VscGear, VscBell, VscAccount, VscMenu, VscClose } from "react-icons/vsc";
-import ThemeToggle from '../../ui/ThemeToggle/ThemeToggle';
+import ThemeToggle from '../../../features/theme/components/ThemeToggle/ThemeToggle';
 import './Header.css'
 
 const Header = () => {

@@ -6,6 +6,8 @@ import App from './App.jsx'
 import { Provider } from 'react-redux'
 import { store } from './redux/store.js'
 import { Toaster } from '@pheralb/toast'
+import Login from './pages/Login/Login.jsx'
+import Register from './pages/Register/Register.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -13,6 +15,8 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<App />}/>
+          <Route path='/login' element={<Login/>} />
+          <Route path='/register' element={<Register/>}/>
         </Routes>
       </BrowserRouter>
       <Toaster theme='light' position='bottom-center'/>

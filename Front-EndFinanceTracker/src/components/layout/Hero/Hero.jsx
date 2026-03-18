@@ -1,10 +1,12 @@
 import React from 'react'
 import './Hero.css'
+import Cookies from 'js-cookie'
 
 const Hero = () => {
+    const userData = Cookies.get("userName")
     return (
         <section className='hero'>
-            <h1>Hello, [user]!</h1>
+            <h1>Hola, {userData}!</h1>
             <div className='ButtonsContainer'>
                 <button className='btnLeft active'>Este Mes</button>
                 <button>Último Mes</button>

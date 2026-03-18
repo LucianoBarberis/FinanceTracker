@@ -3,12 +3,14 @@ import { transactionSlice } from '../features/transactions/redux/transactionRedu
 import { balanceSlice } from '../features/analytics/redux/balanceReducer'
 import { categoriesSlice } from '../features/categories/redux/categoriesReducer'
 import themeReducer from '../features/theme/redux/themeReducer'
+import { authSlice } from '../features/loginRegister/redux/validationReducer'
 
 export const store = configureStore({
     reducer: {
         transaction: transactionSlice.reducer,
         balance: balanceSlice.reducer,
         categories: categoriesSlice.reducer,
-        theme: themeReducer
+        theme: themeReducer,
+        auth: authSlice.reducer
     },
 })

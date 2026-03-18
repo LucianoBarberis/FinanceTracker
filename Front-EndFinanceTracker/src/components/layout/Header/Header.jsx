@@ -3,11 +3,21 @@ import { Link } from 'react-router'
 import { VscGear, VscBell, VscAccount, VscMenu, VscClose } from "react-icons/vsc";
 import ThemeToggle from '../../../features/theme/components/ThemeToggle/ThemeToggle';
 import './Header.css'
+import { useDispatch } from 'react-redux';
+import { logout } from "../../../features/loginRegister/redux/validationReducer"
+import { toast } from '@pheralb/toast';
 
 const Header = () => {
     const [isOpenConfig, setOpenConfig] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
+    const dispatch = useDispatch()
+    
+    const handlerLogout = () => {
+        toast.info({
+            text:"Cerrando sesión..."
+        })
+        dispatch(logout())
+    }
     return (
         <header>
             <div className='logo'>
@@ -39,6 +49,9 @@ const Header = () => {
                         <div className='configOption'>
                             <p>Tema:</p>
                             <ThemeToggle />
+                        </div>
+                        <div className='configOption'>
+                            <button onClick={() => handlerLogout()} className='logoutBtn'>Cerrar Sesión</button>
                         </div>
                     </div>
                 : null}

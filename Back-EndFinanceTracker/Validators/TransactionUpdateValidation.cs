@@ -2,15 +2,19 @@ using Back_EndFinanceTracker.DTOs;
 using Back_EndFinanceTracker.Models;
 using Back_EndFinanceTracker.Repository;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Back_EndFinanceTracker.Validators
 {
     public class TransactionUpdateValidation : AbstractValidator<TransactionUpdateDTO>
     {
         private readonly IRepository<Category> _categoryRepository;
-        public TransactionUpdateValidation(IRepository<Category> repository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public TransactionUpdateValidation(IRepository<Category> repository, IHttpContextAccessor httpContextAccessor)
         {
             _categoryRepository = repository;
+            _httpContextAccessor = httpContextAccessor;
 
             RuleFor(x => x.Amount)
                 .NotEmpty().WithMessage("El monto es obligatorio.")
@@ -33,7 +37,12 @@ namespace Back_EndFinanceTracker.Validators
             RuleFor(x => x)
                 .MustAsync(async (dto, cancellationToken) =>
                 {
-                    var category = await _categoryRepository.GetById(dto.CategoryId);
+                    var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    if (string.IsNullOrEmpty(userIdClaim)) return false;
+
+                    var userId = int.Parse(userIdClaim);
+                    var category = await _categoryRepository.GetById(dto.CategoryId, userId);
+                    
                     if (category == null) return true;
                     return dto.Type == category.Type;
                 })

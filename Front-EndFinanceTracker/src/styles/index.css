@@ -63,7 +63,7 @@
     --shadow: 0 1px 6px 1px #10182806;
     --border: 1px solid var(--border-color);
     --input-border: 1px solid var(--input-border-color);
-    --error-border: 1px solid #c71616;
+    --error-border: 1px solid #ea5e5e;
     --sb-track-color: var(--gray--200);
     --sb-thumb-color: var(--brand--950);
     --sb-size: 6px;
@@ -142,18 +142,38 @@ body {
     border-radius: 20px !important;
 }
 
-*::-webkit-scrollbar {
+
+
+body::-webkit-scrollbar {
     width: var(--sb-size);
 }
 
-*::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track {
     background: var(--sb-track-color);
     border-radius: 2px;
 }
 
-*::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb {
     background: var(--sb-thumb-color);
     border-radius: 5px;
+}
+
+.TransactionsCard::-webkit-scrollbar {
+    width: var(--sb-size);
+}
+
+.TransactionsCard::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 2px;
+}
+
+.TransactionsCard::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 5px;
+}
+
+.ActionMenu::-webkit-scrollbar {
+    width: 0;
 }
 
 
@@ -202,7 +222,9 @@ input[type="email"] {
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     width: 100%;
 }
-
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1)
+}
 input:focus {
     outline: none;
     border-color: var(--brand--500);

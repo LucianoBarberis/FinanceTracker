@@ -14,6 +14,7 @@ const FormInput = ({name, value, useForm, type, placeholder}) => {
                 placeholder={placeholder}
                 name={value}
                 className={`inputBase ${useForm.getFieldError(value)?.length > 0 ? "errorInput" : ""}`}
+                autoComplete="off"
             />
         </div>
     )

@@ -2,8 +2,8 @@
 {
     public interface IBalanceService
     {
-        public Task<decimal> GetBalance();
-        public Task<decimal> GetIncomes();
-        public Task<decimal> GetEgress();
+        public Task<decimal> GetBalance(int userId);
+        public Task<decimal> GetIncomes(int userId);
+        public Task<decimal> GetEgress(int userId);
     }
 }

@@ -1,0 +1,24 @@
+.LoginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.LoginForm input {
+    height: 30px;
+    width: 300px;
+    border-radius: 7px;
+    padding: 0 10px;
+    border: var(--input-border);
+    font-size: 16px;
+}
+
+.btnSucces {
+    background-color: var(--brand--600);
+    color: #fff;
+    font-size: 16px;
+    border-radius: 7px;
+    height: 35px;
+    border: var(--border);
+    cursor: pointer;
+}

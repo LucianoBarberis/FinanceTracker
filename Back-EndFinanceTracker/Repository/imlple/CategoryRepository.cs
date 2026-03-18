@@ -2,7 +2,7 @@
 using Back_EndFinanceTracker.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Back_EndFinanceTracker.Repository
+namespace Back_EndFinanceTracker.Repository.imlple
 {
     public class CategoryRepository : IRepository<Category>
     {
@@ -21,14 +21,14 @@ namespace Back_EndFinanceTracker.Repository
             _context.Categories.Remove(entity);
         }
 
-        public async Task<IEnumerable<Category>> Get()
+        public async Task<IEnumerable<Category>> Get(int userId)
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories.Where(x => x.UserId == userId).ToListAsync();
         }
 
-        public async Task<Category> GetById(int id)
+        public async Task<Category?> GetById(int id, int userId)
         {
-            return await _context.Categories.FindAsync(id);
+            return await _context.Categories.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
         }
 
         public async Task Save()

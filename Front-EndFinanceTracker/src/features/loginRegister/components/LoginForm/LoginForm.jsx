@@ -1,0 +1,53 @@
+import { useForm } from "../../../../hooks"
+import FormInput from "../../../../components/ui/FormInput/FormInput"
+import { toast } from "@pheralb/toast"
+import './LoginForm.css'
+import { useDispatch, useSelector } from "react-redux"      
+import { loginAction } from "../../redux/loginAction"       
+import { loginSchema } from "../../validation/loginSchema"
+import { useNavigate } from "react-router"
+
+const LoginForm = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { loading, error } = useSelector(state => state.auth)
+
+    const loginForm = useForm({
+        userIdentify: "",
+        password: ""
+    }, loginSchema)
+
+    const handlerSubmitLogin = (e) => {
+        e.preventDefault()
+        if(!loginForm.validar()) return toast.error({
+            text: "Error al validar los datos",
+        });
+
+        dispatch(loginAction(loginForm.valores))
+        
+        toast.info({
+            text: "Validando credenciales..."
+        })
+        
+        if(error == true) {
+            toast.error({
+                text: "Error al validar los datos",
+                description: "Prueba registrandote..."
+            })
+        }
+        navigate("/")
+        loginForm.resetForm()
+    }
+    
+    return (
+        <>
+            <form className="LoginForm" onSubmit={handlerSubmitLogin} autoComplete="off">
+                <FormInput name={"Nombre"} value={"userIdentify"} useForm={loginForm} type={"text"} placeholder={"Nombre..."}/>
+                <FormInput name={"Contraseña"} value={"password"} useForm={loginForm} type={"password"} placeholder={"********"}/>
+                <button type="submit" className="btnSucces">Entrar</button>
+            </form>
+        </>
+    )
+}
+
+export default LoginForm

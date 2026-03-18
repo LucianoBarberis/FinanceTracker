@@ -4,11 +4,11 @@ namespace Back_EndFinanceTracker.Services
 {
     public interface ICategoryService
     {
-        public Task<IEnumerable<CategoryDto>> GetCategories();
-        public Task<CategoryDto> GetCategoryById(int id);
-        public Task<CategoryDto> AddCategory(CategoryAddDTO category);
-        public Task<CategoryDto> UpdateCategory(int id, CategoryDto category);
-        public Task<CategoryDto> DeleteCategory(int id);
-        public Task<decimal> TotalForCategory(int id);
+        public Task<IEnumerable<CategoryDto>> GetCategories(int userId);
+        public Task<CategoryDto> GetCategoryById(int id, int userId);
+        public Task<CategoryDto> AddCategory(CategoryAddDTO category, int userId);
+        public Task<CategoryDto> UpdateCategory(int id, CategoryDto category, int userId);
+        public Task<CategoryDto> DeleteCategory(int id, int userId);
+        public Task<decimal> TotalForCategory(int id, int userId);
     }
 }

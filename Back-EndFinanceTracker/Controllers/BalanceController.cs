@@ -1,9 +1,11 @@
 ﻿using Back_EndFinanceTracker.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Back_EndFinanceTracker.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BalanceController : ControllerBase
@@ -13,12 +15,19 @@ namespace Back_EndFinanceTracker.Controllers
         {
             _balanceService = balanceService;
         }
+
+        private int GetUserId()
+        {
+            var claim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            return claim != null ? int.Parse(claim.Value) : -1;
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetTotal()
         {
             try
             {
-                var total = await _balanceService.GetBalance();
+                var total = await _balanceService.GetBalance(GetUserId());
                 return Ok(total);
             }
             catch (Exception ex)
@@ -32,7 +41,7 @@ namespace Back_EndFinanceTracker.Controllers
         {
             try
             {
-                var incomes = await _balanceService.GetIncomes();
+                var incomes = await _balanceService.GetIncomes(GetUserId());
                 return Ok(incomes);
             }
             catch (Exception ex)
@@ -46,7 +55,7 @@ namespace Back_EndFinanceTracker.Controllers
         {
             try
             {
-                var egress = await _balanceService.GetEgress();
+                var egress = await _balanceService.GetEgress(GetUserId());
                 return Ok(egress);
             }
             catch (Exception ex)

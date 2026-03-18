@@ -9,8 +9,9 @@
     transform: scale(1.2);
     transition: transform 0.3s;
     cursor: pointer;
-    border-radius: 1000px;
+    border-radius: 2px;
     color: var(--text-primary);
+    padding: 0 0.3px;
 }
 
 .iconsPopover div svg:hover {

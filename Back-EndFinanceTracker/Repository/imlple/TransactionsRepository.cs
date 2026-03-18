@@ -1,12 +1,10 @@
 ﻿using Back_EndFinanceTracker.Data;
 using Back_EndFinanceTracker.DTOs;
 using Back_EndFinanceTracker.Models;
-
-
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace Back_EndFinanceTracker.Repository
+namespace Back_EndFinanceTracker.Repository.imlple
 {
     public class TransactionsRepository : ITransactionRepository
     {
@@ -16,22 +14,23 @@ namespace Back_EndFinanceTracker.Repository
             _context = financeContext;
         }
 
-        public async Task<IEnumerable<BalanceDTO>> GetAmounts()
+        public async Task<IEnumerable<BalanceDTO>> GetAmounts(int userId)
         {
             return await _context.Transactions
-                                 .GroupBy(t => t.Type)
-                                 .Select(group => new BalanceDTO
-                                 {
-                                     Type = group.Key,
-                                     Total = group.Sum(t => t.Amount),
-                                 })
-                                 .ToListAsync();
+                .Where(x => x.UserId == userId)
+                .GroupBy(t => t.Type)
+                .Select(group => new BalanceDTO
+                {
+                    Type = group.Key,
+                    Total = group.Sum(t => t.Amount),
+                })
+                .ToListAsync();
         }
 
-        public async Task<decimal> GetCategoryTotals(int categoryId)
+        public async Task<decimal> GetCategoryTotals(int categoryId, int userId)
         {
             return await _context.Transactions
-                .Where(t => t.CategoryId == categoryId && t.Type == Enums.TransactionType.Egreso)
+                .Where(t => t.CategoryId == categoryId && t.Type == Enums.TransactionType.Egreso && t.UserId == userId)
                 .SumAsync(t => t.Amount);
         }
 
@@ -45,14 +44,14 @@ namespace Back_EndFinanceTracker.Repository
             _context.Transactions.Remove(entity);
         }
 
-        public async Task<IEnumerable<Transaction>> Get()
+        public async Task<IEnumerable<Transaction>> Get(int userId)
         {
-            return await _context.Transactions.ToListAsync();
+            return await _context.Transactions.Where(x => x.UserId == userId).ToListAsync();
         }
 
-        public async Task<Transaction> GetById(int id)
+        public async Task<Transaction?> GetById(int id, int userId)
         {
-            return await  _context.Transactions.FindAsync(id);
+            return await _context.Transactions.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
         }
 
         public async Task Save()

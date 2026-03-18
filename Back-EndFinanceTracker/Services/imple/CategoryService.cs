@@ -2,7 +2,7 @@
 using Back_EndFinanceTracker.Models;
 using Back_EndFinanceTracker.Repository;
 
-namespace Back_EndFinanceTracker.Services
+namespace Back_EndFinanceTracker.Services.imple
 {
     public class CategoryService : ICategoryService
     {
@@ -16,12 +16,12 @@ namespace Back_EndFinanceTracker.Services
             _balanceService = balanceService;
         }
 
-        public async Task<decimal> TotalForCategory(int id)
+        public async Task<decimal> TotalForCategory(int id, int userId)
         {
-            return await _transactionRepository.GetCategoryTotals(id);
+            return await _transactionRepository.GetCategoryTotals(id, userId);
         }
 
-        public async Task<CategoryDto> AddCategory(CategoryAddDTO category)
+        public async Task<CategoryDto> AddCategory(CategoryAddDTO category, int userId)
         {
             var categoryToAdd = new Category
             {
@@ -29,6 +29,7 @@ namespace Back_EndFinanceTracker.Services
                 Icon = category.Icon,
                 Type = category.Type,
                 Color = category.Color,
+                UserId = userId
             };
             await _cateRepository.Add(categoryToAdd);
             await _cateRepository.Save();
@@ -45,9 +46,9 @@ namespace Back_EndFinanceTracker.Services
             return categoryDto;
         }
 
-        public async Task<CategoryDto> DeleteCategory(int id)
+        public async Task<CategoryDto> DeleteCategory(int id, int userId)
         {
-            var catToDelete = await _cateRepository.GetById(id);
+            var catToDelete = await _cateRepository.GetById(id, userId);
             if(catToDelete == null)
             {
                 return null;
@@ -68,17 +69,17 @@ namespace Back_EndFinanceTracker.Services
             return categoryDto;
         }
 
-        public async Task<IEnumerable<CategoryDto>> GetCategories()
+        public async Task<IEnumerable<CategoryDto>> GetCategories(int userId)
         {
-            var categories = await _cateRepository.Get();
+            var categories = await _cateRepository.Get(userId);
 
-            var totalEgress = await _balanceService.GetEgress();
+            var totalEgress = await _balanceService.GetEgress(userId);
 
             var categoryDtos = new List<CategoryDto>();
 
             foreach (var category in categories) 
             {
-                var categoryTotal = await TotalForCategory(category.Id);
+                var categoryTotal = await TotalForCategory(category.Id, userId);
                 categoryDtos.Add(new CategoryDto
                 {
                     Name = category.Name,
@@ -94,15 +95,15 @@ namespace Back_EndFinanceTracker.Services
             return categoryDtos.AsEnumerable().Reverse();
         }
 
-        public async Task<CategoryDto> GetCategoryById(int id)
+        public async Task<CategoryDto> GetCategoryById(int id, int userId)
         {
-            var category = await _cateRepository.GetById(id);
+            var category = await _cateRepository.GetById(id, userId);
             if (category == null)
             {
                 return null;
             }
-            var totalIncomes = await _balanceService.GetIncomes();
-            var categoryTotal = await TotalForCategory(id);
+            var totalIncomes = await _balanceService.GetIncomes(userId);
+            var categoryTotal = await TotalForCategory(id, userId);
 
             return new CategoryDto
             {
@@ -116,9 +117,9 @@ namespace Back_EndFinanceTracker.Services
             };
         }
 
-        public async Task<CategoryDto> UpdateCategory(int id, CategoryDto category)
+        public async Task<CategoryDto> UpdateCategory(int id, CategoryDto category, int userId)
         {
-            var categoryToUpdate = await _cateRepository.GetById(id);
+            var categoryToUpdate = await _cateRepository.GetById(id, userId);
             if(category.Id != id || categoryToUpdate == null) return null;
 
             categoryToUpdate.Name = category.Name;

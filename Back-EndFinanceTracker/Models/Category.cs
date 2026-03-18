@@ -20,5 +20,8 @@ namespace Back_EndFinanceTracker.Models
 
         [Required]
         public TransactionType Type { get; set; }
+        public int UserId { get; set; }
+        [ForeignKey("UserId")]
+        public User User { get; set; } = null!;
     }
 }

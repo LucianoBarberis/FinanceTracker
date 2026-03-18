@@ -1,9 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getBalances = createAsyncThunk("getBalances", async () => {
+export const getBalances = createAsyncThunk("getBalances", async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const token = state.auth.token;
+
     try{
         const response = await fetch("https://localhost:7277/api/balance", {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         })
 
         if (!response.ok) {
@@ -11,15 +17,22 @@ export const getBalances = createAsyncThunk("getBalances", async () => {
         }
         return await response.json();
         
-    }catch {
+    }catch (error) {
         console.error("Error al obtener datos:", error.message);
+        return thunkAPI.rejectWithValue(error.message);
     }
 })
 
-export const getIncomes = createAsyncThunk("getIncomes", async () => {
+export const getIncomes = createAsyncThunk("getIncomes", async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const token = state.auth.token;
+
     try{
         const response = await fetch("https://localhost:7277/api/balance/incomes", {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         })
 
         if (!response.ok) {
@@ -27,15 +40,22 @@ export const getIncomes = createAsyncThunk("getIncomes", async () => {
         }
         return await response.json();
         
-    }catch {
+    }catch (error) {
         console.error("Error al obtener datos:", error.message);
+        return thunkAPI.rejectWithValue(error.message);
     }
 })
 
-export const getEgress = createAsyncThunk("getEgress", async () => {
+export const getEgress = createAsyncThunk("getEgress", async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const token = state.auth.token;
+
     try{
         const response = await fetch("https://localhost:7277/api/balance/egress", {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         })
 
         if (!response.ok) {
@@ -43,7 +63,8 @@ export const getEgress = createAsyncThunk("getEgress", async () => {
         }
         return await response.json();
         
-    }catch {
+    }catch (error) {
         console.error("Error al obtener datos:", error.message);
+        return thunkAPI.rejectWithValue(error.message);
     }
 })

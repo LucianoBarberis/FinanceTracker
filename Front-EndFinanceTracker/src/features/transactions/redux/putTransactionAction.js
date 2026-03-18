@@ -1,6 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const putTransaction = createAsyncThunk("putTransactions", async ({ id, data }) => {
+export const putTransaction = createAsyncThunk("putTransactions", async ({ id, data }, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const token = state.auth.token;
+
     try {
         if (data.dateTime && !data.dateTime.includes('T')) {
             data.dateTime = data.dateTime + 'T00:00:00Z';
@@ -16,7 +19,8 @@ export const putTransaction = createAsyncThunk("putTransactions", async ({ id, d
         const response = await fetch(`https://localhost:7277/api/Transaction/${id}`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify(body)
         })
@@ -32,6 +36,6 @@ export const putTransaction = createAsyncThunk("putTransactions", async ({ id, d
         
     } catch (error) {
         console.error("Error al editar transacción:", error.message);
-        throw error;
+        return thunkAPI.rejectWithValue(error.message);
     }
 })

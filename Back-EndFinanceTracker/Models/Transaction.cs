@@ -27,5 +27,8 @@ namespace Back_EndFinanceTracker.Models
         
         [ForeignKey("CategoryId")]
         public Category? Category { get; set; }
+        public int UserId { get; set; }
+        [ForeignKey("UserId")]
+        public User User { get; set; } = null!;
     }
 }

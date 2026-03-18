@@ -3,7 +3,7 @@ using Back_EndFinanceTracker.Models;
 using Back_EndFinanceTracker.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace Back_EndFinanceTracker.Services
+namespace Back_EndFinanceTracker.Services.imple
 {
     public class TransactionService : ITransactionService
     {
@@ -15,9 +15,9 @@ namespace Back_EndFinanceTracker.Services
             _cateRepository = repository1;
         }
 
-        public async Task<TransactionDTO> Add(TransactionAddDTO transactionDTO)
+        public async Task<TransactionDTO> Add(TransactionAddDTO transactionDTO, int userId)
         {
-            var category = await _cateRepository.GetById(transactionDTO.CategoryId);
+            var category = await _cateRepository.GetById(transactionDTO.CategoryId, userId);
 
             if (category == null)
             {
@@ -31,6 +31,7 @@ namespace Back_EndFinanceTracker.Services
                 DateTime = transactionDTO.DateTime,
                 Type = transactionDTO.Type,
                 CategoryId = transactionDTO.CategoryId,
+                UserId = userId
             };
             
             await _repository.Add(trans);
@@ -38,20 +39,20 @@ namespace Back_EndFinanceTracker.Services
 
             var transactionToRead = new TransactionDTO
             {
-                Amount = transactionDTO.Amount,
-                Description = transactionDTO.Description,
-                DateTime = transactionDTO.DateTime,
-                Type = transactionDTO.Type,
-                CategoryId = transactionDTO.CategoryId,
+                Amount = trans.Amount,
+                Description = trans.Description,
+                DateTime = trans.DateTime,
+                Type = trans.Type,
+                CategoryId = trans.CategoryId,
                 Id = trans.Id
             };
 
             return transactionToRead;
         }
 
-        public async Task<TransactionDTO> DeleteById(int id)
+        public async Task<TransactionDTO> DeleteById(int id, int userId)
         {
-            var transaction = await _repository.GetById(id);
+            var transaction = await _repository.GetById(id, userId);
             if (transaction == null)
             {
                 return null;
@@ -72,9 +73,9 @@ namespace Back_EndFinanceTracker.Services
             return transactionDTO;
         }
 
-        public async Task<IEnumerable<TransactionDTO>> GetAll()
+        public async Task<IEnumerable<TransactionDTO>> GetAll(int userId)
         {
-            var transactions = await _repository.Get();
+            var transactions = await _repository.Get(userId);
             return transactions.Select(t => new TransactionDTO
             {
                 Amount = t.Amount,
@@ -87,9 +88,9 @@ namespace Back_EndFinanceTracker.Services
             
         }
 
-        public async Task<TransactionDTO> GetById(int id)
+        public async Task<TransactionDTO> GetById(int id, int userId)
         {
-            var transaccion = await _repository.GetById(id);
+            var transaccion = await _repository.GetById(id, userId);
             if (transaccion == null)
             {
                 return null;
@@ -106,16 +107,16 @@ namespace Back_EndFinanceTracker.Services
             return transactionDTO;
         }
 
-        public async Task<TransactionDTO> Update(TransactionUpdateDTO transactionDTO, int id)
+        public async Task<TransactionDTO> Update(TransactionUpdateDTO transactionDTO, int id, int userId)
         {
-            var category = await _cateRepository.GetById(transactionDTO.CategoryId);
+            var category = await _cateRepository.GetById(transactionDTO.CategoryId, userId);
 
             if (category == null)
             {
                 return null;
             }
 
-            var transaction = await _repository.GetById(id);
+            var transaction = await _repository.GetById(id, userId);
             if (transaction == null || transactionDTO.Id != id) return null;
 
             transaction.CategoryId = transactionDTO.CategoryId;

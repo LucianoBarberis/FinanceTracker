@@ -1,6 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"; 
 
-export const postTransaction = createAsyncThunk("postTransaction", async (data) => {
+export const postTransaction = createAsyncThunk("postTransaction", async (data, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const token = state.auth.token;
+
     try {
         // Asegurar que la fecha tenga un formato ISO válido si solo viene YYYY-MM-DD
         let finalDate = data.dateTime;
@@ -21,6 +24,7 @@ export const postTransaction = createAsyncThunk("postTransaction", async (data) 
             method: "POST",
             headers: {
                 'Content-Type': "application/json",
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(body)
         });
@@ -35,6 +39,6 @@ export const postTransaction = createAsyncThunk("postTransaction", async (data) 
         return await response.json();
     } catch (error) {
         console.error("Error en postTransaction:", error);
-        throw error;
+        return thunkAPI.rejectWithValue(error.message);
     }
 });

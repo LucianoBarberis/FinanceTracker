@@ -1,9 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getCategories = createAsyncThunk("getCategories", async ()=> {
+export const getCategories = createAsyncThunk("getCategories", async (_, thunkAPI)=> {
+    const state = thunkAPI.getState();
+    const token = state.auth.token;
+
     try{
         const response = await fetch("https://localhost:7277/api/Categories", {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         })
 
         if (!response.ok) {
@@ -11,7 +17,8 @@ export const getCategories = createAsyncThunk("getCategories", async ()=> {
         }
         return await response.json();
         
-    }catch {
+    }catch (error) {
         console.error("Error al obtener datos:", error.message);
+        return thunkAPI.rejectWithValue(error.message);
     }
 })

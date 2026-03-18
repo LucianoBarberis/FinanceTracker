@@ -3,12 +3,16 @@ using Back_EndFinanceTracker.DTOs;
 using Back_EndFinanceTracker.Models;
 using Back_EndFinanceTracker.Services;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using System.Security.Claims;
+
 namespace Back_EndFinanceTracker.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TransactionController : ControllerBase
@@ -26,13 +30,15 @@ namespace Back_EndFinanceTracker.Controllers
         [HttpGet]
         public async Task<IEnumerable<TransactionDTO>> GetAll()
         {
-            return await _transactionService.GetAll();
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            return await _transactionService.GetAll(userId);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TransactionDTO>> GetById(int id)
         {
-            var transaction = await _transactionService.GetById(id);
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var transaction = await _transactionService.GetById(id, userId);
             if (transaction == null) 
             {
                 return NotFound(transaction);
@@ -43,13 +49,14 @@ namespace Back_EndFinanceTracker.Controllers
         [HttpPost]
         public async Task<ActionResult> Add(TransactionAddDTO transactionDTO) 
         {
-            var result = _validator.Validate(transactionDTO);
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _validator.ValidateAsync(transactionDTO);
             if (!result.IsValid)
             {
                 return BadRequest(result.Errors);
             }
 
-            var newTransaction = await _transactionService.Add(transactionDTO);
+            var newTransaction = await _transactionService.Add(transactionDTO, userId);
 
             if(newTransaction == null) return BadRequest("Categoria no encontrada");
 
@@ -59,7 +66,8 @@ namespace Back_EndFinanceTracker.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<TransactionDTO>> Delete(int id)
         {
-            var result = await _transactionService.DeleteById(id);
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _transactionService.DeleteById(id, userId);
 
             if(result == null) return NotFound();
             return Ok(result);
@@ -68,6 +76,7 @@ namespace Back_EndFinanceTracker.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] TransactionUpdateDTO transactionDTO, int id)
         {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             var result = await _validatorUpdate.ValidateAsync(transactionDTO);
 
             if (!result.IsValid) 
@@ -80,7 +89,7 @@ namespace Back_EndFinanceTracker.Controllers
                  return BadRequest("El ID de la transacción no coincide.");
             }
 
-            var contactUpdated = await _transactionService.Update(transactionDTO, id);
+            var contactUpdated = await _transactionService.Update(transactionDTO, id, userId);
 
             if (contactUpdated == null)
             {

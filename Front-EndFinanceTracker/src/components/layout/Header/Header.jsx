@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { VscGear, VscBell, VscAccount, VscMenu, VscClose } from "react-icons/vsc";
 import ThemeToggle from '../../../features/theme/components/ThemeToggle/ThemeToggle';
 import './Header.css'
@@ -11,6 +11,7 @@ const Header = () => {
     const [isOpenConfig, setOpenConfig] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const dispatch = useDispatch()
+    const location = useLocation().pathname
     
     const handlerLogout = () => {
         toast.info({
@@ -26,19 +27,49 @@ const Header = () => {
             <nav className={`menu ${isMobileMenuOpen ? 'mobileOpen' : ''}`}>
                 <ul>
                     <li>
-                        <Link className='active' to={"/"} onClick={() => setIsMobileMenuOpen(false)}>Overview</Link>
+                        <Link
+                            className={location == "/" ? "active": ""}
+                            to={"/"}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            Dashboard
+                        </Link>
                     </li>
                     <li>
-                        <Link to={"/"} onClick={() => setIsMobileMenuOpen(false)}>Transactions</Link>
+                        <Link
+                            to={"/transactions"}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={location == "/transactions" ? "active": ""}
+                        >
+                            Transactions
+                        </Link>
                     </li>
                     <li>
-                        <Link to={"/"} onClick={() => setIsMobileMenuOpen(false)}>Analytics</Link>
+                        <Link
+                            to={"/categories"}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={location == "/categories" ? "active": ""}
+                        >
+                            Categorías
+                        </Link>
                     </li>
                     <li>
-                        <Link to={"/"} onClick={() => setIsMobileMenuOpen(false)}>Accounts</Link>
+                        <Link
+                            to={"/"}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={location == "/accounts" ? "active": ""}
+                        >
+                            Accounts
+                        </Link>
                     </li>
                     <li>
-                        <Link to={"/"} onClick={() => setIsMobileMenuOpen(false)}>Wallet</Link>
+                        <Link
+                            to={"/"}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={location == "/wallet" ? "active": ""}
+                        >
+                            Wallet
+                        </Link>
                     </li>
                 </ul>
             </nav>

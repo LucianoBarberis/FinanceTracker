@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 
-export const loginAction = createAsyncThunk("authLogin", async(loginData, { rejectedWithValue }) => {
+export const loginAction = createAsyncThunk("authLogin", async(loginData, { rejectWithValue }) => {
     try {
         const response = await fetch('https://localhost:7277/api/User/login', {
         method: 'POST',
@@ -10,13 +10,16 @@ export const loginAction = createAsyncThunk("authLogin", async(loginData, { reje
         },
         body: JSON.stringify(loginData)})
 
-        if(!response.ok) throw new Error("Informacion invalida")
+        if(response.status == 404) throw new Error("Usuario no encontrado...")
+        if(!response.ok) throw new Error("Algo salio mal...")
+        if(response.status == 500) throw new Error("El servidor fallo...")
+
         const data = await response.json()
         
         Cookies.set("token", data.jwt, {expires: 1})
         Cookies.set("userName", data.userName, {expires: 1})
         return data
     }catch(error) {
-        return rejectedWithValue(error.message)
+        return rejectWithValue(error.message)
     }
 })

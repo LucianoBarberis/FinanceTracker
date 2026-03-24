@@ -32,11 +32,12 @@ export const authSlice = createSlice({
                 state.loading = false;
                 state.isAuthenticated = true;
                 state.user = action.payload.userName
+                state.error = null;
                 state.token = action.payload.jwt;
             })
             builder.addCase(loginAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload || action.error.message || "Algo salio mal...";
             })
             builder.addCase(registerAction.pending, (state) => {
                 state.loading = true;

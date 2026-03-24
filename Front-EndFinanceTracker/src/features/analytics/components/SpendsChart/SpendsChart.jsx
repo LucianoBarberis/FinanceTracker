@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { IconRender } from '../../../../components/ui/IconRender/iconRender';
 import './SpendingChart.css';
@@ -9,8 +9,7 @@ const SpendingChart = () => {
     const data = useMemo(()=> {
         return [...rawData].sort((a, b)=> b.total - a.total)
     }, [rawData])
-    const COLORS = data.map(d => {return d.color});
-
+    const COLORS = data.map(d => {return d.color})
     const getContrastColor = (hexColor) => {
         if (!hexColor) return '#FFFFFF';
         const hex = hexColor.replace('#', '');
@@ -21,6 +20,34 @@ const SpendingChart = () => {
         return yiq >= 128 ? '#1f1a1a' : '#fdfdf4';
     };
 
+    const total = data.map((ele) => ele.total).reduce((acumulador, valorActual) => acumulador + valorActual, 0)
+    const isEmpty = total > 0 ? false : true
+    if (isEmpty) {
+        return(
+            <>
+                <ResponsiveContainer width="100%" height={250}>
+                    <PieChart>
+                        <Pie
+                            data={[{ value: 1 }]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={45}
+                            outerRadius={85}
+                            fill='#e4e7ec7a'
+                            dataKey="value"
+                            stroke='none'
+                            strokeWidth={1}
+                            isAnimationActive={false}
+                        />
+                    </PieChart>
+                </ResponsiveContainer>
+                <div className='Legend'>
+                    <span>No hay gastos aún</span>
+                    <p>Añadí un nuevo gasto para ver la distribución</p>
+                </div>
+            </>
+        )
+    }
     return (
         <div className='chart-container'>
             <ResponsiveContainer width="100%" height={250}>
@@ -52,7 +79,7 @@ const SpendingChart = () => {
                                         <IconRender iconName={d.icon} color={getContrastColor(d.color)} />
                                     </div>
                                     <p>{d.name}</p>
-                                    <span className='per'>{d.percentaje.toFixed(2)}%</span>
+                                    <span className='per'>{d.percentage.toFixed(2)}%</span>
                                 </li>
                     })}
                 </ul>

@@ -14,9 +14,10 @@ import FormSelect from '../../../../components/ui/FormSelect/FormSelect';
 import { getCategories } from '../../../categories/redux/getCategoriesAction';
 import { transactionUpdateSchema } from '../../validation/transactionUpdateSchema';
 
-const TransactionsCard = () => {
+const TransactionsCard = ({transactionsToRender, data}) => {
 
-    const {transacciones, loading} = useSelector((state) => state.transaction)
+    const {transacciones: reduxTransactions, loading} = useSelector((state) => state.transaction)
+    const transacciones = data || reduxTransactions;
     const dispatch = useDispatch()
     const [openMenuIndex, setOpenMenuIndex] = useState(null)
     const [isOpenModalEdit, setOpenModalEdit] = useState(false)
@@ -112,8 +113,18 @@ const TransactionsCard = () => {
     <div className='TransactionsCardContainer'>
         <div className='TransactionsCard' ref={menuRef}>
             <div className="CardTitle">
-                <h3>Últimas Transacciones</h3>
-                <p>Revisa tus últimas transacciones registradas</p>
+                {
+                transactionsToRender <= 20 ? 
+                <>
+                    <h3>Últimas Transacciones</h3>
+                    <p>Revisa tus últimas transacciones registradas</p>
+                </>
+                :
+                <>
+                    <h3>Transacciones</h3>
+                    <p>Revisa todas tus transacciones registradas</p>
+                </>
+                }
             </div>
             <div className="tableBorder"></div>
             <table className='Table'>
@@ -133,13 +144,13 @@ const TransactionsCard = () => {
                             <td colSpan="6" style={{textAlign: 'center'}}>Cargando...</td>
                         </tr>
                     ) : transacciones && transacciones.length > 0 ? (
-                        transacciones.map((d, index) => {
+                        transacciones.slice(0, transactionsToRender || 10000000).map((d, index) => {
                             return <tr key={index}>
                                 <td>{d.description}</td>
                                 <td>{d.type == 1 ? "Egreso" : "Ingreso" }</td>
                                 <td>{catDictionary[d.categoryId]}</td>
                                 <td>{d.dateTime.split('T')[0].replaceAll("-", "/")}</td>
-                                <td>${d.amount.toLocaleString("es-ES")}</td>
+                                <td className={`amount ${d.type === 0 ? 'income' : 'expense'}`}>${d.amount.toLocaleString("es-ES")}</td>
                                 <td className='TableAction'>
                                     <button 
                                         className='TableActionBtn'

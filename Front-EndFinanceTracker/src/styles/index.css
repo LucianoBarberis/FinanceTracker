@@ -250,6 +250,10 @@ input::placeholder {
     color: var(--text-secondary);
 }
 
+.dashboardContainer {
+    padding: 0 var(--container-padding);
+}
+
 .error {
     font-size: 12px;
     margin: 0 0 2px 4px;

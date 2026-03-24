@@ -7,7 +7,7 @@ const AnalitycSection = () => {
     return (
         <section className='AnalitycSection'>
             <GastosByCategory />
-            <TransactionsCard />
+            <TransactionsCard transactionsToRender={20}/>
         </section>
     )
 }

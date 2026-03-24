@@ -16,10 +16,12 @@ function App() {
   return (
     <>
       <Header />
-      <Hero />
-      <InfoCards />
-      <ActionSection />
-      <AnalitycSection />
+      <div className='dashboardContainer'>
+        <Hero />
+        <InfoCards />
+        <ActionSection />
+        <AnalitycSection />
+      </div>
     </>
   )
 }

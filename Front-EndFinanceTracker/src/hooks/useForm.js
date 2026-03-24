@@ -107,6 +107,7 @@ export const useForm = (valoresIniciales = {}, ValidateSchema) => {
     return {
         valores,
         errores,
+        setErrores,
         handleChange,
         resetForm,
         setFieldValue,

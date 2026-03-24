@@ -1,0 +1,149 @@
+.transactions-page {
+    padding: 40px var(--container-padding);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.transactions-header h1 {
+    color: var(--text-primary);
+}
+
+/* Summary Cards */
+.transactions-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.summary-card {
+    background-color: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: var(--border);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.summary-card .label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.summary-card .amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.summary-card.income .amount { color: var(--success--600); }
+.summary-card.expense .amount { color: #ea5e5e; }
+
+/* Filters */
+.transactions-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 250px;
+}
+
+.filter-group {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* List Header */
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.list-header span {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.add-btn {
+    background-color: var(--brand--600);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-btn:hover {
+    background-color: var(--brand--700);
+}
+
+.transactions-list-container {
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    border: var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.TransactionFAB {
+    position: sticky;
+    bottom: 50px;
+    display: flex;
+    justify-content: center;
+    z-index: 120;
+}
+
+.FABcontainer {
+    padding: 10px 20px;
+    display: flex;
+    gap: 20px;
+    background: var(--header-bg-color);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7.2px);
+    -webkit-backdrop-filter: blur(7.2px);
+    border: 1px solid rgba(228, 228, 228, 0.2);
+}
+
+.TransactionFAB button {
+    background-color: transparent;
+    border: var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.TransactionFAB button:hover {
+    transform: rotate(-2deg) scale(1.1);
+}
+
+.TransactionFAB .fabIncome {
+    background-color: var(--brand--600);
+}
+.TransactionFAB .fabEgress {
+    background: var(--brand--950);
+}
+
+@media (max-width: 768px) {
+    .transactions-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

@@ -1,0 +1,117 @@
+.category-card {
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 315px;
+}
+
+.category-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.category-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.category-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.category-info h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.category-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.4rem;
+    border-radius: 6px;
+    transition: all 0.5s;
+    color: #888;
+}
+
+.btn-icon:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-icon.edit:hover {
+    color: #4a90e2;
+}
+
+.btn-icon.delete:hover {
+    color: #e74c3c;
+}
+
+.category-card-body {
+    padding: 20px;
+}
+
+.category-card-body h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.mini-transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.mini-transaction-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    padding-bottom: 0.4rem;
+    border-bottom: var(--border);
+}
+
+.mini-transaction-item .description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+.amount {
+    font-weight: 600;
+}
+
+.amount.income {
+    color: #27ae60;
+}
+
+.amount.expense {
+    color: #e74c3c;
+}
+
+.no-transactions, .more-transactions {
+    font-size: 0.8rem;
+    color: #999;
+    text-align: center;
+    margin: 0.5rem 0;
+}

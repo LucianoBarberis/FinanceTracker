@@ -1,14 +1,13 @@
 import { useForm } from "../../../../hooks"
 import FormInput from "../../../../components/ui/FormInput/FormInput"
 import { toast } from "@pheralb/toast"
-import { useDispatch, useSelector } from "react-redux"      
+import { useDispatch } from "react-redux"      
 import { registerSchema } from "../../validation/registerSchema"
 import { registerAction } from "../../redux/registerAction"
 import { useNavigate } from "react-router"
 
 const RegisterForm = () => {
     const dispatch = useDispatch()
-    const { error } = useSelector(state => state.auth)
     const navigate = useNavigate()
 
     const registerForm = useForm({
@@ -18,23 +17,27 @@ const RegisterForm = () => {
         confirmPassword: ''
     }, registerSchema)
 
-    const handlerSubmitRegister = (e) => {
+    const handlerSubmitRegister = async (e) => {
         e.preventDefault()
+        if(registerForm.valores.password != registerForm.valores.confirmPassword) {
+            return( registerForm.setErrores((prevErrors) => ({
+                ...prevErrors,
+                confirmPassword: "Las contraseñas son diferentes"
+            })),
+            toast.error({text: "Error al validar los datos",})
+        )
+        }
         if(!registerForm.validar()) return toast.error({
             text: "Error al validar los datos",
         });
-        dispatch(registerAction(registerForm.valores))
-
-        toast.info({
-            text: "Validando credenciales..."
-        })
-
-        if(error == true) {
-            toast.error({
-                text: "Error al validar los datos",
-            })
+        try {
+            await dispatch(registerAction(registerForm.valores)).unwrap()
+            toast.success({text: "Usuario registrado!"})
+            navigate("/")
+        } catch (error) {
+            toast.error({ text: error || "Credenciales incorrectas" });
         }
-        navigate("/")
+        
         registerForm.resetForm()
     }
     

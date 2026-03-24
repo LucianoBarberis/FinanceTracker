@@ -21,7 +21,6 @@
 .ExpenseContainer .CardTitle {
     border-radius: 12px;
     position: relative;
-    margin-bottom: 20px;
 }
 
 @media (max-width: 480px) {

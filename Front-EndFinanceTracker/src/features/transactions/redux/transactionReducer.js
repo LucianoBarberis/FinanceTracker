@@ -3,6 +3,7 @@ import { getTransactions } from "./getTransactionAction";
 import { postTransaction } from "./postTransactionAction";
 import { deleteTransaction } from "./deleteTransactionAction";
 import { putTransaction } from "./putTransactionAction";
+import { deleteCategories } from "../../categories/redux/deleteCategoriesAction";
 
 const initialState = {
     transacciones: [],
@@ -55,6 +56,11 @@ export const transactionSlice = createSlice({
         })
         builder.addCase(putTransaction.rejected, (state, action) => {
             state.loading = false
+        })
+        // Al eliminar una categoría, eliminamos sus transacciones localmente
+        builder.addCase(deleteCategories.fulfilled, (state, action) => {
+            const categoryId = action.payload;
+            state.transacciones = state.transacciones.filter(t => t.categoryId !== categoryId);
         })
     }
 })

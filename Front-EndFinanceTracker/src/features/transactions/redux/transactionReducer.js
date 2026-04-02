@@ -4,10 +4,12 @@ import { postTransaction } from "./postTransactionAction";
 import { deleteTransaction } from "./deleteTransactionAction";
 import { putTransaction } from "./putTransactionAction";
 import { deleteCategories } from "../../categories/redux/deleteCategoriesAction";
+import { toast } from "@pheralb/toast";
 
 const initialState = {
     transacciones: [],
-    loading: false
+    loading: false,
+    alertMessage: ""
 }
 
 export const transactionSlice = createSlice({
@@ -29,9 +31,16 @@ export const transactionSlice = createSlice({
         builder.addCase(postTransaction.pending, (state) => {
             state.loading = true
             state.error = null
+            state.alertMessage = ""
         })
         builder.addCase(postTransaction.fulfilled, (state, action) => {
-            state.transacciones.unshift(action.payload)
+            if (action.payload.alertMessage) {
+                toast.info({
+                    text: action.payload.alertMessage
+                })
+            }
+            state.transacciones.unshift(action.payload.transaction)
+            state.alertMessage = action.payload.alertMessage
             state.loading = false
         })
         builder.addCase(postTransaction.rejected, (state, action) => {

@@ -8,6 +8,7 @@ import { useTheme } from '../../features/theme/hooks/useTheme';
 import { getTransactions } from '../../features/transactions/redux/getTransactionAction';
 import { getCategories } from '../../features/categories/redux/getCategoriesAction';
 import InfoCards from '../../features/analytics/components/InfoCards/InfoCards';
+import { lastYear } from '../../features/analytics/redux/balanceReducer';
 
 const Transactions = () => {
     useTheme();
@@ -27,6 +28,7 @@ const Transactions = () => {
             navigate("/login");
             return;
         }
+        dispatch(lastYear())
         dispatch(getTransactions());
         dispatch(getCategories());
     }, [isAuth, dispatch, navigate]);
@@ -109,17 +111,6 @@ const Transactions = () => {
                         <TransactionsCard data={filteredTransactions} />
                     </div>
                 </section>
-            </div>
-            {/* ... FAB ... */}
-            <div className='TransactionFAB'>
-                <div className='FABcontainer'>
-                    <button className='fabIncome'>
-                        Añadir Ingreso
-                    </button>
-                    <button className='fabEgress'>
-                        Añadir Egreso
-                    </button>
-                </div>
             </div>
         </>
     );

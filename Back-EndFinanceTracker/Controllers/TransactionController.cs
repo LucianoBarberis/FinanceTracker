@@ -56,11 +56,12 @@ namespace Back_EndFinanceTracker.Controllers
                 return BadRequest(result.Errors);
             }
 
-            var newTransaction = await _transactionService.Add(transactionDTO, userId);
+            var response = await _transactionService.Add(transactionDTO, userId);
 
-            if(newTransaction == null) return BadRequest("Categoria no encontrada");
+            if(response == null) return BadRequest("Categoria no encontrada");
 
-            return CreatedAtAction(nameof(GetById), new { id = newTransaction.Id }, newTransaction);
+            // Si hay un mensaje de alerta (presupuesto excedido), lo incluimos en la respuesta.
+            return CreatedAtAction(nameof(GetById), new { id = response.Transaction.Id }, response);
         }
 
         [HttpDelete("{id}")]

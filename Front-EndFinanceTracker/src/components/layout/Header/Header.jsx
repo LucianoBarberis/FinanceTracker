@@ -41,7 +41,7 @@ const Header = () => {
                             onClick={() => setIsMobileMenuOpen(false)}
                             className={location == "/transactions" ? "active": ""}
                         >
-                            Transactions
+                            Transacciones
                         </Link>
                     </li>
                     <li>
@@ -59,7 +59,7 @@ const Header = () => {
                             onClick={() => setIsMobileMenuOpen(false)}
                             className={location == "/accounts" ? "active": ""}
                         >
-                            Accounts
+                            Estadísticas
                         </Link>
                     </li>
                     <li>

@@ -4,6 +4,7 @@ import { useForm } from '../../../../hooks';
 import { LuEllipsisVertical } from "react-icons/lu";
 import { useDispatch, useSelector } from 'react-redux';
 import { getTransactions } from '../../redux/getTransactionAction';
+import { getBudgets } from '../../../budget/redux/getBudgetsAction';
 import { deleteTransaction } from '../../redux/deleteTransactionAction';
 import { putTransaction } from '../../redux/putTransactionAction';
 import { getBalances, getEgress, getIncomes } from '../../../analytics/redux/getBalancesAction';
@@ -44,6 +45,7 @@ const TransactionsCard = ({transactionsToRender, data}) => {
         dispatch(getBalances())
         dispatch(getCategories())
         dispatch(getIncomes())
+        dispatch(getBudgets())
         dispatch(getEgress())
         toast.success({
             text: `Transacción Eliminada`,
@@ -75,6 +77,7 @@ const TransactionsCard = ({transactionsToRender, data}) => {
         dispatch(getBalances())
         dispatch(getIncomes())
         dispatch(getCategories())
+        dispatch(getBudgets())
         dispatch(getEgress())
         toast.success({
             text: `Transacción Editada`,

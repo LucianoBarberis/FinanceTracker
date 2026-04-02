@@ -7,22 +7,30 @@ namespace Back_EndFinanceTracker.Services.imple
 {
     public class TransactionService : ITransactionService
     {
-        private ITransactionRepository _repository;
-        private IRepository<Category> _cateRepository;
-        public TransactionService(ITransactionRepository repository, IRepository<Category> repository1) 
+        private readonly ITransactionRepository _repository;
+        private readonly IRepository<Category> _cateRepository;
+        private readonly IBudgetService _budgetService;
+
+        public TransactionService(
+            ITransactionRepository repository, 
+            IRepository<Category> cateRepository, 
+            IBudgetService budgetService) 
         {
             _repository = repository;
-            _cateRepository = repository1;
+            _cateRepository = cateRepository;
+            _budgetService = budgetService;
         }
 
-        public async Task<TransactionDTO> Add(TransactionAddDTO transactionDTO, int userId)
+        public async Task<TransactionResponseDTO> Add(TransactionAddDTO transactionDTO, int userId)
         {
             var category = await _cateRepository.GetById(transactionDTO.CategoryId, userId);
 
             if (category == null)
             {
-                return null;
+                return null!;
             }
+
+            string? alert = await _budgetService.CheckBudgetLimit(transactionDTO.CategoryId, userId, transactionDTO.Amount, transactionDTO.DateTime);
 
             var trans = new Transaction
             {
@@ -47,7 +55,11 @@ namespace Back_EndFinanceTracker.Services.imple
                 Id = trans.Id
             };
 
-            return transactionToRead;
+            return new TransactionResponseDTO 
+            { 
+                Transaction = transactionToRead, 
+                AlertMessage = alert 
+            };
         }
 
         public async Task<TransactionDTO> DeleteById(int id, int userId)

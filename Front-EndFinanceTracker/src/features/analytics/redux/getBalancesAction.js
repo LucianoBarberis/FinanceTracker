@@ -5,7 +5,7 @@ export const getBalances = createAsyncThunk("getBalances", async (_, thunkAPI) =
     const token = state.auth.token;
 
     try{
-        const response = await fetch("https://localhost:7277/api/balance", {
+        const response = await fetch(`https://localhost:7277/api/balance/${state.balance.dateTime}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -28,7 +28,7 @@ export const getIncomes = createAsyncThunk("getIncomes", async (_, thunkAPI) => 
     const token = state.auth.token;
 
     try{
-        const response = await fetch("https://localhost:7277/api/balance/incomes", {
+        const response = await fetch(`https://localhost:7277/api/balance/incomes/${state.balance.dateTime}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -51,7 +51,7 @@ export const getEgress = createAsyncThunk("getEgress", async (_, thunkAPI) => {
     const token = state.auth.token;
 
     try{
-        const response = await fetch("https://localhost:7277/api/balance/egress", {
+        const response = await fetch(`https://localhost:7277/api/balance/egress/${state.balance.dateTime}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`

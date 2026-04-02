@@ -14,12 +14,12 @@ namespace Back_EndFinanceTracker.Services.imple
             _repository = repository;
         }
 
-        public async Task<decimal> GetBalance(int userId)
+        public async Task<decimal> GetBalance(int userId, DateTime dateTime)
         {
             try
             {
-                var incomes = await GetIncomes(userId);
-                var egress = await GetEgress(userId);
+                var incomes = await GetIncomes(userId, dateTime);
+                var egress = await GetEgress(userId, dateTime);
                 return incomes - egress;
             }
             catch (Exception ex)
@@ -28,11 +28,11 @@ namespace Back_EndFinanceTracker.Services.imple
             }
         }
 
-        public async Task<decimal> GetEgress(int userId)
+        public async Task<decimal> GetEgress(int userId, DateTime dateTimeLimit)
         {
             try
             {
-                var amounts = await _repository.GetAmounts(userId);
+                var amounts = await _repository.GetAmounts(userId, dateTimeLimit);
                 var egresosTotal = amounts.FirstOrDefault(t => t.Type == TransactionType.Egreso);
 
                 return egresosTotal?.Total ?? 0;
@@ -43,11 +43,11 @@ namespace Back_EndFinanceTracker.Services.imple
             }
         }
 
-        public async Task<decimal> GetIncomes(int userId)
+        public async Task<decimal> GetIncomes(int userId, DateTime dateTimeLimit)
         {
             try
             {
-                var amounts = await _repository.GetAmounts(userId);
+                var amounts = await _repository.GetAmounts(userId, dateTimeLimit);
                 var ingresoTotal = amounts.FirstOrDefault(t => t.Type == TransactionType.Ingreso);
 
                 return ingresoTotal?.Total ?? 0;

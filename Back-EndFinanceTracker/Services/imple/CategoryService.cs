@@ -71,9 +71,10 @@ namespace Back_EndFinanceTracker.Services.imple
 
         public async Task<IEnumerable<CategoryDto>> GetCategories(int userId)
         {
+            DateTime date = new DateTime(1950, 1, 1);
             var categories = await _cateRepository.Get(userId);
 
-            var totalEgress = await _balanceService.GetEgress(userId);
+            var totalEgress = await _balanceService.GetEgress(userId, date);
 
             var categoryDtos = new List<CategoryDto>();
 
@@ -97,12 +98,13 @@ namespace Back_EndFinanceTracker.Services.imple
 
         public async Task<CategoryDto> GetCategoryById(int id, int userId)
         {
+            DateTime date = new DateTime(1950, 1, 1);
             var category = await _cateRepository.GetById(id, userId);
             if (category == null)
             {
                 return null;
             }
-            var totalIncomes = await _balanceService.GetIncomes(userId);
+            var totalIncomes = await _balanceService.GetIncomes(userId, date);
             var categoryTotal = await TotalForCategory(id, userId);
 
             return new CategoryDto

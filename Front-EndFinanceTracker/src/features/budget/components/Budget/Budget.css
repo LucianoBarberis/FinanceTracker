@@ -1,0 +1,29 @@
+.BudgetCardContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.addNewBudget {
+    color: var(--text-primary);
+    font-size: 22px;
+    color: #fff;
+    background: linear-gradient(to top left, var(--brand--700), var(--brand--600));
+    cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+    .BudgetCardContainer {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .BudgetCardContainer {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}

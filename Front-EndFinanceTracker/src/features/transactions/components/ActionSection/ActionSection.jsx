@@ -12,6 +12,7 @@ import { postTransaction } from '../../redux/postTransactionAction'
 import { postCategories } from '../../../categories/redux/postCategoriesAction.js'
 import { getBalances, getEgress, getIncomes } from '../../../analytics/redux/getBalancesAction'
 import { getCategories } from '../../../categories/redux/getCategoriesAction'
+import { getBudgets } from '../../../budget/redux/getBudgetsAction.js';
 import { toast } from '@pheralb/toast'
 import { TfiStatsUp, TfiStatsDown } from "react-icons/tfi";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -29,6 +30,7 @@ const ActionSection = () => {
     const [isDark, setIsDark] = useState(false)
     const optIncomes = useSelector((s) => s.categories.catIncomes)
     const optEgress = useSelector((s) => s.categories.catEgress)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setIsDark(theme === 'dark')
@@ -86,7 +88,6 @@ const ActionSection = () => {
         setOpenNewCat(false)
     }
 
-    const dispatch = useDispatch()
 
     const handleSubmitIncome = async (e) => {
         e.preventDefault();
@@ -116,10 +117,12 @@ const ActionSection = () => {
         dispatch(getIncomes())
         dispatch(getCategories())
         dispatch(getEgress())
+        dispatch(getBudgets())
         egressForm.resetForm()
         toast.success({
-            text: "Transacción creada correctamente!",
+            text: "Transacción creada!",
         })
+        
     };
 
     useEffect(() => {

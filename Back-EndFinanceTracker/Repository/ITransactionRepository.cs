@@ -5,7 +5,7 @@ namespace Back_EndFinanceTracker.Repository
 {
     public interface ITransactionRepository : IRepository<Transaction>
     {
-        public Task<IEnumerable<BalanceDTO>> GetAmounts(int userId);
+        public Task<IEnumerable<BalanceDTO>> GetAmounts(int userId, DateTime dateTimeLimit);
         public Task<decimal> GetCategoryTotals(int categoryId, int userId);
     }
 }

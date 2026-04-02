@@ -14,9 +14,10 @@ namespace Back_EndFinanceTracker.Repository.imlple
             _context = financeContext;
         }
 
-        public async Task<IEnumerable<BalanceDTO>> GetAmounts(int userId)
+        public async Task<IEnumerable<BalanceDTO>> GetAmounts(int userId, DateTime dateTimeLimit)
         {
             return await _context.Transactions
+                .Where(x => x.DateTime >= dateTimeLimit)
                 .Where(x => x.UserId == userId)
                 .GroupBy(t => t.Type)
                 .Select(group => new BalanceDTO

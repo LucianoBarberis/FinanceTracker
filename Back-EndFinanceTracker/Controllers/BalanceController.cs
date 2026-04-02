@@ -22,12 +22,12 @@ namespace Back_EndFinanceTracker.Controllers
             return claim != null ? int.Parse(claim.Value) : -1;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetTotal()
+        [HttpGet("{dateTime}")]
+        public async Task<IActionResult> GetTotal(DateTime dateTime)
         {
             try
             {
-                var total = await _balanceService.GetBalance(GetUserId());
+                var total = await _balanceService.GetBalance(GetUserId(), dateTime);
                 return Ok(total);
             }
             catch (Exception ex)
@@ -36,12 +36,12 @@ namespace Back_EndFinanceTracker.Controllers
             }
         }
 
-        [HttpGet("incomes")]
-        public async Task<IActionResult> GetIncomes() 
+        [HttpGet("incomes/{dateTime}")]
+        public async Task<IActionResult> GetIncomes(DateTime dateTime) 
         {
             try
             {
-                var incomes = await _balanceService.GetIncomes(GetUserId());
+                var incomes = await _balanceService.GetIncomes(GetUserId(), dateTime);
                 return Ok(incomes);
             }
             catch (Exception ex)
@@ -50,12 +50,12 @@ namespace Back_EndFinanceTracker.Controllers
             }
         }
 
-        [HttpGet("egress")]
-        public async Task<IActionResult> GetEgress()
+        [HttpGet("egress/{dateTime}")]
+        public async Task<IActionResult> GetEgress(DateTime dateTime)
         {
             try
             {
-                var egress = await _balanceService.GetEgress(GetUserId());
+                var egress = await _balanceService.GetEgress(GetUserId(), dateTime);
                 return Ok(egress);
             }
             catch (Exception ex)

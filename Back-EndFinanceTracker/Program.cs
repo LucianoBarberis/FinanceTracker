@@ -52,6 +52,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IBalanceService, BalanceService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IBudgetService, BudgetService>();
 builder.Services.AddScoped<IJwtAuthService, JwtAuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddHttpContextAccessor();
@@ -63,6 +64,7 @@ builder.Services.AddScoped<IValidator<CategoryAddDTO>, CategoriesAddValidator>()
 builder.Services.AddScoped<IValidator<CategoryDto>, CategoriesUpdateValidator>();
 builder.Services.AddScoped<IValidator<LoginDTO>, LoginValidator>();
 builder.Services.AddScoped<IValidator<RegisterDTO>, RegisterValidator>();
+builder.Services.AddScoped<IValidator<BudgetAddDTO>, BudgetAddValidator>();
 
 // Entity Framework
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -79,6 +81,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<ITransactionRepository, TransactionsRepository>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRepository<Budget>, BudgetRepository>();
 
 var app = builder.Build();
 

@@ -23,5 +23,6 @@ namespace Back_EndFinanceTracker.Models
         public int UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; } = null!;
+        public virtual ICollection<Budget> Budgets { get; set; } = new List<Budget>();
     }
 }

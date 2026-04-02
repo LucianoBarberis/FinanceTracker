@@ -1,0 +1,66 @@
+progress {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    width: 100%;
+    height: 20px;
+}
+
+progress {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 10px;
+    /* Fondo para Firefox */
+    background-color: #ffffff;
+    border-radius: 10px;
+    /* Para que la barra no se salga de las esquinas */
+}
+
+/* Fondo del contenedor (Chrome/Safari) */
+progress::-webkit-progress-bar {
+    background-color: var(--text-secondary);
+    border-radius: 10px;
+}
+
+/* La barra que se llena (Chrome/Safari) */
+progress::-webkit-progress-value {
+    background: var(--brand--400);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+progress::-moz-progress-bar {
+    background: var(--brand-400);
+    border-radius: 10px;
+}
+
+.budgetCard {
+    background-color: var(--bg-secondary);
+    width: 100%;
+    padding: 20px 20px;
+    border-radius: 10px;
+    border: var(--border);
+    box-shadow: var(--shadow);
+}
+
+.budgetTilte {
+    color: var(--text-primary);
+}
+
+.cardTitle {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.progressBarData {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.progressBarData span {
+    font-size: 12px;
+    color: var(--text-secondary);
+}

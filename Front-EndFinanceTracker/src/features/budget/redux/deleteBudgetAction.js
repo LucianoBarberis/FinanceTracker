@@ -1,24 +1,25 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getTransactions = createAsyncThunk("getTransactions", async (_, thunkAPI) => {
+export const deleteBudget = createAsyncThunk("deleteBudget", async (categoryId, thunkAPI) => {
     const state = thunkAPI.getState();
     const token = state.auth.token;
 
-    try{
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/Transaction`, {
-            method: "GET",
+    try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Budget/${categoryId}`, {
+            method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`
             }
-        })
+        });
 
         if (!response.ok) {
             throw new Error(`Error HTTP: ${response.status}`);
         }
-        return await response.json();
+
+        return categoryId;
         
-    }catch (error) {
-        console.error("Error al obtener datos:", error.message);
+    } catch (error) {
+        console.error("Error al eliminar presupuesto:", error.message);
         return thunkAPI.rejectWithValue(error.message);
     }
-})
+});

@@ -13,7 +13,7 @@ export const postCategories = createAsyncThunk("postCategories", async (data, th
             type: Number(data.type)
         };
 
-        const response = await fetch("https://localhost:7277/api/categories", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
             method: "POST",
             headers: {
                 'Content-Type': "application/json",

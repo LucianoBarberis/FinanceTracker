@@ -17,7 +17,7 @@ namespace Back_EndFinanceTracker.Models
         [Required]
         [StringLength(40)]
         public string Description { get; set; }
-        public DateTime DateTime { get; set; } = DateTime.Now;
+        public DateTime DateTime { get; set; } = DateTime.UtcNow;
 
         [Required]
         public TransactionType Type { get; set; }

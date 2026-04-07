@@ -42,6 +42,7 @@ const Hero = () => {
                 <button 
                     onClick={() => handleFilterChange(lastYear)} 
                     className={`btnRight ${activeFilter === 'lastYear' ? 'active' : ''}`}
+                    style={{minWidth: "auto"}}
                 >
                     Todos Los Registros
                 </button>

@@ -1,62 +1,65 @@
 import Modal from "../../../../components/ui/Modal/Modal"
 import FormInput from "../../../../components/ui/FormInput/FormInput"
-import FormSelect from "../../../../components/ui/FormSelect/FormSelect"
 import { useForm } from "../../../../hooks"
-import { useSelector, useDispatch } from "react-redux"
-import { postBudget } from "../../redux/postBudgetAction"
+import { useDispatch } from "react-redux"
+import { putBudget } from "../../redux/putBudgetAction"
 import { budgetSchema } from "../../validation/budgetSchema"
 import { toast } from "@pheralb/toast"
 import { useEffect } from "react"
 
 
-const NewBudgetModal = ({isOpen, onClose, setOpen}) => {
-    const optEgress = useSelector((s) => s.categories.catEgress)
-    const budgets = useSelector((s) => s.budget.budgets)
-
-    const opciones = optEgress.filter(cat => 
-        !budgets.some(budget => budget.categoryId === cat.id)
-    )
-
+const EditBudgetModal = ({isOpen, onClose, setOpen, budget, categoryName}) => {
     const budgetForm = useForm({
-        amount: "",
-        categoryId: -1
+        amount: budget?.amount || "",
+        budgetId: budget?.budgetId || -1
     }, budgetSchema)
     const dispatch = useDispatch()
 
     const handlerSubmit = async (e) => {
         e.preventDefault();
+        console.log(budgetForm.valores)
         if(!budgetForm.validar()) return(
             toast.error({
                 text: "Error al validar la información"
             })
         )
-        const result = await dispatch(postBudget(budgetForm.valores))
+        
+        const result = await dispatch(putBudget(budgetForm.valores))
         if (!result.error) {
             toast.success({
-                text: "Presupuesto añadido correctamente"
+                text: "Presupuesto actualizado correctamente"
             })
             setOpen(false)
+        }else {
+            toast.error({
+                text: "Error del servidor"
+            })
         }
     }
 
     useEffect(()=>{
-        budgetForm.resetForm()
-    },[isOpen])
+        if (budget) {
+            budgetForm.setValues({
+                amount: budget.amount,
+                categoryId: budget.categoryId,
+                budgetId: budget.id
+            })
+        }
+    },[isOpen, budget])
 
     return (
         <Modal
-            title={"Añadir un nuevo límite de presupuesto"}
-            description={"El límite te va a ayudar a visualizar tus gastos en una categoria especifica"}
+            title={"Editar límite de presupuesto"}
+            description={`Modificando el presupuesto para la categoría: ${categoryName}`}
             isOpen={isOpen}
             onClose={onClose}
         >
             <form className="FormIncome" onSubmit={handlerSubmit}>
                 <FormInput useForm={budgetForm} name={"Monto Límite"} type={"number"} value={"amount"} placeholder={"$25.000"}/>
-                <FormSelect useForm={budgetForm} name={"categoryId"} label={"Categoría"} options={opciones} />
-                <button className='submitIncome' type="submit">Añadir</button>
+                <button className='submitIncome' type="submit">Actualizar</button>
             </form>
         </Modal>
     )
 }
 
-export default NewBudgetModal
+export default EditBudgetModal

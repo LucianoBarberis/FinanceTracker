@@ -5,7 +5,7 @@ export const getCategories = createAsyncThunk("getCategories", async (_, thunkAP
     const token = state.auth.token;
 
     try{
-        const response = await fetch("https://localhost:7277/api/Categories", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Categories`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`

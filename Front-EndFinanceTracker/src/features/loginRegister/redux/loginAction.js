@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 export const loginAction = createAsyncThunk("authLogin", async(loginData, { rejectWithValue }) => {
     try {
-        const response = await fetch('https://localhost:7277/api/User/login', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/User/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

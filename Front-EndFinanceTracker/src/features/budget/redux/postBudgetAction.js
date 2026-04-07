@@ -11,7 +11,7 @@ export const postBudget = createAsyncThunk("postBudget", async (data, thunkAPI) 
             categoryId: Number(data.categoryId)
         };
 
-        const response = await fetch("https://localhost:7277/api/Budget", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Budget`, {
             method: "POST",
             headers: {
                 'Content-Type': "application/json",

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { LuTriangleAlert } from "react-icons/lu";
 import Header from '../../components/layout/Header/Header';
 import CategoryCard from '../../features/categories/components/CategoryCard/CategoryCard';
+import Budget from '../../features/budget/components/Budget/Budget';
 import Modal from '../../components/ui/Modal/Modal';
 import FormInput from '../../components/ui/FormInput/FormInput';
 import InputColorPicker from '../../components/ui/InputColorPicker/InputColorPicker';
@@ -130,6 +131,11 @@ const Categories = () => {
             <main className="categories-page">
                 <div className="categories-header">
                     <h1>Mis Categorías</h1>
+                </div>
+
+                <div className="budget-section">
+                    <h2 className="section-title">Mis Presupuestos</h2>
+                    <Budget />
                 </div>
 
                 <div className="categories-grid">

@@ -35,6 +35,37 @@
     padding: 20px 40px 30px 40px;
 }
 
+@media (max-width: 768px) {
+    .loginContainer {
+        padding: 20px;
+    }
+
+    .loginContainer .loginWrapper {
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .loginContainer .loginWrapper .loginHeader {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .loginContainer .loginWrapper .loginBody {
+        flex-direction: column-reverse;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .loginContainer .loginWrapper .loginBody .imgLogin {
+        height: 150px;
+    }
+
+    .loginContainer .loginWrapper .loginFooter {
+        width: 100%;
+        padding: 0 20px;
+    }
+}
+
 .loginContainer .loginWrapper .loginBody .imgLogin {
     height: 220px;
 }

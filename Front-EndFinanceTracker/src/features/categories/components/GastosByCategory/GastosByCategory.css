@@ -24,9 +24,6 @@
 }
 
 @media (max-width: 480px) {
-    .ExpenseContainer {
-        padding: 15px;
-    }
     
     .ExpenseContainer h3 {
         font-size: 18px;

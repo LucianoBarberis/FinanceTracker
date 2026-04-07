@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 export const registerAction = createAsyncThunk("authRegister", async(registerData, { rejectWithValue }) => {
     try {
-        const response = await fetch('https://localhost:7277/api/User/register', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/User/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

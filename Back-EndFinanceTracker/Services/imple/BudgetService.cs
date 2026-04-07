@@ -38,7 +38,7 @@ namespace Back_EndFinanceTracker.Services.imple
 
         private async Task<decimal> CalculateSpentAmount(int categoryId, int userId)
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             return await _context.Transactions
                 .Where(t => t.CategoryId == categoryId && 
                             t.UserId == userId && 
@@ -85,7 +85,7 @@ namespace Back_EndFinanceTracker.Services.imple
 
         public async Task<string?> CheckBudgetLimit(int categoryId, int userId, decimal newAmount, DateTime transactionDate)
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             
             // Si la transacción no es para el mes/año actual, no disparamos alerta de presupuesto mensual
             if (transactionDate.Month != now.Month || transactionDate.Year != now.Year)

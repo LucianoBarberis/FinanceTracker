@@ -1,0 +1,98 @@
+.loginContainer {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginContainer .loginWrapper {
+    background-color: var(--bg-secondary);
+    border-radius: 20px;
+    border: var(--border);
+    box-shadow: var(--shadow);
+}
+
+.loginContainer .loginWrapper .loginHeader {
+    padding: 20px 40px;
+}
+
+.loginContainer .loginWrapper .loginHeader h2 {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.loginContainer .loginWrapper .loginHeader p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.loginContainer .loginWrapper .loginBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 20px 40px 30px 40px;
+}
+
+@media (max-width: 768px) {
+    .loginContainer {
+        padding: 20px;
+    }
+
+    .loginContainer .loginWrapper {
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .loginContainer .loginWrapper .loginHeader {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .loginContainer .loginWrapper .loginBody {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .loginContainer .loginWrapper .loginBody .imgLogin {
+        height: 150px;
+    }
+
+    .loginContainer .loginWrapper .loginFooter {
+        width: 100%;
+        padding: 0 20px;
+    }
+}
+
+.loginContainer .loginWrapper .loginBody .imgLogin {
+    height: 220px;
+}
+
+.loginContainer .loginWrapper .loginFooter {
+    width: 80%;
+    margin: 0 auto;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: var(--border);
+}
+
+.loginContainer .loginWrapper .loginFooter a {
+    color: var(--text-secondary);
+    font-size: 14px;
+    text-underline-offset: 2px;
+}
+
+.loadingContainer {
+    position: fixed;
+    top: 47%;
+    left: 50%;
+    z-index: 100;
+}
+
+.blur {
+    filter: blur(3px);
+}

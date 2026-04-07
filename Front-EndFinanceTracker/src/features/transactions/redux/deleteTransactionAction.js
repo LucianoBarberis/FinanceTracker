@@ -5,7 +5,7 @@ export const deleteTransaction = createAsyncThunk("deleteTransaction", async (id
     const token = state.auth.token;
 
     try{
-        const response = await fetch(`https://localhost:7277/api/Transaction/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Transaction/${id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`

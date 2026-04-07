@@ -72,6 +72,15 @@ header {
     backdrop-filter: blur(7.2px);
     -webkit-backdrop-filter: blur(7.2px);
     border: 1px solid rgba(228, 228, 228, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.logo:hover {
+    transform: rotate(-4deg) scale(1.1);
 }
 
 .config {
@@ -187,6 +196,10 @@ header {
         padding: 10px 15px;
     }
 
+    .logo:hover {
+        transform: none;
+    }
+
     .accountMenu {
         padding: 10px 15px;
         gap: 15px;
@@ -204,6 +217,14 @@ header {
     
     .menu {
         top: 80px;
+    }
+
+    .accountMenu {
+        height: 50px;
+    }
+
+    .logo{
+        height: 50px;
     }
 
     .logo h1 {

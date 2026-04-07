@@ -26,7 +26,7 @@ namespace Back_EndFinanceTracker.Validators
 
             RuleFor(x => x.DateTime)
                 .NotEmpty().WithMessage("La fecha es obligatoria.")
-                .LessThanOrEqualTo(DateTime.Now).WithMessage("No puedes registrar una transacción con fecha futura.");
+                .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("No puedes registrar una transacción con fecha futura.");
 
             RuleFor(x => x.Type)
                 .IsInEnum().WithMessage("El tipo de transacción seleccionado no es válido.");

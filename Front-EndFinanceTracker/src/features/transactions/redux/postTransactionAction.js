@@ -20,7 +20,7 @@ export const postTransaction = createAsyncThunk("postTransaction", async (data, 
             categoryId: Number(data.categoryId)
         };
 
-        const response = await fetch("https://localhost:7277/api/Transaction", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Transaction`, {
             method: "POST",
             headers: {
                 'Content-Type': "application/json",

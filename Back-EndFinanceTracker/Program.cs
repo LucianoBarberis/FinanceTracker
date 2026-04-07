@@ -13,6 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
 
+// Enable legacy timestamp behavior for Npgsql to avoid DateTime UTC issues during migration
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuraciones de JWT
@@ -70,7 +73,7 @@ builder.Services.AddScoped<IValidator<BudgetAddDTO>, BudgetAddValidator>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<FinanceContext>(options =>
 {
-    options.UseSqlServer(connectionString);
+    options.UseNpgsql(connectionString);
 });
 
 builder.Services.AddAuthorization();

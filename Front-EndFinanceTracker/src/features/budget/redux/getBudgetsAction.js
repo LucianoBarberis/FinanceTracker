@@ -5,7 +5,7 @@ export const getBudgets = createAsyncThunk("getBudgets", async (_, thunkAPI)=> {
     const token = state.auth.token;
 
     try{
-        const response = await fetch("https://localhost:7277/api/Budget", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Budget`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`

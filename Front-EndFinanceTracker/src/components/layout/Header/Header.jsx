@@ -6,11 +6,13 @@ import './Header.css'
 import { useDispatch } from 'react-redux';
 import { logout } from "../../../features/loginRegister/redux/validationReducer"
 import { toast } from '@pheralb/toast';
+import { useNavigate } from 'react-router';
 
 const Header = () => {
     const [isOpenConfig, setOpenConfig] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const location = useLocation().pathname
     
     const handlerLogout = () => {
@@ -21,7 +23,7 @@ const Header = () => {
     }
     return (
         <header>
-            <div className='logo'>
+            <div className='logo' onClick={()=> navigate('/')} >
                 <h1>Fin<span>Track</span></h1>
             </div>
             <nav className={`menu ${isMobileMenuOpen ? 'mobileOpen' : ''}`}>

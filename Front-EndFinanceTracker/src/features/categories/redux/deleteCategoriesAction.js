@@ -5,7 +5,7 @@ export const deleteCategories = createAsyncThunk("deleteCategories", async (cate
     const token = state.auth.token;
 
     try {
-        const response = await fetch(`https://localhost:7277/api/Categories/${categoryId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Categories/${categoryId}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`

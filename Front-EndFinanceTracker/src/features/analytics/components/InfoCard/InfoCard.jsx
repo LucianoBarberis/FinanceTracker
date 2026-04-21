@@ -1,5 +1,5 @@
 import React from 'react'
-import './infoCard.css'
+import './InfoCard.css'
 import { VscArrowSmallUp } from "react-icons/vsc";
 
 const InfoCard = ({ title, data }) => {

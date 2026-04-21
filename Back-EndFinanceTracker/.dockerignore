@@ -1,0 +1,8 @@
+bin/
+obj/
+publish/
+.vs/
+.git/
+.github/
+.vscode/
+*.user

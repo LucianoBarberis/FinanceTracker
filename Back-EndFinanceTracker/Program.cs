@@ -8,15 +8,20 @@ using Back_EndFinanceTracker.Services.imple;
 using Back_EndFinanceTracker.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
+using System.Threading.RateLimiting;
 
 // Enable legacy timestamp behavior for Npgsql to avoid DateTime UTC issues during migration
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configuración de URLs para escucha en LAN
+builder.WebHost.UseUrls("http://0.0.0.0:7277");
 
 // Configuraciones de JWT
 
@@ -46,10 +51,35 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("useCors", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        // En desarrollo permitimos todo, en producción deberás cambiar esto por la URL de Vercel
+        policy.WithOrigins("http://localhost:5173") 
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials();
     });
+});
+
+// Rate Limiter Configuration
+builder.Services.AddRateLimiter(options =>
+{
+    // Política general para la app
+    options.AddFixedWindowLimiter(policyName: "fixed", options =>
+    {
+        options.PermitLimit = 10;
+        options.Window = TimeSpan.FromSeconds(10);
+        options.QueueLimit = 2;
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    });
+
+    // Política estricta para Login y Register (Anti-brute force)
+    options.AddFixedWindowLimiter(policyName: "auth_strict", options =>
+    {
+        options.PermitLimit = 3;
+        options.Window = TimeSpan.FromMinutes(1);
+        options.QueueLimit = 0;
+    });
+
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 });
 
 builder.Services.AddScoped<ITransactionService, TransactionService>();
@@ -95,10 +125,19 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+// app.UseCors debe ir antes de Authentication y Authorization
+app.UseCors("useCors");
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("useCors");
-app.UseHttpsRedirection();
-app.UseAuthorization();
+
+// Comentamos la redirección a HTTPS para facilitar el despliegue en LAN sin certificados SSL
+/*
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+*/
+
 app.MapControllers();
 app.Run();

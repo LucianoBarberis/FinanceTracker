@@ -4,9 +4,11 @@ using Back_EndFinanceTracker.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Back_EndFinanceTracker.Controllers
 {
+    [EnableRateLimiting("auth_strict")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase

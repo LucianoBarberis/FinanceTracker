@@ -51,10 +51,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("useCors", policy =>
     {
-        policy.SetIsOriginAllowed(origin => true)
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
@@ -116,7 +115,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRepository<Budget>, BudgetRepository>();
 
 var app = builder.Build();
-app.UseCors("useCors");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -124,18 +123,15 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-// app.UseCors debe ir antes de Authentication y Authorization
+app.UseCors("useCors");
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Comentamos la redirección a HTTPS para facilitar el despliegue en LAN sin certificados SSL
-/*
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
-*/
 
 app.MapControllers();
 app.Run();

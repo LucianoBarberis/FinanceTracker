@@ -116,7 +116,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRepository<Budget>, BudgetRepository>();
 
 var app = builder.Build();
-
+app.UseCors("useCors");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -125,7 +125,6 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseCors debe ir antes de Authentication y Authorization
-app.UseCors("useCors");
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();

@@ -51,8 +51,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("useCors", policy =>
     {
-        // En desarrollo permitimos todo, en producción deberás cambiar esto por la URL de Vercel
-        policy.WithOrigins("http://localhost:5173") 
+        policy.WithOrigins("https://yourfintracker.vercel.app") 
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();

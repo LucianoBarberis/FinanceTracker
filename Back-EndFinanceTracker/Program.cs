@@ -51,7 +51,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("useCors", policy =>
     {
-        policy.WithOrigins("https://yourfintracker.vercel.app") 
+        policy.SetIsOriginAllowed(origin => true)
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();
@@ -117,6 +117,9 @@ builder.Services.AddScoped<IRepository<Budget>, BudgetRepository>();
 
 var app = builder.Build();
 
+// MOVER UseCors AL PRINCIPIO
+app.UseCors("useCors");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -124,8 +127,6 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-// app.UseCors debe ir antes de Authentication y Authorization
-app.UseCors("useCors");
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();

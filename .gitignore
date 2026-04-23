@@ -38,3 +38,7 @@ pnpm-debug.log*
 # OS-specific files
 .DS_Store
 Thumbs.db
+Back-EndFinanceTracker/publish/*
+Front-EndFinanceTracker/.gitignore
+deploy-plan.md
+GEMINI.md

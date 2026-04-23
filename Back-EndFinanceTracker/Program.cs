@@ -51,10 +51,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("useCors", policy =>
     {
-        policy.SetIsOriginAllowed(origin => true)
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
+        policy.WithOrigins(
+            "https://yourfintracker.vercel.app/",
+            "http://localhost:3000",
+            "http://localhost:5173"
+        )
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+        .SetPreflightMaxAge(TimeSpan.FromHours(1));
     });
 });
 
@@ -127,17 +132,16 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+// app.UseCors debe ir antes de Authentication y Authorization
+app.UseCors("useCors");
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Comentamos la redirección a HTTPS para facilitar el despliegue en LAN sin certificados SSL
-/*
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
-*/
 
 app.MapControllers();
 app.Run();

@@ -52,13 +52,12 @@ builder.Services.AddCors(options =>
     options.AddPolicy("useCors", policy =>
     {
         policy.WithOrigins(
-            "https://yourfintracker.vercel.app/",
+            "https://yourfintracker.vercel.app",
             "http://localhost:3000",
             "http://localhost:5173"
         )
         .AllowAnyMethod()
         .AllowAnyHeader()
-        .AllowCredentials()
         .SetPreflightMaxAge(TimeSpan.FromHours(1));
     });
 });
@@ -125,6 +124,11 @@ var app = builder.Build();
 // MOVER UseCors AL PRINCIPIO
 app.UseCors("useCors");
 
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -132,16 +136,11 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-// app.UseCors debe ir antes de Authentication y Authorization
-app.UseCors("useCors");
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseHttpsRedirection();
-}
+app.MapGet("/", () => Results.Ok(new { Message = "Finance Tracker API is running", Status = "Healthy" }));
 
 app.MapControllers();
 app.Run();

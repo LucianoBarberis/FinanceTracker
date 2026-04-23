@@ -49,16 +49,11 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("useCors", policy =>
+    options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins(
-            "https://yourfintracker.vercel.app",
-            "http://localhost:3000",
-            "http://localhost:5173"
-        )
+        policy.SetIsOriginAllowed(_ => true) // Permitir cualquier origen para diagnóstico
         .AllowAnyMethod()
-        .AllowAnyHeader()
-        .SetPreflightMaxAge(TimeSpan.FromHours(1));
+        .AllowAnyHeader();
     });
 });
 
@@ -121,13 +116,15 @@ builder.Services.AddScoped<IRepository<Budget>, BudgetRepository>();
 
 var app = builder.Build();
 
-// MOVER UseCors AL PRINCIPIO
-app.UseCors("useCors");
+// Usar la política de CORS por defecto
+app.UseCors();
 
+/*
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
+*/
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

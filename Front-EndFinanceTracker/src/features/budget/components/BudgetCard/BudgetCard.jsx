@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import './BudgetCard.css'
 import { LuEllipsis } from 'react-icons/lu'
 
-const BudgetCard = ({budgetTitle, value, total, onEdit, onDelete}) => {
+const BudgetCard = React.memo(({budgetTitle, value, total, onEdit, onDelete}) => {
     const actionMenuRef = useRef(null)
     const [isMenuOpen, setOpenMenu] = useState(false)
 
@@ -44,6 +44,6 @@ const BudgetCard = ({budgetTitle, value, total, onEdit, onDelete}) => {
             </div>
         </div>
     )
-}
+})
 
 export default BudgetCard

@@ -1,7 +1,8 @@
+import React from 'react'
 import SpendingChart from '../../../analytics/components/SpendsChart/SpendsChart.jsx'
 import './GastosByCategory.css'
 
-const GastosByCategory = () => {
+const GastosByCategory = React.memo(() => {
     return (
         <div className='ExpenseContainer'>
             <div className='CardTitle'>
@@ -12,6 +13,6 @@ const GastosByCategory = () => {
             <SpendingChart/>
         </div>
     )
-}
+})
 
 export default GastosByCategory

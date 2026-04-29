@@ -33,6 +33,11 @@ namespace Back_EndFinanceTracker.Repository.imlple
             return await _context.Users.FirstOrDefaultAsync(u => u.UserId == id && u.UserId == userId);
         }
 
+        public async Task<User?> GetById(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
+        }
+
         public async Task<User?> GetByUserIdentifier(string identifier)
         {
             return await _context.Users

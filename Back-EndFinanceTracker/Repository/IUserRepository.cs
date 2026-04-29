@@ -7,5 +7,6 @@ namespace Back_EndFinanceTracker.Repository
         Task<User?> GetByUserIdentifier(string identifier);
         Task<bool> UserNameExists(string userName);
         Task<bool> EmailExists(string email);
+        Task<User?> GetById(int id);
     }
 }

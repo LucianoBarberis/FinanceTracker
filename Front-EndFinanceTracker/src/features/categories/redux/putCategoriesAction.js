@@ -1,15 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { apiFetch } from "../../../utils/apiFetch";
 
 export const putCategories = createAsyncThunk("putCategories", async (categoryData, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const token = state.auth.token;
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/Categories/${categoryData.id}`, {
+        const response = await apiFetch(`${import.meta.env.VITE_API_URL}/Categories/${categoryData.id}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
             body: JSON.stringify(categoryData)
         });
 
@@ -17,7 +12,6 @@ export const putCategories = createAsyncThunk("putCategories", async (categoryDa
             throw new Error(`Error HTTP: ${response.status}`);
         }
 
-        // Si el API no devuelve el objeto, devolvemos lo que enviamos para actualizar el estado local
         return categoryData;
         
     } catch (error) {

@@ -1,34 +1,36 @@
+import React from 'react'
 import './TransactionsCard.css'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { useForm } from '../../../../hooks';
 import { LuEllipsisVertical } from "react-icons/lu";
 import { useDispatch, useSelector } from 'react-redux';
 import { getTransactions } from '../../redux/getTransactionAction';
-import { getBudgets } from '../../../budget/redux/getBudgetsAction';
 import { deleteTransaction } from '../../redux/deleteTransactionAction';
 import { putTransaction } from '../../redux/putTransactionAction';
-import { getBalances, getEgress, getIncomes } from '../../../analytics/redux/getBalancesAction';
+import { refreshDashboardData } from '../../../analytics/redux/refreshDashboardData';
+import { getBudgets } from '../../../budget/redux/getBudgetsAction';
 import { toast } from '@pheralb/toast';
 import Modal from '../../../../components/ui/Modal/Modal';
 import FormInput from '../../../../components/ui/FormInput/FormInput';
 import FormSelect from '../../../../components/ui/FormSelect/FormSelect';
-import { getCategories } from '../../../categories/redux/getCategoriesAction';
+import { selectTransactions, selectTransactionsLoading } from '../../redux/transactionReducer';
+import { selectCatDictionary, selectCatIncomes, selectCatEgress } from '../../../categories/redux/categoriesReducer';
 import { transactionUpdateSchema } from '../../validation/transactionUpdateSchema';
 
-const TransactionsCard = ({transactionsToRender, data}) => {
-
-    const {transacciones: reduxTransactions, loading} = useSelector((state) => state.transaction)
+const TransactionsCard = React.memo(({transactionsToRender, data}) => {
+    const reduxTransactions = useSelector(selectTransactions)
+    const loading = useSelector(selectTransactionsLoading)
     const transacciones = data || reduxTransactions;
     const dispatch = useDispatch()
-    const [openMenuIndex, setOpenMenuIndex] = useState(null)
-    const [isOpenModalEdit, setOpenModalEdit] = useState(false)
-    const catDictionary = useSelector(s => s.categories.catDictionary)
-    const optIncomes = useSelector((s) => s.categories.catIncomes)
-    const optEgress = useSelector((s) => s.categories.catEgress)
+    const catDictionary = useSelector(selectCatDictionary)
+    const optIncomes = useSelector(selectCatIncomes)
+    const optEgress = useSelector(selectCatEgress)
     const menuRef = useRef(null)
     const actionMenuRef = useRef(null)
+    const [openMenuIndex, setOpenMenuIndex] = useState(null)
+    const [isOpenModalEdit, setOpenModalEdit] = useState(false)
 
-    const allCategories = [...optIncomes, ...optEgress];
+    const allCategories = useMemo(() => [...optIncomes, ...optEgress], [optIncomes, optEgress]);
 
     const editForm = useForm({
         id: null,
@@ -39,21 +41,18 @@ const TransactionsCard = ({transactionsToRender, data}) => {
         categoryId: 0
     }, transactionUpdateSchema(allCategories))
     
-    const handleDeleteBtn = async (id) => {
+    const handleDeleteBtn = useCallback(async (id) => {
         await dispatch(deleteTransaction(id));
         setOpenMenuIndex(null)
-        dispatch(getBalances())
-        dispatch(getCategories())
-        dispatch(getIncomes())
+        dispatch(refreshDashboardData())
         dispatch(getBudgets())
-        dispatch(getEgress())
         toast.success({
             text: `Transacción Eliminada`,
             description: `id: ${id}`
         })
-    }
+    }, [dispatch])
     
-    const handleEditBtn = (data) => {
+    const handleEditBtn = useCallback((data) => {
         setOpenMenuIndex(null);
         editForm.setValues({
             id: data.id,
@@ -64,9 +63,9 @@ const TransactionsCard = ({transactionsToRender, data}) => {
             categoryId: data.categoryId
         });
         setOpenModalEdit(true);
-    }
+    }, [editForm])
 
-    const handleSubmitEdit = async (e) => {
+    const handleSubmitEdit = useCallback(async (e) => {
         e.preventDefault()
         if(!editForm.validar()) return toast.error({
             text: "Error al validar los datos",
@@ -74,16 +73,12 @@ const TransactionsCard = ({transactionsToRender, data}) => {
         const { id, ...data } = editForm.valores;
         setOpenModalEdit(false)
         await dispatch(putTransaction({ id, data }))
-        dispatch(getBalances())
-        dispatch(getIncomes())
-        dispatch(getCategories())
-        dispatch(getBudgets())
-        dispatch(getEgress())
+        dispatch(refreshDashboardData())
         toast.success({
             text: `Transacción Editada`,
             description: `id: ${id}`
         })
-    }
+    }, [dispatch, editForm])
 
     useEffect(() => {
         dispatch(getTransactions())
@@ -95,28 +90,26 @@ const TransactionsCard = ({transactionsToRender, data}) => {
                 setOpenMenuIndex(null)
             }
         }
-        dispatch(getCategories())
 
         document.addEventListener('mousedown', handleClickOutside)
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
 
-    const options = [
-        {
-            value: 0,
-            name: "Ingresos"
-        },
-        {
-            value: 1,
-            name: "Egresos"
-        }
-    ]
+    const options = useMemo(() => [
+        { value: 0, name: "Ingresos" },
+        { value: 1, name: "Egresos" }
+    ], [])
+
+    const transactionsList = useMemo(() => {
+        if (!transacciones || transacciones.length === 0) return [];
+        return transacciones.slice(0, transactionsToRender || 10000000);
+    }, [transacciones, transactionsToRender])
 
     return (
     <div className='TransactionsCardContainer'>
         <div className='TransactionsCard' ref={menuRef}>
             <div className="CardTitle">
-                {
+            {
                 transactionsToRender <= 20 ? 
                 <>
                     <h3>Últimas Transacciones</h3>
@@ -127,7 +120,7 @@ const TransactionsCard = ({transactionsToRender, data}) => {
                     <h3>Transacciones</h3>
                     <p>Revisa todas tus transacciones registradas</p>
                 </>
-                }
+            }
             </div>
             <div className="tableBorder"></div>
             <table className='Table'>
@@ -146,8 +139,8 @@ const TransactionsCard = ({transactionsToRender, data}) => {
                         <tr>
                             <td colSpan="6" style={{textAlign: 'center'}}>Cargando...</td>
                         </tr>
-                    ) : transacciones && transacciones.length > 0 ? (
-                        transacciones.slice(0, transactionsToRender || 10000000).map((d, index) => {
+                    ) : transactionsList.length > 0 ? (
+                        transactionsList.map((d, index) => {
                             return <tr key={index}>
                                 <td>{d.description}</td>
                                 <td>{d.type == 1 ? "Egreso" : "Ingreso" }</td>
@@ -203,6 +196,6 @@ const TransactionsCard = ({transactionsToRender, data}) => {
         </Modal>
     </div>
     )
-}
+})
 
 export default TransactionsCard

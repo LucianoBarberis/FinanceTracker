@@ -1,11 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { apiFetch } from "../../../utils/apiFetch";
 
 export const postCategories = createAsyncThunk("postCategories", async (data, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const token = state.auth.token;
-
     try {
-        // Construir el body siguiendo exactamente el template del backend
         const body = {
             color: String(data.color),
             icon: String(data.icon),
@@ -13,12 +10,8 @@ export const postCategories = createAsyncThunk("postCategories", async (data, th
             type: Number(data.type)
         };
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
+        const response = await apiFetch(`${import.meta.env.VITE_API_URL}/categories`, {
             method: "POST",
-            headers: {
-                'Content-Type': "application/json",
-                'Authorization': `Bearer ${token}`
-            },
             body: JSON.stringify(body)
         });
 
@@ -29,7 +22,7 @@ export const postCategories = createAsyncThunk("postCategories", async (data, th
         }
         return await response.json();
     } catch (error) {
-        console.error("Error en postTransaction:", error);
+        console.error("Error en postCategories:", error);
         return thunkAPI.rejectWithValue(error.message);
     }
 })

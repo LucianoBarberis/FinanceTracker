@@ -5,7 +5,7 @@ import Loading from '../../components/ui/Loading/Loading'
 import { Link } from 'react-router'
 
 const Login = () => {
-    const { loading, error } = useSelector(state => state.auth)
+    const { loading } = useSelector(state => state.auth)
     return (
         <>
             <div className='loginContainer'>
@@ -24,7 +24,7 @@ const Login = () => {
                     <div className='tableBorder'></div>
                     <div className='loginBody'>
                         <LoginForm />
-                        <img className='imgLogin' src="./svg/login.svg" alt="" />
+                        <img className='imgLogin' src="./svg/login.svg" alt="Ilustración de inicio de sesión en FinTrack" />
                     </div>
                     <div className='loginFooter'>
                         <Link to={"/register"}>Ya te creaste una cuenta?</Link>

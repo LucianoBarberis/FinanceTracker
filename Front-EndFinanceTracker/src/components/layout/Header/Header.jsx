@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useCallback} from 'react'
 import { Link, useLocation } from 'react-router'
 import { VscGear, VscBell, VscAccount, VscMenu, VscClose } from "react-icons/vsc";
 import ThemeToggle from '../../../features/theme/components/ThemeToggle/ThemeToggle';
@@ -8,23 +8,23 @@ import { logout } from "../../../features/loginRegister/redux/validationReducer"
 import { toast } from '@pheralb/toast';
 import { useNavigate } from 'react-router';
 
-const Header = () => {
+const Header = React.memo(() => {
     const [isOpenConfig, setOpenConfig] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation().pathname
     
-    const handlerLogout = () => {
+    const handlerLogout = useCallback(() => {
         toast.info({
             text:"Cerrando sesión..."
         })
         dispatch(logout())
-    }
+    }, [dispatch])
     return (
         <header>
             <div className='logo' onClick={()=> navigate('/')} >
-                <h1>Fin<span>Track</span></h1>
+                <div className='logo-text'>Fin<span>Track</span></div>
             </div>
             <nav className={`menu ${isMobileMenuOpen ? 'mobileOpen' : ''}`}>
                 <ul>
@@ -97,6 +97,6 @@ const Header = () => {
             </div>
         </header>
     )
-}
+})
 
 export default Header

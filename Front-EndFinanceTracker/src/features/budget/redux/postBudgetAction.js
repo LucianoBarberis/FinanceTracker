@@ -1,22 +1,15 @@
-import { createAsyncThunk } from "@reduxjs/toolkit"; 
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { apiFetch } from "../../../utils/apiFetch";
 
 export const postBudget = createAsyncThunk("postBudget", async (data, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const token = state.auth.token;
-
     try {
-        // Construir el body siguiendo exactamente el template del backend
         const body = {
             amount: Number(data.amount),
             categoryId: Number(data.categoryId)
         };
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/Budget`, {
+        const response = await apiFetch(`${import.meta.env.VITE_API_URL}/Budget`, {
             method: "POST",
-            headers: {
-                'Content-Type': "application/json",
-                'Authorization': `Bearer ${token}`
-            },
             body: JSON.stringify(body)
         });
 
@@ -28,7 +21,7 @@ export const postBudget = createAsyncThunk("postBudget", async (data, thunkAPI) 
         
         return await response.json();
     } catch (error) {
-        console.error("Error en postTransaction:", error);
+        console.error("Error en postBudget:", error);
         return thunkAPI.rejectWithValue(error.message);
     }
 });

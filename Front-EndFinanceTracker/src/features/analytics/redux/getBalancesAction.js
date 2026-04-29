@@ -1,15 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { apiFetch } from "../../../utils/apiFetch";
 
 export const getBalances = createAsyncThunk("getBalances", async (_, thunkAPI) => {
     const state = thunkAPI.getState();
-    const token = state.auth.token;
 
     try{
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/balance/${state.balance.dateTime}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
+        const response = await apiFetch(`${import.meta.env.VITE_API_URL}/balance/${state.balance.dateTime}`, {
+            method: "GET"
         })
 
         if (!response.ok) {
@@ -25,14 +22,10 @@ export const getBalances = createAsyncThunk("getBalances", async (_, thunkAPI) =
 
 export const getIncomes = createAsyncThunk("getIncomes", async (_, thunkAPI) => {
     const state = thunkAPI.getState();
-    const token = state.auth.token;
 
     try{
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/balance/incomes/${state.balance.dateTime}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
+        const response = await apiFetch(`${import.meta.env.VITE_API_URL}/balance/incomes/${state.balance.dateTime}`, {
+            method: "GET"
         })
 
         if (!response.ok) {
@@ -48,14 +41,10 @@ export const getIncomes = createAsyncThunk("getIncomes", async (_, thunkAPI) => 
 
 export const getEgress = createAsyncThunk("getEgress", async (_, thunkAPI) => {
     const state = thunkAPI.getState();
-    const token = state.auth.token;
 
     try{
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/balance/egress/${state.balance.dateTime}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
+        const response = await apiFetch(`${import.meta.env.VITE_API_URL}/balance/egress/${state.balance.dateTime}`, {
+            method: "GET"
         })
 
         if (!response.ok) {

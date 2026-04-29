@@ -20,6 +20,9 @@ namespace Back_EndFinanceTracker.Models
         [Required]
         public string HashedPassword { get; set; } = string.Empty;
 
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiry { get; set; }
+
         public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
         public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
         public virtual ICollection<Budget> Budgets { get; set; } = new List<Budget>();

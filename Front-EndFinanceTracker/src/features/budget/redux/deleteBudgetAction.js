@@ -1,15 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { apiFetch } from "../../../utils/apiFetch";
 
 export const deleteBudget = createAsyncThunk("deleteBudget", async (categoryId, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const token = state.auth.token;
-
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/Budget/${categoryId}`, {
-            method: "DELETE",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
+        const response = await apiFetch(`${import.meta.env.VITE_API_URL}/Budget/${categoryId}`, {
+            method: "DELETE"
         });
 
         if (!response.ok) {

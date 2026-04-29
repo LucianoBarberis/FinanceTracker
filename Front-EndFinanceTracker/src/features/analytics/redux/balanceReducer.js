@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { getBalances, getEgress, getIncomes } from "./getBalancesAction";
 
 const initialState = {
@@ -54,5 +54,16 @@ const formatToLocalISO = (date) => {
     const localISOTime = (new Date(date - offset)).toISOString().slice(0, 19);
     return localISOTime;
 };
+
+export const selectBalance = (state) => state.balance.balance;
+export const selectIncomes = (state) => state.balance.incomes;
+export const selectEgress = (state) => state.balance.egress;
+export const selectBalanceDateTime = (state) => state.balance.dateTime;
+export const selectBalanceActiveFilter = (state) => state.balance.activeFilter;
+
+export const selectBalanceSummary = createSelector(
+    [selectBalance, selectIncomes, selectEgress],
+    (balance, incomes, egress) => ({ balance, incomes, egress })
+);
 
 export const { thisMonth, lastMonth, thisYear, lastYear } = balanceSlice.actions

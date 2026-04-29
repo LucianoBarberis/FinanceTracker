@@ -1,15 +1,16 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { IconRender } from '../../../../components/ui/IconRender/iconRender';
 import './SpendingChart.css';
 import { useSelector } from 'react-redux'
+import { selectCatEgress } from '../../../categories/redux/categoriesReducer'
 
-const SpendingChart = () => {
-    const rawData = useSelector((s) => s.categories.catEgress)
+const SpendingChart = React.memo(() => {
+    const rawData = useSelector(selectCatEgress)
     const data = useMemo(()=> {
         return [...rawData].sort((a, b)=> b.total - a.total)
     }, [rawData])
-    const COLORS = data.map(d => {return d.color})
+    const COLORS = useMemo(() => data.map(d => d.color), [data])
     const getContrastColor = (hexColor) => {
         if (!hexColor) return '#FFFFFF';
         const hex = hexColor.replace('#', '');
@@ -20,7 +21,7 @@ const SpendingChart = () => {
         return yiq >= 128 ? '#1f1a1a' : '#fdfdf4';
     };
 
-    const total = data.map((ele) => ele.total).reduce((acumulador, valorActual) => acumulador + valorActual, 0)
+    const total = useMemo(() => data.map((ele) => ele.total).reduce((acumulador, valorActual) => acumulador + valorActual, 0), [data])
     const isEmpty = total > 0 ? false : true
     if (isEmpty) {
         return(
@@ -86,6 +87,6 @@ const SpendingChart = () => {
             </div>
         </div>
     );
-};
+})
 
 export default SpendingChart;

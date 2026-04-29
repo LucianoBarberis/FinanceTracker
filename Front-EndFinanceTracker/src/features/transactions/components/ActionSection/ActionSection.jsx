@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import './ActionSection.css'
 import ActionCard from '../ActionCard/ActionCard'
 import Modal from '../../../../components/ui/Modal/Modal'
@@ -10,9 +10,9 @@ import { useForm } from '../../../../hooks'
 import { useDispatch, useSelector } from 'react-redux'
 import { postTransaction } from '../../redux/postTransactionAction'
 import { postCategories } from '../../../categories/redux/postCategoriesAction.js'
-import { getBalances, getEgress, getIncomes } from '../../../analytics/redux/getBalancesAction'
+import { refreshDashboardData } from '../../../analytics/redux/refreshDashboardData'
 import { getCategories } from '../../../categories/redux/getCategoriesAction'
-import { getBudgets } from '../../../budget/redux/getBudgetsAction.js';
+import { selectCatIncomes, selectCatEgress } from '../../../categories/redux/categoriesReducer'
 import { toast } from '@pheralb/toast'
 import { TfiStatsUp, TfiStatsDown } from "react-icons/tfi";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -27,14 +27,11 @@ const ActionSection = () => {
     const [isOpenNewCat, setOpenNewCat] = useState(false)
     const [showColorPicker, setShowColorPicker] = useState(false)
     const [showIconPicker, setIconPicker] = useState(false)
-    const [isDark, setIsDark] = useState(false)
-    const optIncomes = useSelector((s) => s.categories.catIncomes)
-    const optEgress = useSelector((s) => s.categories.catEgress)
+    const optIncomes = useSelector(selectCatIncomes)
+    const optEgress = useSelector(selectCatEgress)
     const dispatch = useDispatch()
-
-    useEffect(() => {
-        setIsDark(theme === 'dark')
-    }, [theme])
+    
+    const isDark = theme === 'dark'
     
     const colors = {
         income: {
@@ -74,7 +71,7 @@ const ActionSection = () => {
         type: -1
     }, categorySchema)
 
-    const handlerSubmitNewCat = async (e) => {
+    const handlerSubmitNewCat = useCallback(async (e) => {
         e.preventDefault()
         if(!addCategoryForm.validar()) return toast.error({
             text: "Error al validar los datos",
@@ -86,54 +83,47 @@ const ActionSection = () => {
             text: "Categoria añadida!"
         })
         setOpenNewCat(false)
-    }
+    }, [dispatch, addCategoryForm])
 
+    const refreshData = useCallback(() => {
+        dispatch(refreshDashboardData())
+    }, [dispatch])
 
-    const handleSubmitIncome = async (e) => {
+    const handleSubmitIncome = useCallback(async (e) => {
         e.preventDefault();
         if(!incomeForm.validar()) return toast.error({
             text: "Error al validar los datos",
         });
         setIsOpenIncome(false)
         await dispatch(postTransaction(incomeForm.valores))
-        dispatch(getBalances())
-        dispatch(getIncomes())
-        dispatch(getCategories())
-        dispatch(getEgress())
+        refreshData()
         incomeForm.resetForm()
         toast.success({
             text: "Transacción creada correctamente!",
         })
-    };
+    }, [dispatch, incomeForm, refreshData]);
 
-    const handleSubmitEgress = async (e) => {
+    const handleSubmitEgress = useCallback(async (e) => {
         e.preventDefault();
         if(!egressForm.validar()) return toast.error({
             text: "Error al validar los datos",
         });
         setIsOpenEgress(false)
         await dispatch(postTransaction(egressForm.valores))
-        dispatch(getBalances())
-        dispatch(getIncomes())
+        refreshData()
         dispatch(getCategories())
-        dispatch(getEgress())
-        dispatch(getBudgets())
         egressForm.resetForm()
         toast.success({
             text: "Transacción creada!",
         })
-        
-    };
+    }, [dispatch, egressForm, refreshData]);
 
     useEffect(() => {
         egressForm.resetForm()
         incomeForm.resetForm()
         addCategoryForm.resetForm()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpenAddEgress, isOpenAddIncome, isOpenNewCat])
-
-    useEffect(() => {
-        dispatch(getCategories())
-    }, [])
 
     return (
         <>

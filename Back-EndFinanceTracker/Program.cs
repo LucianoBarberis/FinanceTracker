@@ -18,15 +18,24 @@ using System.Threading.RateLimiting;
 // Enable legacy timestamp behavior for Npgsql to avoid DateTime UTC issues during migration
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+// Load .env file if it exists
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de URLs para escucha en LAN
-builder.WebHost.UseUrls("http://0.0.0.0:7277");
+builder.Configuration.AddEnvironmentVariables();
 
 // Configuraciones de JWT
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var secretKey = jwtSettings.GetValue<string>("Key") ?? throw new InvalidOperationException("JWT Key is missing");
+var secretKey = jwtSettings.GetValue<string>("Key");
+if (string.IsNullOrEmpty(secretKey))
+{
+    var jwtKeyEnv = Environment.GetEnvironmentVariable("JWT_KEY");
+    if (string.IsNullOrEmpty(jwtKeyEnv))
+        throw new InvalidOperationException("JWT Key is missing");
+    secretKey = jwtKeyEnv;
+}
 
 // Servicios
 builder.Services.AddAuthentication(options =>
@@ -39,8 +48,8 @@ builder.Services.AddAuthentication(options =>
         {
             ValidateIssuer = true,
             ValidateAudience = true,
-            ValidateLifetime = true, // Rechaza tokens expirados
-            ValidateIssuerSigningKey = true, // Verifica que la firma coincida con nuestra llave secreta
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
             ValidIssuer = jwtSettings.GetValue<string>("Issuer"),
             ValidAudience = jwtSettings.GetValue<string>("Audience"),
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
@@ -49,17 +58,21 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("useCors", policy =>
+    options.AddDefaultPolicy(policy =>
     {
         policy.WithOrigins(
-            "https://yourfintracker.vercel.app",
-            "http://localhost:3000",
-            "http://localhost:5173"
-        )
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .SetPreflightMaxAge(TimeSpan.FromHours(1));
+                "https://yourfintracker.vercel.app",
+                "http://localhost:5173")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithExposedHeaders("X-Total-Count", "X-Page-Size", "X-Current-Page");
     });
+});
+
+// Security Headers
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.AddServerHeader = false;
 });
 
 // Rate Limiter Configuration
@@ -104,6 +117,16 @@ builder.Services.AddScoped<IValidator<BudgetAddDTO>, BudgetAddValidator>();
 
 // Entity Framework
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString))
+{
+    var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+    var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+    var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+    var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+    if (string.IsNullOrEmpty(dbHost) || string.IsNullOrEmpty(dbName))
+        throw new InvalidOperationException("Database connection string is missing");
+    connectionString = $"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPassword};sslmode=require";
+}
 builder.Services.AddDbContext<FinanceContext>(options =>
 {
     options.UseNpgsql(connectionString);
@@ -121,13 +144,27 @@ builder.Services.AddScoped<IRepository<Budget>, BudgetRepository>();
 
 var app = builder.Build();
 
-// MOVER UseCors AL PRINCIPIO
-app.UseCors("useCors");
+// Usar la política de CORS por defecto
+app.UseCors();
+
+// Security Headers Middleware
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Append("X-Frame-Options", "DENY");
+    context.Response.Headers.Append("X-XSS-Protection", "0");
+    context.Response.Headers.Append("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+    context.Response.Headers.Append("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    await next();
+});
+
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -13,9 +13,9 @@ const NewBudgetModal = ({isOpen, onClose, setOpen}) => {
     const optEgress = useSelector((s) => s.categories.catEgress)
     const budgets = useSelector((s) => s.budget.budgets)
 
-    const opciones = optEgress.filter(cat => 
-        !budgets.some(budget => budget.categoryId === cat.id)
-    )
+    const opciones = optEgress?.filter(cat => 
+        !budgets?.some(budget => budget.categoryId === cat.id)
+    ) || []
 
     const budgetForm = useForm({
         amount: "",
@@ -38,6 +38,10 @@ const NewBudgetModal = ({isOpen, onClose, setOpen}) => {
             setOpen(false)
         }
     }
+
+    useEffect(()=> {
+
+    },[])
 
     useEffect(()=>{
         budgetForm.resetForm()

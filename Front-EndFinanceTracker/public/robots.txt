@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block auth pages from indexing
+Disallow: /login
+Disallow: /register
+Disallow: /api/
+
+Sitemap: https://fintrack.app/sitemap.xml

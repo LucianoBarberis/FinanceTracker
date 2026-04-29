@@ -1,22 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { apiFetch } from "../../../utils/apiFetch";
 
 export const deleteTransaction = createAsyncThunk("deleteTransaction", async (id, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const token = state.auth.token;
-
     try{
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/Transaction/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
+        const response = await apiFetch(`${import.meta.env.VITE_API_URL}/Transaction/${id}`, {
+            method: "DELETE"
         })
 
         if (!response.ok) {
             throw new Error(`Error HTTP: ${response.status}`);
         }
         
-        // En DELETE, a veces el backend no devuelve contenido (204 No Content)
         if (response.status === 204) {
             return id;
         }

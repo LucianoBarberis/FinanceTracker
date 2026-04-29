@@ -1,28 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import InfoCard from '../InfoCard/InfoCard'
 import './InfoCards.css'
-import { useDispatch, useSelector } from 'react-redux'
-import { getBalances, getEgress, getIncomes } from '../../redux/getBalancesAction'
+import { useSelector } from 'react-redux'
+import { selectBalanceSummary } from '../../redux/balanceReducer'
 
-const InfoCards = () => {
-    const Balance = useSelector((s) => s.balance.balance)
-    const Incomes = useSelector((s) => s.balance.incomes)
-    const Egress  = useSelector((s) => s.balance.egress)
+const InfoCards = React.memo(() => {
+    const { balance, incomes, egress } = useSelector(selectBalanceSummary)
 
-    const dispatch = useDispatch()
+    const formattedBalance = useMemo(() => balance.toLocaleString("es-ES"), [balance])
+    const formattedIncomes = useMemo(() => incomes.toLocaleString("es-ES"), [incomes])
+    const formattedEgress = useMemo(() => egress.toLocaleString("es-ES"), [egress])
 
-    useEffect(()=>{
-        dispatch(getBalances())
-        dispatch(getIncomes())
-        dispatch(getEgress())
-    }, [])
     return (
         <section className='InfoCardsContainer'>
-            <InfoCard title={"Balance"} data={Balance.toLocaleString("es-ES")} />
-            <InfoCard title={"Ingresos"} data={Incomes.toLocaleString("es-ES")} />
-            <InfoCard title={"Egresos"} data={Egress.toLocaleString("es-ES")} />
+            <InfoCard title={"Balance"} data={formattedBalance} />
+            <InfoCard title={"Ingresos"} data={formattedIncomes} />
+            <InfoCard title={"Egresos"} data={formattedEgress} />
         </section>
     )
-}
+})
 
 export default InfoCards

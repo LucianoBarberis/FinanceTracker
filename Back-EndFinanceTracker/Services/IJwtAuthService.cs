@@ -3,5 +3,6 @@
     public interface IJwtAuthService
     {
         public string generateUserToken(string userName, int userId);
+        public string generateRefreshToken();
     }
 }

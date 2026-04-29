@@ -5,7 +5,7 @@ import RegisterForm from '../../features/loginRegister/components/RegisterForm/R
 import { Link } from 'react-router'
 
 const Register = () => {
-    const { loading, error } = useSelector(state => state.auth)
+    const { loading } = useSelector(state => state.auth)
     return (
         <>
             <div className='loginContainer'>
@@ -23,7 +23,7 @@ const Register = () => {
                     </div>
                     <div className='tableBorder'></div>
                     <div className='loginBody'>
-                        <img className='imgLogin' src="./svg/register.svg" alt="" />
+                        <img className='imgLogin' src="./svg/register.svg" alt="Ilustración de registro en FinTrack" />
                         <RegisterForm />
                     </div>
                     <div className='loginFooter'>

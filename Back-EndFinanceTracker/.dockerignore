@@ -6,3 +6,9 @@ publish/
 .github/
 .vscode/
 *.user
+*.suo
+*.csproj.Backup.tmp
+*.slnx
+appsettings.json
+*.json
+!**/package.json

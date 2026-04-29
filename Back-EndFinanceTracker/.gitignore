@@ -1,0 +1,16 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.csproj.Backup.tmp
+*.slnx
+appsettings.json
+.env
+!appsettings.template.json
+publish/
+
+# IDE
+.vs/
+.vscode/
+.idea/

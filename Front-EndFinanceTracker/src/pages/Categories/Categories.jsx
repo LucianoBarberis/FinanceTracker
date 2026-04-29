@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { LuTriangleAlert } from "react-icons/lu";
@@ -18,7 +18,9 @@ import { categorySchema } from '../../features/categories/validation/categorySch
 import { getCategories } from '../../features/categories/redux/getCategoriesAction';
 import { putCategories } from '../../features/categories/redux/putCategoriesAction';
 import { deleteCategories } from '../../features/categories/redux/deleteCategoriesAction';
-import { getTransactions } from '../../features/transactions/redux/getTransactionAction';
+import { selectTransactions, selectTransactionsLoading } from '../../features/transactions/redux/transactionReducer';
+import { selectCatIncomes, selectCatEgress, selectCategoriesLoading } from '../../features/categories/redux/categoriesReducer';
+import { selectIsAuthenticated } from '../../features/loginRegister/redux/validationReducer';
 
 import './Categories.css';
 import { toast } from '@pheralb/toast';
@@ -26,11 +28,14 @@ import { toast } from '@pheralb/toast';
 const Categories = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const isAuth = useSelector((state) => state.auth.isAuthenticated);
+    const isAuth = useSelector(selectIsAuthenticated);
     useTheme()
     
-    const { catIncomes, catEgress, loading: catLoading } = useSelector(state => state.categories);
-    const { transacciones, loading: transLoading } = useSelector(state => state.transaction);
+    const catIncomes = useSelector(selectCatIncomes);
+    const catEgress = useSelector(selectCatEgress);
+    const catLoading = useSelector(selectCategoriesLoading);
+    const transacciones = useSelector(selectTransactions);
+    const transLoading = useSelector(selectTransactionsLoading);
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -52,12 +57,7 @@ const Categories = () => {
             return;
         }
 
-        if (catIncomes.length === 0 && catEgress.length === 0) {
-            dispatch(getCategories());
-        }
-        if (transacciones.length === 0) {
-            dispatch(getTransactions());
-        }
+        dispatch(getCategories());
     }, [isAuth, dispatch, navigate]);
 
     const groupedData = useMemo(() => {
@@ -72,7 +72,7 @@ const Categories = () => {
         };
     }, [catIncomes, catEgress, transacciones]);
 
-    const handleEditClick = (category) => {
+    const handleEditClick = useCallback((category) => {
         setSelectedCategory(category);
         categoryForm.setValues({
             name: category.name,
@@ -81,14 +81,14 @@ const Categories = () => {
             type: category.type
         });
         setIsEditModalOpen(true);
-    };
+    }, [categoryForm]);
 
-    const handleDeleteClick = (category) => {
+    const handleDeleteClick = useCallback((category) => {
         setSelectedCategory(category);
         setIsDeleteModalOpen(true);
-    };
+    }, []);
 
-    const handleUpdate = async (e) => {
+    const handleUpdate = useCallback(async (e) => {
         e.preventDefault();
 
         if (!categoryForm.validar()) 
@@ -110,14 +110,14 @@ const Categories = () => {
                 text: "Categoria editada correctamente!"
             })
         }
-    };
+    }, [dispatch, selectedCategory, categoryForm]);
 
-    const handleDelete = async () => {
+    const handleDelete = useCallback(async () => {
         const result = await dispatch(deleteCategories(selectedCategory.id));
         if (!result.error) {
             setIsDeleteModalOpen(false);
         }
-    };
+    }, [dispatch, selectedCategory]);
 
     if (catLoading || transLoading) return(
         <div className='loadingContainer'>

@@ -51,14 +51,14 @@ header {
     color: var(--active-font);
 }
 
-.logo h1 {
+.logo .logo-text {
     color: var(--brand-color);
     font-size: 30px;
     font-weight: 400;
     letter-spacing: -1px;
 }
 
-.logo h1 span {
+.logo .logo-text span {
     font-weight: 600;
     color: var(--brand--500);
 }

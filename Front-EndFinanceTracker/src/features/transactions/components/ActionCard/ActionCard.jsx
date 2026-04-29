@@ -1,6 +1,7 @@
+import React from 'react'
 import './ActionCard.css'
 
-const ActionCard = ({ description, title, imgSrc, bgColor, onClick }) => {
+const ActionCard = React.memo(({ description, title, imgSrc, bgColor, onClick }) => {
     return (
         <div className='ActionCard' onClick={onClick}>
             <div style={{backgroundColor: bgColor}} className='iconActionCard'>{imgSrc}</div>
@@ -10,6 +11,6 @@ const ActionCard = ({ description, title, imgSrc, bgColor, onClick }) => {
             </div>
         </div>
     )
-}
+})
 
 export default ActionCard

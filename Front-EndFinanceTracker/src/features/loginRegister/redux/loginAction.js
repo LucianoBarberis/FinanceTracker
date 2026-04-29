@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import Cookies from "js-cookie";
 
 export const loginAction = createAsyncThunk("authLogin", async(loginData, { rejectWithValue }) => {
     try {
@@ -15,9 +14,6 @@ export const loginAction = createAsyncThunk("authLogin", async(loginData, { reje
         if(response.status == 500) throw new Error("El servidor fallo...")
 
         const data = await response.json()
-        
-        Cookies.set("token", data.jwt, {expires: 1})
-        Cookies.set("userName", data.userName, {expires: 1})
         return data
     }catch(error) {
         return rejectWithValue(error.message)

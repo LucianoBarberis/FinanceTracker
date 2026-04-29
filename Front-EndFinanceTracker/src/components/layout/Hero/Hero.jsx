@@ -1,21 +1,19 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import './Hero.css'
-import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { thisMonth, lastMonth, thisYear, lastYear } from '../../../features/analytics/redux/balanceReducer'
-import { getBalances, getEgress, getIncomes } from '../../../features/analytics/redux/getBalancesAction'
+import { thisMonth, lastMonth, thisYear, lastYear, selectBalanceActiveFilter } from '../../../features/analytics/redux/balanceReducer'
+import { refreshDashboardData } from '../../../features/analytics/redux/refreshDashboardData'
+import { selectAuthUser } from '../../../features/loginRegister/redux/validationReducer'
 
 const Hero = () => {
     const dispatch = useDispatch()
-    const activeFilter = useSelector(state => state.balance.activeFilter)
-    const userData = Cookies.get("userName")
+    const activeFilter = useSelector(selectBalanceActiveFilter)
+    const userData = useSelector(selectAuthUser)
 
-    const handleFilterChange = (filterAction) => {
+    const handleFilterChange = useCallback((filterAction) => {
         dispatch(filterAction())
-        dispatch(getBalances())
-        dispatch(getIncomes())
-        dispatch(getEgress())
-    }
+        dispatch(refreshDashboardData())
+    }, [dispatch])
 
     return (
         <section className='hero'>

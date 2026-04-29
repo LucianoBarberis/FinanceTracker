@@ -1,9 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { apiFetch } from "../../../utils/apiFetch";
 
 export const putTransaction = createAsyncThunk("putTransactions", async ({ id, data }, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const token = state.auth.token;
-
     try {
         if (data.dateTime && !data.dateTime.includes('T')) {
             data.dateTime = data.dateTime + 'T00:00:00Z';
@@ -16,12 +14,8 @@ export const putTransaction = createAsyncThunk("putTransactions", async ({ id, d
             categoryId: Number(data.categoryId)
         };
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/Transaction/${id}`, {
+        const response = await apiFetch(`${import.meta.env.VITE_API_URL}/Transaction/${id}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
             body: JSON.stringify(body)
         })
 

@@ -5,8 +5,9 @@ import './Transactions.css';
 import TransactionsCard from '../../features/transactions/components/TransactionsCard/TransactionsCard';
 import Header from '../../components/layout/Header/Header';
 import { useTheme } from '../../features/theme/hooks/useTheme';
-import { getTransactions } from '../../features/transactions/redux/getTransactionAction';
-import { getCategories } from '../../features/categories/redux/getCategoriesAction';
+import { selectIsAuthenticated } from '../../features/loginRegister/redux/validationReducer';
+import { selectTransactions } from '../../features/transactions/redux/transactionReducer';
+import { selectCatIncomes, selectCatEgress } from '../../features/categories/redux/categoriesReducer';
 import InfoCards from '../../features/analytics/components/InfoCards/InfoCards';
 import { lastYear } from '../../features/analytics/redux/balanceReducer';
 
@@ -14,9 +15,10 @@ const Transactions = () => {
     useTheme();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const isAuth = useSelector((state) => state.auth.isAuthenticated);
-    const { transacciones } = useSelector((state) => state.transaction);
-    const { catIncomes, catEgress } = useSelector((state) => state.categories);
+    const isAuth = useSelector(selectIsAuthenticated);
+    const transacciones = useSelector(selectTransactions);
+    const catIncomes = useSelector(selectCatIncomes);
+    const catEgress = useSelector(selectCatEgress);
     
     const [searchTerm, setSearchTerm] = useState('');
     const [typeFilter, setTypeFilter] = useState('all');
@@ -29,8 +31,6 @@ const Transactions = () => {
             return;
         }
         dispatch(lastYear())
-        dispatch(getTransactions());
-        dispatch(getCategories());
     }, [isAuth, dispatch, navigate]);
 
     const filteredTransactions = useMemo(() => {

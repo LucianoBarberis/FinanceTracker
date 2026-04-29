@@ -137,6 +137,12 @@ namespace Back_EndFinanceTracker.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RefreshTokenExpiry")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(40)

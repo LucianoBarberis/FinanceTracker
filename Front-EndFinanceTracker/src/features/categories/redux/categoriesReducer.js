@@ -1,14 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { getCategories } from "./getCategoriesAction";
 import { postCategories } from "./postCategoriesAction";
 import { putCategories } from "./putCategoriesAction";
 import { deleteCategories } from "./deleteCategoriesAction";
 
 const initialState = {
-    catIncomes: [],
-    catEgress: [],
-    loading: true,
-    catDictionary: {}
+    byId: {},
+    allIds: [],
+    loading: false,
 }
 
 export const categoriesSlice = createSlice({
@@ -19,25 +18,24 @@ export const categoriesSlice = createSlice({
         builder.addCase(postCategories.pending, (state) => {
             state.loading = true
         })
-        builder.addCase(postCategories.fulfilled, (state) => {
+        builder.addCase(postCategories.fulfilled, (state, action) => {
+            const category = action.payload;
+            if (!state.byId[category.id]) {
+                state.byId[category.id] = category;
+                state.allIds.push(category.id);
+            }
             state.loading = false
         })
         builder.addCase(getCategories.pending, (state) => {
             state.loading = true
         })
         builder.addCase(getCategories.fulfilled, (state, action) => {
-            state.catIncomes = action.payload
-                .filter(e => e.type === 0)
-                .map(e => ({ id: e.id, name: e.name, value: e.id, icon: e.icon, color: e.color, percentage: e.percentaje, total: e.total, type: e.type }));
-            
-            state.catEgress = action.payload
-                .filter(e => e.type === 1)
-                .map(e => ({ id: e.id, name: e.name, value: e.id, icon: e.icon, color: e.color, percentage: e.percentaje, total: e.total, type: e.type }));
-                
-            action.payload.forEach((e) => {
-                state.catDictionary[e.id] = e.name
-            })
-
+            state.byId = {};
+            state.allIds = [];
+            action.payload.forEach((category) => {
+                state.byId[category.id] = category;
+                state.allIds.push(category.id);
+            });
             state.loading = false;
         })
         builder.addCase(getCategories.rejected, (state) => {
@@ -48,20 +46,9 @@ export const categoriesSlice = createSlice({
         })
         builder.addCase(putCategories.fulfilled, (state, action) => {
             const { id, name, icon, color } = action.payload;
-            // Actualizar en catIncomes si existe
-            const incomeIndex = state.catIncomes.findIndex(c => c.id === id);
-            if (incomeIndex !== -1) {
-                state.catIncomes[incomeIndex] = { ...state.catIncomes[incomeIndex], name, icon, color };
+            if (state.byId[id]) {
+                state.byId[id] = { ...state.byId[id], name, icon, color };
             }
-
-            // Actualizar en catEgress si existe
-            const egressIndex = state.catEgress.findIndex(c => c.id === id);
-            if (egressIndex !== -1) {
-                state.catEgress[egressIndex] = { ...state.catEgress[egressIndex], name, icon, color };
-            }
-
-            // Actualizar diccionario
-            state.catDictionary[id] = name;
             state.loading = false;
         })
         builder.addCase(putCategories.rejected, (state) => {
@@ -72,9 +59,8 @@ export const categoriesSlice = createSlice({
         })
         builder.addCase(deleteCategories.fulfilled, (state, action) => {
             const id = action.payload;
-            state.catIncomes = state.catIncomes.filter(c => c.id !== id);
-            state.catEgress = state.catEgress.filter(c => c.id !== id);
-            delete state.catDictionary[id];
+            delete state.byId[id];
+            state.allIds = state.allIds.filter(catId => catId !== id);
             state.loading = false;
         })
         builder.addCase(deleteCategories.rejected, (state) => {
@@ -82,3 +68,41 @@ export const categoriesSlice = createSlice({
         })
     }
 })
+
+export const selectCategoriesLoading = (state) => state.categories.loading;
+
+export const selectCatIncomes = createSelector(
+    [(state) => state.categories.byId, (state) => state.categories.allIds],
+    (byId, allIds) => allIds
+        .filter(id => byId[id]?.type === 0)
+        .map(id => {
+            const c = byId[id];
+            return { id: c.id, name: c.name, value: c.id, icon: c.icon, color: c.color, percentage: c.percentaje, total: c.total, type: c.type };
+        })
+);
+
+export const selectCatEgress = createSelector(
+    [(state) => state.categories.byId, (state) => state.categories.allIds],
+    (byId, allIds) => allIds
+        .filter(id => byId[id]?.type === 1)
+        .map(id => {
+            const c = byId[id];
+            return { id: c.id, name: c.name, value: c.id, icon: c.icon, color: c.color, percentage: c.percentaje, total: c.total, type: c.type };
+        })
+);
+
+export const selectCatDictionary = createSelector(
+    [(state) => state.categories.byId, (state) => state.categories.allIds],
+    (byId, allIds) => {
+        const dict = {};
+        allIds.forEach(id => {
+            dict[id] = byId[id]?.name;
+        });
+        return dict;
+    }
+);
+
+export const selectCategoryById = (categoryId) => createSelector(
+    [(state) => state.categories.byId],
+    (byId) => byId[categoryId] || null
+);

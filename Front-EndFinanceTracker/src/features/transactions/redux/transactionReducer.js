@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { getTransactions } from "./getTransactionAction";
 import { postTransaction } from "./postTransactionAction";
 import { deleteTransaction } from "./deleteTransactionAction";
@@ -7,7 +7,8 @@ import { deleteCategories } from "../../categories/redux/deleteCategoriesAction"
 import { toast } from "@pheralb/toast";
 
 const initialState = {
-    transacciones: [],
+    byId: {},
+    allIds: [],
     loading: false,
     alertMessage: ""
 }
@@ -18,14 +19,20 @@ export const transactionSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder.addCase(getTransactions.fulfilled, (state, action) => {
-            state.transacciones = action.payload
+            state.byId = {};
+            state.allIds = [];
+            action.payload.forEach(t => {
+                state.byId[t.id] = t;
+                state.allIds.push(t.id);
+            });
             state.loading = false
         })
-        builder.addCase(getTransactions.pending, (state, action) => {
+        builder.addCase(getTransactions.pending, (state) => {
             state.loading = true
         })
-        builder.addCase(getTransactions.rejected, (state, action) => {
-            state.transacciones = []
+        builder.addCase(getTransactions.rejected, (state) => {
+            state.byId = {};
+            state.allIds = [];
             state.loading = false
         })
         builder.addCase(postTransaction.pending, (state) => {
@@ -39,7 +46,11 @@ export const transactionSlice = createSlice({
                     text: action.payload.alertMessage
                 })
             }
-            state.transacciones.unshift(action.payload.transaction)
+            const newTrans = action.payload.transaction;
+            state.byId[newTrans.id] = newTrans;
+            if (!state.allIds.includes(newTrans.id)) {
+                state.allIds.unshift(newTrans.id);
+            }
             state.alertMessage = action.payload.alertMessage
             state.loading = false
         })
@@ -49,29 +60,51 @@ export const transactionSlice = createSlice({
         })
         builder.addCase(deleteTransaction.fulfilled, (state, action) => {
             state.loading = false
-            state.transacciones = state.transacciones.filter(trans => trans.id !== action.payload.id)
+            const id = action.payload.id;
+            delete state.byId[id];
+            state.allIds = state.allIds.filter(tid => tid !== id);
         })
-            builder.addCase(putTransaction.pending, (state, action) => {
+        builder.addCase(putTransaction.pending, (state) => {
             state.loading = true
         })
         builder.addCase(putTransaction.fulfilled, (state, action) => {
             state.loading = false
-            const transToUpdate = state.transacciones.find(trans => trans.id === action.payload.id)
-            transToUpdate.amount = action.payload.amount
-            transToUpdate.categoryId = action.payload.categoryId
-            transToUpdate.description = action.payload.description
-            transToUpdate.type = action.payload.type
-            transToUpdate.dateTime = action.payload.dateTime
+            const existing = state.byId[action.payload.id];
+            if (existing) {
+                state.byId[action.payload.id] = {
+                    ...existing,
+                    amount: action.payload.amount,
+                    categoryId: action.payload.categoryId,
+                    description: action.payload.description,
+                    type: action.payload.type,
+                    dateTime: action.payload.dateTime
+                };
+            }
         })
-        builder.addCase(putTransaction.rejected, (state, action) => {
+        builder.addCase(putTransaction.rejected, (state) => {
             state.loading = false
         })
-        // Al eliminar una categoría, eliminamos sus transacciones localmente
         builder.addCase(deleteCategories.fulfilled, (state, action) => {
             const categoryId = action.payload;
-            state.transacciones = state.transacciones.filter(t => t.categoryId !== categoryId);
+            state.allIds = state.allIds.filter(id => {
+                if (state.byId[id]?.categoryId === categoryId) {
+                    delete state.byId[id];
+                    return false;
+                }
+                return true;
+            });
         })
     }
 })
 
-export default transactionSlice.reducer
+export const selectTransactionsLoading = (state) => state.transaction.loading;
+
+export const selectTransactions = createSelector(
+    [(state) => state.transaction.byId, (state) => state.transaction.allIds],
+    (byId, allIds) => allIds.map(id => byId[id]).filter(Boolean)
+);
+
+export const selectTransactionById = (id) => createSelector(
+    [(state) => state.transaction.byId],
+    (byId) => byId[id] || null
+);

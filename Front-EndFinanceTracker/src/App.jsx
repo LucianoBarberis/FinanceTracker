@@ -5,14 +5,24 @@ import ActionSection from './features/transactions/components/ActionSection/Acti
 import AnalitycSection from './features/analytics/components/AnalitycSection/AnalitycSection'
 import Budget from './features/budget/components/Budget/Budget'
 import { useTheme } from './features/theme/hooks/useTheme'
+import { useDashboardData } from './hooks'
 import { useSelector } from 'react-redux'
-import Login from "./pages/Login/Login"
+import { selectIsAuthenticated } from './features/loginRegister/redux/validationReducer'
+import { Suspense, lazy } from 'react'
+import Loading from './components/ui/Loading/Loading'
+
+const Login = lazy(() => import('./pages/Login/Login'))
 
 function App() {
   useTheme();
-  const isAuth = useSelector((state) => state.auth.isAuthenticated)
+  useDashboardData();
+  const isAuth = useSelector(selectIsAuthenticated)
   if(!isAuth){
-    return <Login />
+    return (
+      <Suspense fallback={<div className="loadingContainer"><Loading /></div>}>
+        <Login />
+      </Suspense>
+    )
   }
   return (
     <>

@@ -2,7 +2,7 @@ import React from 'react'
 import './InfoCard.css'
 import { VscArrowSmallUp } from "react-icons/vsc";
 
-const InfoCard = ({ title, data }) => {
+const InfoCard = React.memo(({ title, data }) => {
     return (
         <div className='infoCard'>
             <h3>{title}</h3>
@@ -14,6 +14,6 @@ const InfoCard = ({ title, data }) => {
             </div>
         </div>
     )
-}
+})
 
 export default InfoCard

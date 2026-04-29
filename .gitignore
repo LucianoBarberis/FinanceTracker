@@ -40,5 +40,4 @@ pnpm-debug.log*
 Thumbs.db
 Back-EndFinanceTracker/publish/*
 Front-EndFinanceTracker/.gitignore
-deploy-plan.md
-GEMINI.md
+.gemini

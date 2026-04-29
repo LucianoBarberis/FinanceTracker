@@ -50,5 +50,19 @@ namespace Back_EndFinanceTracker.Controllers
             var newUser = await _userService.Register(RegisterDTO);
             return Ok(newUser);
         }
+
+        [HttpPost("refresh")]
+        public async Task<ActionResult<UserDTO>> Refresh(RefreshTokenDTO refreshTokenDTO)
+        {
+            try
+            {
+                var result = await _userService.RefreshToken(refreshTokenDTO);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return Unauthorized("Invalid refresh token");
+            }
+        }
     }
 }

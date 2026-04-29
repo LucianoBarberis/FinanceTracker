@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { LuTriangleAlert } from "react-icons/lu"
 import { getBudgets } from '../../redux/getBudgetsAction'
@@ -10,33 +10,37 @@ import Modal from '../../../../components/ui/Modal/Modal'
 import Loading from '../../../../components/ui/Loading/Loading'
 import './Budget.css'
 import { toast } from '@pheralb/toast'
+import { selectCatDictionary, selectCategoriesLoading } from '../../../categories/redux/categoriesReducer'
+import { selectBudgets, selectBudgetsLoading } from '../../redux/budgetReducer'
 
-const Budget = ({budgetToRender}) => {
+
+const Budget = React.memo(({budgetToRender}) => {
     const dispatch = useDispatch()
-    useEffect(()=>{
-        dispatch(getBudgets())
-    }, [])
-    const budgets = useSelector(state => state.budget.budgets)
-    const catDictionary = useSelector(state => state.categories.catDictionary)
-    const budgetsLoading = useSelector(state => state.budget.loading)
-    const categoriesLoading = useSelector(state => state.categories.loading)
+    const budgets = useSelector(selectBudgets)
+    const catDictionary = useSelector(selectCatDictionary)
+    const budgetsLoading = useSelector(selectBudgetsLoading)
+    const categoriesLoading = useSelector(selectCategoriesLoading)
     
     const [isOpenNewBudget, setOpenNewBudget] = useState(false)
     const [isOpenEditBudget, setOpenEditBudget] = useState(false)
     const [isOpenDeleteBudget, setOpenDeleteBudget] = useState(false)
     const [selectedBudget, setSelectedBudget] = useState(null)
 
-    const handleEdit = (budget) => {
+    useEffect(()=>{
+        dispatch(getBudgets())
+    }, [dispatch])
+
+    const handleEdit = useCallback((budget) => {
         setSelectedBudget(budget)
         setOpenEditBudget(true)
-    }
+    }, [])
 
-    const handleDeleteClick = (budget) => {
+    const handleDeleteClick = useCallback((budget) => {
         setSelectedBudget(budget)
         setOpenDeleteBudget(true)
-    }
+    }, [])
 
-    const handleDeleteConfirm = async () => {
+    const handleDeleteConfirm = useCallback(async () => {
         const result = await dispatch(deleteBudget(selectedBudget.id))
         if (!result.error) {
             toast.success({
@@ -44,8 +48,11 @@ const Budget = ({budgetToRender}) => {
             })
             setOpenDeleteBudget(false)
         }
-        dispatch(getBudgets())
-    }
+    }, [dispatch, selectedBudget])
+
+    const budgetsToDisplay = useMemo(() => {
+        return budgetToRender ? budgets.slice(0, budgetToRender) : budgets
+    }, [budgets, budgetToRender])
 
     if(budgetsLoading || categoriesLoading) {
         return (
@@ -54,8 +61,6 @@ const Budget = ({budgetToRender}) => {
                 </div>
             )
     }
-
-    const budgetsToDisplay = budgetToRender ? budgets.slice(0, budgetToRender) : budgets
 
     return (
         <section className='BudgetCardContainer'>
@@ -109,6 +114,6 @@ const Budget = ({budgetToRender}) => {
             </Modal>
         </section>
     )
-}
+})
 
 export default Budget

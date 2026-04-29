@@ -67,7 +67,7 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader()
             .WithExposedHeaders("X-Total-Count", "X-Page-Size", "X-Current-Page");
-    });
+    }));
 });
 
 // Security Headers
@@ -145,27 +145,19 @@ builder.Services.AddScoped<IRepository<Budget>, BudgetRepository>();
 
 var app = builder.Build();
 
-// MOVER UseCors AL PRINCIPIO
-app.UseCors("useCors");
+// Usar la política de CORS por defecto
+app.UseCors();
 
-/*
-if (!app.Environment.IsDevelopment())
+// Security Headers Middleware
+app.Use(async (context, next) =>
 {
-    app.UseHttpsRedirection();
-}
+    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Append("X-Frame-Options", "DENY");
+    context.Response.Headers.Append("X-XSS-Protection", "0");
+    context.Response.Headers.Append("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+    context.Response.Headers.Append("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    await next();
+});
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-}
 
-app.UseRateLimiter();
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapGet("/", () => Results.Ok(new { Message = "Finance Tracker API is running", Status = "Healthy" }));
-
-app.MapControllers();
-app.Run();

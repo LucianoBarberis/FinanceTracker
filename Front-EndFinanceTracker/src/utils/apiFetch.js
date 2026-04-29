@@ -1,7 +1,10 @@
-import { store } from "../redux/store";
-
+let storeRef = null;
 let isRefreshing = false;
 let refreshSubscribers = [];
+
+export function initApiFetch(store) {
+    storeRef = store;
+}
 
 function subscribeTokenRefresh(cb) {
     refreshSubscribers.push(cb);
@@ -13,7 +16,8 @@ function onRefreshed(token) {
 }
 
 async function refreshToken() {
-    const state = store.getState();
+    if (!storeRef) return null;
+    const state = storeRef.getState();
     const token = state.auth.token;
     const refreshTokenValue = state.auth.refreshToken;
 
@@ -29,16 +33,18 @@ async function refreshToken() {
         if (!response.ok) return null;
 
         const data = await response.json();
-        store.dispatch({ type: "auth/refresh/fulfilled", payload: data });
+        storeRef.dispatch({ type: "auth/refresh/fulfilled", payload: data });
         return data.jwt;
     } catch {
-        store.dispatch({ type: "auth/refresh/rejected" });
+        storeRef.dispatch({ type: "auth/refresh/rejected" });
         return null;
     }
 }
 
 export async function apiFetch(url, options = {}) {
-    const state = store.getState();
+    if (!storeRef) return fetch(url, options);
+
+    const state = storeRef.getState();
     const token = state.auth.token;
 
     const defaultOptions = {

@@ -7,6 +7,7 @@ import { categoriesSlice } from '../features/categories/redux/categoriesReducer'
 import themeReducer from '../features/theme/redux/themeReducer'
 import { authSlice } from '../features/loginRegister/redux/validationReducer'
 import { budgetSlice } from '../features/budget/redux/budgetReducer'
+import { initApiFetch } from '../utils/apiFetch'
 
 const persistConfig = {
     key: 'root',
@@ -36,3 +37,5 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+initApiFetch(store);

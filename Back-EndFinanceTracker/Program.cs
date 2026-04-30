@@ -163,4 +163,17 @@ app.Use(async (context, next) =>
     await next();
 });
 
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseRateLimiter();
 
+app.MapControllers();
+
+// OpenAPI + Scalar
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+}
+
+app.Run();

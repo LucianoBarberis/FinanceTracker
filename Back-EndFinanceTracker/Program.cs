@@ -23,6 +23,10 @@ DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configurar puerto para Render (variable de entorno PORT)
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 builder.Configuration.AddEnvironmentVariables();
 
 // Configuraciones de JWT
@@ -59,7 +63,6 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
-    options.AddDefaultPolicy(policy =>
     {
         policy.WithOrigins(
                 "https://yourfintracker.vercel.app",
@@ -67,7 +70,7 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader()
             .WithExposedHeaders("X-Total-Count", "X-Page-Size", "X-Current-Page");
-    }));
+    });
 });
 
 // Security Headers

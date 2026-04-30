@@ -19,8 +19,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends libgssapi-krb5-
 
 COPY --from=build /app/out .
 
-# Configurar el puerto para Render (usa la variable de entorno PORT)
-ENV ASPNETCORE_URLS=http://+:7277
-EXPOSE 7277
+# El puerto se configura dinámicamente desde Program.cs usando la variable PORT
 
 ENTRYPOINT ["dotnet", "Back-EndFinanceTracker.dll"]

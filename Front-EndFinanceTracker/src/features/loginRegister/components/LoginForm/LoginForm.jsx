@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux"
 import { loginAction } from "../../redux/loginAction"       
 import { loginSchema } from "../../validation/loginSchema"
 import { useNavigate } from "react-router"
+import { refreshDashboardData } from '../../../analytics/redux/refreshDashboardData'
 
 const LoginForm = () => {
     const navigate = useNavigate()
@@ -24,6 +25,7 @@ const LoginForm = () => {
 
         try {
             await dispatch(loginAction(loginForm.valores)).unwrap()
+            dispatch(refreshDashboardData())
             toast.success({text: "Bienvenido..."})
             navigate("/")
         } catch (error) {

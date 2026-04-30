@@ -6,9 +6,9 @@ import AnalitycSection from './features/analytics/components/AnalitycSection/Ana
 import Budget from './features/budget/components/Budget/Budget'
 import { useTheme } from './features/theme/hooks/useTheme'
 import { useDashboardData } from './hooks'
-import { useSelector } from 'react-redux'
-import { selectIsAuthenticated } from './features/loginRegister/redux/validationReducer'
-import { Suspense, lazy } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectIsAuthenticated, selectAuthRefreshToken, refreshTokenAction } from './features/loginRegister/redux/validationReducer'
+import { Suspense, lazy, useEffect } from 'react'
 import Loading from './components/ui/Loading/Loading'
 
 const Login = lazy(() => import('./pages/Login/Login'))
@@ -16,7 +16,16 @@ const Login = lazy(() => import('./pages/Login/Login'))
 function App() {
   useTheme();
   useDashboardData();
-  const isAuth = useSelector(selectIsAuthenticated)
+  const dispatch = useDispatch();
+  const isAuth = useSelector(selectIsAuthenticated);
+  const refreshToken = useSelector(selectAuthRefreshToken);
+
+  useEffect(() => {
+    if (!isAuth && refreshToken) {
+      dispatch(refreshTokenAction());
+    }
+  }, [isAuth, refreshToken, dispatch]);
+
   if(!isAuth){
     return (
       <Suspense fallback={<div className="loadingContainer"><Loading /></div>}>

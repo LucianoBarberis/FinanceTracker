@@ -87,3 +87,4 @@ export const selectAuthLoading = (state) => state.auth.loading;
 export const selectAuthError = (state) => state.auth.error;
 
 export const { logout } = authSlice.actions;
+export { refreshTokenAction };

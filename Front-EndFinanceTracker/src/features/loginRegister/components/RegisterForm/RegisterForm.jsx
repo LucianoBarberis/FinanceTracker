@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux"
 import { registerSchema } from "../../validation/registerSchema"
 import { registerAction } from "../../redux/registerAction"
 import { useNavigate } from "react-router"
+import { refreshDashboardData } from '../../../analytics/redux/refreshDashboardData'
 
 const RegisterForm = () => {
     const dispatch = useDispatch()
@@ -32,6 +33,7 @@ const RegisterForm = () => {
         });
         try {
             await dispatch(registerAction(registerForm.valores)).unwrap()
+            dispatch(refreshDashboardData())
             toast.success({text: "Usuario registrado!"})
             navigate("/")
         } catch (error) {

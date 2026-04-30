@@ -12,7 +12,7 @@ import { initApiFetch } from '../utils/apiFetch'
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['theme', 'categories']
+    whitelist: ['theme', 'categories', 'auth']
 };
 
 const rootReducer = combineReducers({

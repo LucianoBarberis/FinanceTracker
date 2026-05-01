@@ -40,6 +40,7 @@ if (string.IsNullOrEmpty(secretKey))
         throw new InvalidOperationException("JWT Key is missing");
     secretKey = jwtKeyEnv;
 }
+builder.Configuration["Jwt:Key"] = secretKey;
 
 // Servicios
 builder.Services.AddAuthentication(options =>

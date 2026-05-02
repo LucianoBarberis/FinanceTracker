@@ -42,6 +42,30 @@ if (string.IsNullOrEmpty(secretKey))
 }
 builder.Configuration["Jwt:Key"] = secretKey;
 
+// Fallback for JWT Issuer
+var jwtIssuer = jwtSettings.GetValue<string>("Issuer");
+if (string.IsNullOrEmpty(jwtIssuer))
+{
+    jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "FinTrackAPI";
+    builder.Configuration["Jwt:Issuer"] = jwtIssuer;
+}
+
+// Fallback for JWT Audience
+var jwtAudience = jwtSettings.GetValue<string>("Audience");
+if (string.IsNullOrEmpty(jwtAudience))
+{
+    jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "FinTrackWebApp";
+    builder.Configuration["Jwt:Audience"] = jwtAudience;
+}
+
+// Fallback for JWT ExpireMinutes
+var jwtExpire = jwtSettings.GetValue<string>("ExpireMinutes");
+if (string.IsNullOrEmpty(jwtExpire))
+{
+    jwtExpire = Environment.GetEnvironmentVariable("JWT_EXPIRE_MINUTES") ?? "30";
+    builder.Configuration["Jwt:ExpireMinutes"] = jwtExpire;
+}
+
 // Servicios
 builder.Services.AddAuthentication(options =>
 {

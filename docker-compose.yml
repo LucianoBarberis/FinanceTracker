@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: financetracker-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: fintracker
+      POSTGRES_PASSWORD: fintracker_dev
+      POSTGRES_DB: financetracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fintracker -d financetracker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./Back-EndFinanceTracker
+      dockerfile: Dockerfile
+    container_name: financetracker-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_NAME: financetracker
+      DB_USER: fintracker
+      DB_PASSWORD: fintracker_dev
+      DB_SSLMODE: disable
+      JWT_KEY: 8/mtyY1Tak5dF1r4znvpd1yaczsKb7hyD6fvbAYKtizLC0esk/Z4qqJ+ZL2xRax9
+      JWT_ISSUER: FinTrackAPI
+      JWT_AUDIENCE: FinTrackWebApp
+      JWT_EXPIRE_MINUTES: "30"
+      CORS_ALLOWED_ORIGINS: "http://localhost:5173"
+      PORT: "10000"
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "10000:10000"
+
+networks:
+  default:
+    name: financetracker-network
+
+volumes:
+  postgres_data:

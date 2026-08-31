@@ -28,6 +28,11 @@ dist-ssr/
 .env.development
 .env.production
 
+# Environment files (any .env in subdirectories)
+**/.env
+Back-EndFinanceTracker/.env
+Front-EndFinanceTracker/.env
+
 # Logs
 *.log
 npm-debug.log*

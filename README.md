@@ -6,7 +6,7 @@ Este es un proyecto personal desarrollado con el objetivo de practicar y mejorar
 
 ### Backend (`Back-EndFinanceTracker`)
 - **Framework:** .NET 10.0 (ASP.NET Core Web API).
-- **ORM:** Entity Framework Core (SQL Server).
+- **ORM:** Entity Framework Core (PostgreSQL / Npgsql).
 - **Validación:** FluentValidation para asegurar la integridad de los datos de entrada.
 - **Documentación:** OpenAPI con Scalar para una interfaz de pruebas interactiva.
 - **Arquitectura:** Patrón de Repositorio y Capa de Servicio para una separación de responsabilidades clara.
@@ -40,11 +40,11 @@ Este es un proyecto personal desarrollado con el objetivo de practicar y mejorar
 ### Requisitos Previos
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [Node.js](https://nodejs.org/) (v18 o superior)
-- [SQL Server](https://www.microsoft.com/sql-server)
+- [PostgreSQL](https://www.postgresql.org/) (16)
 
 ### Ejecución del Backend
 1. Navega a la carpeta `Back-EndFinanceTracker`.
-2. Configura tu cadena de conexión en `appsettings.json`.
+2. Configura las variables de entorno (base de datos y JWT) en el archivo `.env`.
 3. Ejecuta las migraciones para crear la base de datos:
    ```bash
    dotnet ef database update

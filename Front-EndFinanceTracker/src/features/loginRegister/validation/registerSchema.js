@@ -21,10 +21,9 @@ export const registerSchema = z.object({
         .string()
         .min(1, "la contraseña no puede estar vacia")
         .min(8, "La contraseña debe tener mas de 8 caracteres")
-        // Regex: 2 Mayus, 3 minus, 2 números
         .regex(
-            /^(?=.*[A-Z].*[A-Z])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,}$/,
-            "Contraseña insegura (2 mayúsculas, 3 minúsculas y 2 números)"
+            /^(?=.*[A-Z])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,}$/,
+            "Contraseña insegura (1 mayúsculas y 2 números)"
         )
         .refine((val) => !htmlRegex.test(val), "La contraseña no puede contener etiquetas HTML."),
 

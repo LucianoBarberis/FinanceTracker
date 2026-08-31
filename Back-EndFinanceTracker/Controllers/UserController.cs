@@ -5,6 +5,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Back_EndFinanceTracker.Controllers
 {
@@ -16,11 +17,21 @@ namespace Back_EndFinanceTracker.Controllers
         private readonly IUserService _userService;
         private readonly IValidator<LoginDTO> _validatorLogin;
         private readonly IValidator<RegisterDTO> _validatorRegister;
-        public UserController(IUserService userService, IValidator<LoginDTO> validatorLogin, IValidator<RegisterDTO> validatorRegister) 
+        private readonly IValidator<RefreshTokenDTO> _validatorRefresh;
+        private readonly ILogger<UserController> _logger;
+
+        public UserController(
+            IUserService userService,
+            IValidator<LoginDTO> validatorLogin,
+            IValidator<RegisterDTO> validatorRegister,
+            IValidator<RefreshTokenDTO> validatorRefresh,
+            ILogger<UserController> logger)
         {
             _userService = userService;
             _validatorLogin = validatorLogin;
             _validatorRegister = validatorRegister;
+            _validatorRefresh = validatorRefresh;
+            _logger = logger;
         }
 
         [HttpPost("login")]
@@ -34,7 +45,7 @@ namespace Back_EndFinanceTracker.Controllers
             var loginUser = await _userService.Login(DTO);
             if (loginUser == null)
             {
-                return NotFound("Usuario no registrado");
+                return Unauthorized("Credenciales inválidas");
             }
             return Ok(loginUser);
         }
@@ -48,20 +59,34 @@ namespace Back_EndFinanceTracker.Controllers
                 return BadRequest(results.Errors);
             }
             var newUser = await _userService.Register(RegisterDTO);
-            return Ok(newUser);
+            return StatusCode(StatusCodes.Status201Created, newUser);
         }
 
         [HttpPost("refresh")]
         public async Task<ActionResult<UserDTO>> Refresh(RefreshTokenDTO refreshTokenDTO)
         {
+            var results = await _validatorRefresh.ValidateAsync(refreshTokenDTO);
+            if (!results.IsValid)
+            {
+                return BadRequest(results.Errors);
+            }
             try
             {
                 var result = await _userService.RefreshToken(refreshTokenDTO);
                 return Ok(result);
             }
-            catch (Exception)
+            catch (SecurityTokenException)
             {
                 return Unauthorized("Invalid refresh token");
+            }
+            catch (FormatException)
+            {
+                return Unauthorized("Invalid refresh token");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error during token refresh");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
             }
         }
     }

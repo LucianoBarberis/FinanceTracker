@@ -1,4 +1,5 @@
 ﻿using Back_EndFinanceTracker.DTOs;
+using Back_EndFinanceTracker.Enums;
 using Back_EndFinanceTracker.Models;
 using Back_EndFinanceTracker.Repository;
 
@@ -74,13 +75,16 @@ namespace Back_EndFinanceTracker.Services.imple
             DateTime date = new DateTime(1950, 1, 1);
             var categories = await _cateRepository.Get(userId);
 
+            var totalIncomes = await _balanceService.GetIncomes(userId, date);
             var totalEgress = await _balanceService.GetEgress(userId, date);
+            var categoryTotals = await _transactionRepository.GetCategoryTotalsByCategory(userId);
 
             var categoryDtos = new List<CategoryDto>();
 
             foreach (var category in categories) 
             {
-                var categoryTotal = await TotalForCategory(category.Id, userId);
+                var categoryTotal = categoryTotals.TryGetValue(category.Id, out var total) ? total : 0;
+                var denominator = category.Type == Enums.TransactionType.Ingreso ? totalIncomes : totalEgress;
                 categoryDtos.Add(new CategoryDto
                 {
                     Name = category.Name,
@@ -88,7 +92,7 @@ namespace Back_EndFinanceTracker.Services.imple
                     Type = category.Type,
                     Id = category.Id,
                     Color = category.Color,
-                    Percentaje = totalEgress > 0 ? (categoryTotal / totalEgress) * 100 : 0,
+                    Percentaje = denominator > 0 ? (categoryTotal / denominator) * 100 : 0,
                     Total = categoryTotal
                 });
             }
@@ -105,7 +109,10 @@ namespace Back_EndFinanceTracker.Services.imple
                 return null;
             }
             var totalIncomes = await _balanceService.GetIncomes(userId, date);
+            var totalEgress = await _balanceService.GetEgress(userId, date);
             var categoryTotal = await TotalForCategory(id, userId);
+
+            var denominator = category.Type == Enums.TransactionType.Ingreso ? totalIncomes : totalEgress;
 
             return new CategoryDto
             {
@@ -114,8 +121,8 @@ namespace Back_EndFinanceTracker.Services.imple
                 Type= category.Type,
                 Id = category.Id,
                 Color = category.Color,
-                Total= totalIncomes,
-                Percentaje= totalIncomes > 0 ? (categoryTotal / totalIncomes) * 100 : 0,
+                Total= categoryTotal,
+                Percentaje= denominator > 0 ? (categoryTotal / denominator) * 100 : 0,
             };
         }
 

@@ -96,7 +96,7 @@ namespace Back_EndFinanceTracker.Services.imple
                 Type = t.Type,
                 CategoryId = t.CategoryId,
                 Id = t.Id,
-            }).Reverse();
+            });
             
         }
 

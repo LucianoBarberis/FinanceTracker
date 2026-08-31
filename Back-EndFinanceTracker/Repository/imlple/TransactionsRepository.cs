@@ -16,7 +16,7 @@ namespace Back_EndFinanceTracker.Repository.imlple
 
         public async Task<IEnumerable<BalanceDTO>> GetAmounts(int userId, DateTime dateTimeLimit)
         {
-            return await _context.Transactions
+            return await _context.Transactions.AsNoTracking()
                 .Where(x => x.DateTime >= dateTimeLimit)
                 .Where(x => x.UserId == userId)
                 .GroupBy(t => t.Type)
@@ -30,9 +30,18 @@ namespace Back_EndFinanceTracker.Repository.imlple
 
         public async Task<decimal> GetCategoryTotals(int categoryId, int userId)
         {
-            return await _context.Transactions
-                .Where(t => t.CategoryId == categoryId && t.Type == Enums.TransactionType.Egreso && t.UserId == userId)
+            return await _context.Transactions.AsNoTracking()
+                .Where(t => t.CategoryId == categoryId && t.UserId == userId)
                 .SumAsync(t => t.Amount);
+        }
+
+        public async Task<Dictionary<int, decimal>> GetCategoryTotalsByCategory(int userId)
+        {
+            return await _context.Transactions.AsNoTracking()
+                .Where(t => t.UserId == userId)
+                .GroupBy(t => t.CategoryId)
+                .Select(g => new { CategoryId = g.Key, Total = g.Sum(t => t.Amount) })
+                .ToDictionaryAsync(x => x.CategoryId, x => x.Total);
         }
 
         public async Task Add(Transaction entity)
@@ -47,12 +56,16 @@ namespace Back_EndFinanceTracker.Repository.imlple
 
         public async Task<IEnumerable<Transaction>> Get(int userId)
         {
-            return await _context.Transactions.Where(x => x.UserId == userId).ToListAsync();
+            return await _context.Transactions.AsNoTracking()
+                .Where(x => x.UserId == userId)
+                .OrderByDescending(x => x.DateTime)
+                .ThenByDescending(x => x.Id)
+                .ToListAsync();
         }
 
         public async Task<Transaction?> GetById(int id, int userId)
         {
-            return await _context.Transactions.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+            return await _context.Transactions.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
         }
 
         public async Task Save()

@@ -1,3 +1,4 @@
+using Back_EndFinanceTracker.DTOs;
 using Back_EndFinanceTracker.Models;
 using Back_EndFinanceTracker.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -16,24 +17,33 @@ namespace Back_EndFinanceTracker.Services.imple
             _context = context;
         }
 
-        public async Task<IEnumerable<Budget>> GetByUserId(int userId)
+        private static BudgetDTO ToDto(Budget budget) => new BudgetDTO
+        {
+            Id = budget.Id,
+            Amount = budget.Amount,
+            CategoryId = budget.CategoryId,
+            UserId = budget.UserId,
+            SpentAmount = budget.SpentAmount
+        };
+
+        public async Task<IEnumerable<BudgetDTO>> GetByUserId(int userId)
         {
             var budgets = await _budgetRepository.Get(userId);
+            var dtos = new List<BudgetDTO>();
             foreach (var budget in budgets)
             {
                 budget.SpentAmount = await CalculateSpentAmount(budget.CategoryId, userId);
+                dtos.Add(ToDto(budget));
             }
-            return budgets;
+            return dtos;
         }
 
-        public async Task<Budget?> GetById(int id, int userId)
+        public async Task<BudgetDTO?> GetById(int id, int userId)
         {
             var budget = await _budgetRepository.GetById(id, userId);
-            if (budget != null)
-            {
-                budget.SpentAmount = await CalculateSpentAmount(budget.CategoryId, userId);
-            }
-            return budget;
+            if (budget == null) return null;
+            budget.SpentAmount = await CalculateSpentAmount(budget.CategoryId, userId);
+            return ToDto(budget);
         }
 
         private async Task<decimal> CalculateSpentAmount(int categoryId, int userId)
@@ -53,24 +63,33 @@ namespace Back_EndFinanceTracker.Services.imple
                 .FirstOrDefaultAsync(b => b.CategoryId == categoryId && b.UserId == userId);
         }
 
-        public async Task<Budget> Create(Budget budget)
+        public async Task<BudgetDTO> Create(Budget budget)
         {
             await _budgetRepository.Add(budget);
             await _budgetRepository.Save();
-            return budget;
+            budget.SpentAmount = await CalculateSpentAmount(budget.CategoryId, budget.UserId);
+            return ToDto(budget);
         }
 
-        public async Task<Budget> Update(int id, int userId, Budget budget)
+        public async Task<BudgetDTO?> Update(int id, int userId, Budget budget)
         {
             var existingBudget = await _budgetRepository.GetById(id, userId);
-            if (existingBudget == null) return null!;
+            if (existingBudget == null) return null;
+
+            // Si se cambia la categoría, verificar que la nueva no tenga ya un presupuesto
+            if (existingBudget.CategoryId != budget.CategoryId)
+            {
+                var existingForCategory = await GetByCategory(budget.CategoryId, userId);
+                if (existingForCategory != null) return null!;
+            }
 
             existingBudget.Amount = budget.Amount;
             existingBudget.CategoryId = budget.CategoryId;
 
             _budgetRepository.Update(existingBudget);
             await _budgetRepository.Save();
-            return existingBudget;
+            existingBudget.SpentAmount = await CalculateSpentAmount(existingBudget.CategoryId, userId);
+            return ToDto(existingBudget);
         }
 
         public async Task<bool> Delete(int id, int userId)

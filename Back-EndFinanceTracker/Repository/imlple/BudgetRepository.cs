@@ -23,12 +23,12 @@ namespace Back_EndFinanceTracker.Repository.imlple
 
         public async Task<IEnumerable<Budget>> Get(int userId)
         {
-            return await _context.Budgets.Where(x => x.UserId == userId).ToListAsync();
+            return await _context.Budgets.AsNoTracking().Where(x => x.UserId == userId).ToListAsync();
         }
 
         public async Task<Budget> GetById(int id, int userId)
         {
-            return await _context.Budgets.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+            return await _context.Budgets.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
         }
 
         public async Task Save()

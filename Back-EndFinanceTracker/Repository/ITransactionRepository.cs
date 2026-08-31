@@ -7,5 +7,6 @@ namespace Back_EndFinanceTracker.Repository
     {
         public Task<IEnumerable<BalanceDTO>> GetAmounts(int userId, DateTime dateTimeLimit);
         public Task<decimal> GetCategoryTotals(int categoryId, int userId);
+        public Task<Dictionary<int, decimal>> GetCategoryTotalsByCategory(int userId);
     }
 }

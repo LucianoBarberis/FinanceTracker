@@ -16,8 +16,8 @@ namespace Back_EndFinanceTracker.Validators
                 .NotEmpty().WithMessage("El nombre no puede estar vacio")
                 .Length(3, 40).WithMessage("El nombre debe tener entre 3 y 40 catacteres")
                 .Must(d => d == null || !Regex.IsMatch(d, "<.*?>"))
-                .Matches(@"^[a-zA-Z0-9]*$").WithMessage("El nombre no puede tener caracteres extraños")
                 .WithMessage("El nombre no puede contener etiquetas HTML.")
+                .Matches(@"^[a-zA-Z0-9]*$").WithMessage("El nombre no puede tener caracteres extraños")
                 .MustAsync(async (userName, cancelation) => !await _repository.UserNameExists(userName))
                 .WithMessage("El nombre de usuario ya existe");
             RuleFor(t => t.Password)
@@ -31,7 +31,7 @@ namespace Back_EndFinanceTracker.Validators
                 .NotEmpty().WithMessage("El Email no puede estar vacio")
                 .EmailAddress().WithMessage("El Email debe ser valido")
                 .Must(d => d == null || !Regex.IsMatch(d, "<.*?>"))
-                .WithMessage("La contraseña no puede contener etiquetas HTML.")
+                .WithMessage("El Email no puede contener etiquetas HTML.")
                 .MustAsync(async (email, cancelation) => !await _repository.EmailExists(email))
                 .WithMessage("El correo ya esta registrado");
         }

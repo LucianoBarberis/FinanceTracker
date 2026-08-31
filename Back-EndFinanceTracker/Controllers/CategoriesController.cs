@@ -29,39 +29,47 @@ namespace Back_EndFinanceTracker.Controllers
             _validatorUpdate = validatorUpdate;
         }
 
-        private int GetUserId()
+        private int? GetUserId()
         {
             var claim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            return claim != null ? int.Parse(claim.Value) : -1;
+            return claim != null ? int.Parse(claim.Value) : null;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<CategoryDto>> GetAll()
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetAll()
         {
-            return await _categoryService.GetCategories(GetUserId());
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
+            return Ok(await _categoryService.GetCategories(userId.Value));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDto>> GetById(int id)
         {
-            var category = await _categoryService.GetCategoryById(id, GetUserId());
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
+            var category = await _categoryService.GetCategoryById(id, userId.Value);
             if (category == null) return NotFound();
             return Ok(category);
         }
         [HttpPost]
         public async Task<ActionResult<CategoryDto>> Add(CategoryAddDTO categoryAdd)
         {
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
             var result = await _validatorAdd.ValidateAsync(categoryAdd);
             if (!result.IsValid)
             {
                 return BadRequest(result.Errors);
             }
-            var newCategory = await _categoryService.AddCategory(categoryAdd, GetUserId());
+            var newCategory = await _categoryService.AddCategory(categoryAdd, userId.Value);
             if(newCategory == null) return BadRequest();
             return Ok(newCategory);
         }
         [HttpPut("{id}")]
         public async Task<ActionResult<CategoryDto>> Update(int id, CategoryDto category)
         {
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
 
             if (category.Id != id)
             {
@@ -74,7 +82,7 @@ namespace Back_EndFinanceTracker.Controllers
                 return BadRequest(result.Errors);
             }
             
-            var categoryUpdated = await _categoryService.UpdateCategory(id, category, GetUserId());
+            var categoryUpdated = await _categoryService.UpdateCategory(id, category, userId.Value);
 
             if(categoryUpdated == null) return BadRequest("No se pudo actualizar la categoria");
             return Ok(categoryUpdated);
@@ -82,7 +90,9 @@ namespace Back_EndFinanceTracker.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<CategoryDto>> Delete(int id)
         {
-            var result = await _categoryService.DeleteCategory(id, GetUserId());
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
+            var result = await _categoryService.DeleteCategory(id, userId.Value);
             if(result == null) return BadRequest();
             return Ok(result);
         }

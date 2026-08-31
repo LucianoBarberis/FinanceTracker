@@ -35,7 +35,8 @@ namespace Back_EndFinanceTracker.Validators
 
             RuleFor(x => x.DateTime)
                 .NotEmpty().WithMessage("La fecha es obligatoria.")
-                .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("No puedes registrar una transacción con fecha futura.");
+                .Must(d => d <= DateTime.UtcNow)
+                    .WithMessage("No puedes registrar una transacción con fecha futura.");
 
             RuleFor(x => x)
                 .MustAsync(async (dto, cancellationToken) =>
@@ -46,10 +47,10 @@ namespace Back_EndFinanceTracker.Validators
                     var userId = int.Parse(userIdClaim);
                     var category = await _categoryRepository.GetById(dto.CategoryId, userId);
 
-                    if (category == null) return true;
+                    if (category == null) return false;
                     return dto.Type == category.Type;
                 })
-                .WithMessage("El tipo de la transacción (Ingreso/Egreso) no coincide con el tipo de la categoría seleccionada.");
+                .WithMessage("La categoría seleccionada no existe o no corresponde a la transacción (Ingreso/Egreso).");
         }
     }
 }

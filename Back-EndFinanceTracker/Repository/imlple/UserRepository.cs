@@ -25,12 +25,15 @@ namespace Back_EndFinanceTracker.Repository.imlple
 
         public async Task<IEnumerable<User>> Get(int userId)
         {
-            return await _context.Users.Where(u => u.UserId == userId).ToListAsync();
+            return await _context.Users.AsNoTracking().Where(u => u.UserId == userId).ToListAsync();
         }
 
         public async Task<User?> GetById(int id, int userId)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.UserId == id && u.UserId == userId);
+            // userId is used for authorization validation: the caller must request
+            // the entity that belongs to them. If it does not match, deny access.
+            if (id != userId) return null;
+            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserId == id);
         }
 
         public async Task<User?> GetById(int id)
@@ -40,18 +43,20 @@ namespace Back_EndFinanceTracker.Repository.imlple
 
         public async Task<User?> GetByUserIdentifier(string identifier)
         {
+            // NOTE: No AsNoTracking — Login() mutates RefreshToken/RefreshTokenExpiry on the
+            // returned entity. If this were NoTracking, the changes would be silently lost.
             return await _context.Users
                 .FirstOrDefaultAsync(u => u.UserName == identifier || u.Email == identifier);
         }
 
         public async Task<bool> UserNameExists(string userName)
         {
-            return await _context.Users.AnyAsync(u => u.UserName == userName);
+            return await _context.Users.AsNoTracking().AnyAsync(u => u.UserName == userName);
         }
 
         public async Task<bool> EmailExists(string email)
         {
-            return await _context.Users.AnyAsync(u => u.Email == email);
+            return await _context.Users.AsNoTracking().AnyAsync(u => u.Email == email);
         }
 
         public async Task Save()

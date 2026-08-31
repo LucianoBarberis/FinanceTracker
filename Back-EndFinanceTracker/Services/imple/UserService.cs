@@ -1,6 +1,7 @@
 ﻿using Back_EndFinanceTracker.DTOs;
 using Back_EndFinanceTracker.Models;
 using Back_EndFinanceTracker.Repository;
+using Back_EndFinanceTracker.Security;
 using BC = BCrypt.Net.BCrypt;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -33,7 +34,7 @@ namespace Back_EndFinanceTracker.Services.imple
                 return null;
             }
             var refreshToken = _jwtAuthService.generateRefreshToken();
-            user.RefreshToken = refreshToken;
+            user.RefreshToken = TokenHasher.Hash(refreshToken);
             user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
             await _repository.Save();
 
@@ -57,7 +58,7 @@ namespace Back_EndFinanceTracker.Services.imple
             };
 
             var refreshToken = _jwtAuthService.generateRefreshToken();
-            userToAdd.RefreshToken = refreshToken;
+            userToAdd.RefreshToken = TokenHasher.Hash(refreshToken);
             userToAdd.RefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
 
             await _repository.Add(userToAdd);
@@ -83,15 +84,25 @@ namespace Back_EndFinanceTracker.Services.imple
             var principal = GetPrincipalFromExpiredToken(refreshTokenDTO.Token);
             var userId = int.Parse(principal.FindFirstValue(ClaimTypes.NameIdentifier));
             var user = await _repository.GetById(userId);
-            if (user == null || user.RefreshToken != refreshTokenDTO.RefreshToken || user.RefreshTokenExpiry <= DateTime.UtcNow)
+            if (user == null || !TokenHasher.Verify(refreshTokenDTO.RefreshToken, user.RefreshToken!) || user.RefreshTokenExpiry <= DateTime.UtcNow)
             {
                 throw new SecurityTokenException("Invalid refresh token");
             }
 
             var newJwtToken = _jwtAuthService.generateUserToken(user.UserName, user.UserId);
             var newRefreshToken = _jwtAuthService.generateRefreshToken();
-            user.RefreshToken = newRefreshToken;
-            user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
+            user.RefreshToken = TokenHasher.Hash(newRefreshToken);
+
+            // Refresh policy: token has an ABSOLUTE 7-day lifetime from issuance.
+            // On rotation, only extend if the current token is close to expiring (within 2 days);
+            // otherwise keep the ORIGINAL expiry to preserve the absolute cap.
+            var now = DateTime.UtcNow;
+            if (user.RefreshTokenExpiry.HasValue && user.RefreshTokenExpiry.Value - now < TimeSpan.FromDays(2))
+            {
+                user.RefreshTokenExpiry = now.AddDays(7);
+            }
+            // else: keep the existing RefreshTokenExpiry (absolute lifetime preserved).
+
             await _repository.Save();
 
             return new UserDTO

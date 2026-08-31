@@ -1,5 +1,6 @@
 using Back_EndFinanceTracker.Data;
 using Back_EndFinanceTracker.DTOs;
+using Back_EndFinanceTracker.Exceptions;
 using Back_EndFinanceTracker.Models;
 using Back_EndFinanceTracker.Repository;
 using Back_EndFinanceTracker.Repository.imlple;
@@ -41,6 +42,14 @@ if (string.IsNullOrEmpty(secretKey))
     secretKey = jwtKeyEnv;
 }
 builder.Configuration["Jwt:Key"] = secretKey;
+
+// Security: validate the JWT signing key is strong enough to be used in any environment.
+// A weak or placeholder key would allow anyone to forge tokens.
+if (Encoding.UTF8.GetByteCount(secretKey) < 32)
+    throw new InvalidOperationException("JWT_KEY must be at least 32 bytes (256 bits) when encoded as UTF-8. Generate a strong key with: openssl rand -base64 48");
+
+if (secretKey.Contains("replace-me") || secretKey.Contains("dev-secret-key") || secretKey.Contains("change-me"))
+    throw new InvalidOperationException("JWT_KEY must not be a placeholder/dev key in any environment. Generate a strong key with: openssl rand -base64 48");
 
 // Fallback for JWT Issuer
 var jwtIssuer = jwtSettings.GetValue<string>("Issuer");
@@ -85,15 +94,20 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+// CORS origins from configuration/env (no hardcoded placeholder domains).
+// Priority: appsettings[Cors:AllowedOrigins] -> CORS_ALLOWED_ORIGINS env var -> localhost dev fallback.
+var corsOrigins = builder.Configuration["Cors:AllowedOrigins"];
+if (string.IsNullOrEmpty(corsOrigins))
+    corsOrigins = Environment.GetEnvironmentVariable("CORS_ALLOWED_ORIGINS") ?? "http://localhost:5173";
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins(
-                "https://yourfintracker.vercel.app",
-                "http://localhost:5173")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
+        var allowedOrigins = corsOrigins.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        policy.WithOrigins(allowedOrigins)
+            .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .WithHeaders("Content-Type", "Authorization")
             .WithExposedHeaders("X-Total-Count", "X-Page-Size", "X-Current-Page");
     });
 });
@@ -107,20 +121,23 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 // Rate Limiter Configuration
 builder.Services.AddRateLimiter(options =>
 {
-    // Política general para la app
-    options.AddFixedWindowLimiter(policyName: "fixed", options =>
+    // Política general para la app — PermitLimit=20 allows normal UI load + interaction
+    options.AddSlidingWindowLimiter(policyName: "fixed", options =>
     {
-        options.PermitLimit = 10;
+        options.PermitLimit = 20;
         options.Window = TimeSpan.FromSeconds(10);
-        options.QueueLimit = 2;
+        // 1s segments smooth the reset and avoid boundary-window bypass
+        options.SegmentsPerWindow = 10;
+        options.QueueLimit = 4;
         options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
     });
 
-    // Política estricta para Login y Register (Anti-brute force)
-    options.AddFixedWindowLimiter(policyName: "auth_strict", options =>
+    // Strict policy for Login and Register (anti-brute-force)
+    options.AddSlidingWindowLimiter(policyName: "auth_strict", options =>
     {
-        options.PermitLimit = 3;
+        options.PermitLimit = 5;
         options.Window = TimeSpan.FromMinutes(1);
+        options.SegmentsPerWindow = 6;
         options.QueueLimit = 0;
     });
 
@@ -143,6 +160,7 @@ builder.Services.AddScoped<IValidator<CategoryDto>, CategoriesUpdateValidator>()
 builder.Services.AddScoped<IValidator<LoginDTO>, LoginValidator>();
 builder.Services.AddScoped<IValidator<RegisterDTO>, RegisterValidator>();
 builder.Services.AddScoped<IValidator<BudgetAddDTO>, BudgetAddValidator>();
+builder.Services.AddScoped<IValidator<RefreshTokenDTO>, RefreshTokenValidator>();
 
 // Entity Framework
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -154,7 +172,8 @@ if (string.IsNullOrEmpty(connectionString))
     var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
     if (string.IsNullOrEmpty(dbHost) || string.IsNullOrEmpty(dbName))
         throw new InvalidOperationException("Database connection string is missing");
-    connectionString = $"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPassword};sslmode=require";
+    var sslMode = Environment.GetEnvironmentVariable("DB_SSLMODE") ?? "require";
+    connectionString = $"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPassword};sslmode={sslMode}";
 }
 builder.Services.AddDbContext<FinanceContext>(options =>
 {
@@ -162,6 +181,8 @@ builder.Services.AddDbContext<FinanceContext>(options =>
 });
 
 builder.Services.AddAuthorization();
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -176,6 +197,11 @@ var app = builder.Build();
 // Usar la política de CORS por defecto
 app.UseCors();
 
+// Global exception handler — catches unhandled exceptions from controllers
+// that lack their own try/catch (Budget, Categories, Transaction).
+// Returns a generic ProblemDetails 500 and logs the exception server-side.
+app.UseExceptionHandler();
+
 // Security Headers Middleware
 app.Use(async (context, next) =>
 {
@@ -185,6 +211,7 @@ app.Use(async (context, next) =>
     context.Response.Headers.Append("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
     context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
     context.Response.Headers.Append("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    context.Response.Headers.Append("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'");
     await next();
 });
 

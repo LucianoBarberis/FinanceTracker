@@ -293,6 +293,39 @@ header {
 @media (max-width: 360px) {
     header {
         height: auto;
-        min-height: 80px;
+        min-height: 50px;
+        flex-wrap: nowrap;
+        gap: 6px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .logo {
+        flex-shrink: 0;
+        padding: 6px 12px;
+        height: 44px;
+    }
+
+    .logo .logo-text {
+        font-size: 22px;
+    }
+
+    .accountMenu {
+        flex-wrap: nowrap;
+        gap: 6px;
+        padding: 6px 8px;
+        height: 44px;
+        min-width: 0;
+        flex-shrink: 1;
+    }
+
+    .accountMenu .menuHeaderBtn svg {
+        height: 20px;
+        width: 20px;
+    }
+
+    .headerAuthBtn {
+        padding: 6px 10px;
+        font-size: 12px;
     }
 }

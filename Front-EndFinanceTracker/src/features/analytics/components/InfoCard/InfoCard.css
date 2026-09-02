@@ -24,12 +24,15 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+    min-width: 0;
 }
 
 .infoCard .dataContainer .data {
     font-family: var(--font-mono);
-    font-size: var(--fs-metric);
+    font-size: clamp(22px, 7vw, 32px);
     font-weight: 700;
     color: var(--wv-text);
     letter-spacing: -0.5px;
+    overflow-wrap: anywhere;
+    min-width: 0;
 }

@@ -70,6 +70,18 @@
     }
 }
 
+@media (max-width: 480px) {
+    .BudgetCardContainer {
+        gap: 12px;
+    }
+    .addNewBudget {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
 /* Loading state for budget section */
 .loadingContainer {
     display: flex;

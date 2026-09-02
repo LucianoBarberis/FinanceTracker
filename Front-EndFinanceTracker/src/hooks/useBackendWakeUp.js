@@ -34,7 +34,8 @@ export function useBackendWakeUp({
       // No API configured — treat as awake to avoid blocking local dev without env
       return true
     }
-    const url = `${String(baseUrl).replace(/\/$/, '')}/health`
+    const normalizedBase = String(baseUrl).replace(/\/$/, '')
+    const url = normalizedBase.endsWith('/api') ? `${normalizedBase}/health` : `${normalizedBase}/api/health`
     const controller = new AbortController()
     const timer = setTimeout(() => controller.abort(), timeout)
     try {

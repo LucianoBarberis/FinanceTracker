@@ -40,6 +40,17 @@
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
+.TransactionsCard__scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    container-type: inline-size;
+    background: radial-gradient(ellipse at right, rgba(0,0,0,.12) 0, transparent 70%) right/24px 100% no-repeat;
+}
+
+.TransactionsCard__scroll .Table {
+    min-width: 640px;
+}
+
 .Table {
     width: 100%;
     border: none;
@@ -115,6 +126,7 @@
     position: absolute;
     top: 10%;
     right: 0;
+    max-width: calc(100vw - 16px);
     background-color: var(--wv-surface);
     border: 1px solid var(--wv-border);
     border-radius: var(--radius-control);
@@ -124,6 +136,13 @@
     flex-direction: column;
     margin-top: 8px;
     overflow: hidden;
+}
+
+@media (max-width: 767px) {
+    .CardTitle,
+    .Table thead {
+        position: static;
+    }
 }
 
 .ActionMenuButton {

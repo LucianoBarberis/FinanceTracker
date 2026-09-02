@@ -110,3 +110,12 @@
     display: flex;
     flex-direction: column;
 }
+
+@media (max-width: 480px) {
+    .FormIncome .formGroup {
+        flex-direction: column;
+    }
+    .ActionCardsContainer {
+        gap: 12px;
+    }
+}

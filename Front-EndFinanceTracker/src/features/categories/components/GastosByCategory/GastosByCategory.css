@@ -25,6 +25,17 @@
     position: relative;
 }
 
+.ExpenseContainer .Legend ul li {
+    min-width: 0;
+}
+
+.ExpenseContainer .Legend ul li p {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 @media (max-width: 480px) {
     
     .ExpenseContainer h3 {

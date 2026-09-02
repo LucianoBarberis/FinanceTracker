@@ -124,6 +124,7 @@ const TransactionsCard = React.memo(({transactionsToRender, data}) => {
             }
             </div>
             <div className="tableBorder"></div>
+            <div className="TransactionsCard__scroll">
             <table className='Table'>
                 <thead>
                     <tr>
@@ -181,6 +182,7 @@ const TransactionsCard = React.memo(({transactionsToRender, data}) => {
                     )}
                 </tbody>
             </table>
+            </div>
         </div>
         <Modal 
             title="Editar Transacción"

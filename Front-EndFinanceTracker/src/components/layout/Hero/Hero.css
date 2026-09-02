@@ -25,7 +25,8 @@
 }
 
 .ButtonsContainer button{
-    height: 40px;
+    height: 44px;
+    min-height: 44px;
     min-width: 95px;
     padding: 0 15px;
     color: var(--text-secondary);

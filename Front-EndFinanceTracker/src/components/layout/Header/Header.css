@@ -1,6 +1,8 @@
 header {
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     padding: 0 var(--container-padding);
     padding-top: 20px;
     padding-bottom: 20px;
@@ -66,6 +68,7 @@ header {
 .logo {
     padding: 10px 25px;
     height: 60px;
+    min-width: 0;
     background: var(--header-bg-color);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -115,6 +118,8 @@ header {
     align-items: center;
     padding: 10px 25px;
     height: 60px;
+    min-width: 0;
+    flex-wrap: wrap;
     background: var(--header-bg-color);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -253,6 +258,12 @@ header {
     }
 }
 
+@media (max-width: 768px) {
+    .headerAuthBtn {
+        padding: 7px 12px;
+    }
+}
+
 @media (max-width: 480px) {
     header {
         height: 80px;
@@ -276,5 +287,12 @@ header {
 
     .accountMenu {
         gap: 10px;
+    }
+}
+
+@media (max-width: 360px) {
+    header {
+        height: auto;
+        min-height: 80px;
     }
 }

@@ -251,8 +251,8 @@
   border: 0;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
+/* Responsive — canonical bps 480/768/1024 (900→1024, 640→480) */
+@media (max-width: 1024px) {
   .landing-features__grid {
     grid-template-columns: 1fr;
   }
@@ -262,7 +262,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 480px) {
 
   .landing-title {
     font-size: clamp(28px, 8vw, 36px);
@@ -275,6 +275,10 @@
 
   .landing-btn {
     justify-content: center;
+  }
+
+  .landing-features__grid {
+    gap: 12px;
   }
 }
 

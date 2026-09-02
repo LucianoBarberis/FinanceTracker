@@ -145,6 +145,8 @@
     --container-padding: 8vw;
 }
 
+/* Canonical breakpoints: 480 / 768 / 1024 — only values allowed in in-scope pages
+   Alias mapping: 600/640 → 480/768, 900 → 1024 (grep for 600|640|900 must be 0) */
 @media (max-width: 1024px) {
     :root {
         --container-padding: 4vw;

@@ -34,7 +34,7 @@ const SpendingChart = React.memo(() => {
                             cy="50%"
                             innerRadius={45}
                             outerRadius={85}
-                            fill='#e4e7ec7a'
+                            fill='var(--wv-border)'
                             dataKey="value"
                             stroke='none'
                             strokeWidth={1}
@@ -60,16 +60,14 @@ const SpendingChart = React.memo(() => {
                         innerRadius={45}
                         outerRadius={85}
                         dataKey="total"
-                        stroke='#10182810'
+                        stroke='var(--wv-border)'
                         strokeWidth={1}
                     >
                         {data.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                     </Pie>
-                    <Tooltip
-                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', fontSize: '15px'}}
-                    />
+                    <Tooltip />
                 </PieChart>
             </ResponsiveContainer>
             <div className='Legend'>

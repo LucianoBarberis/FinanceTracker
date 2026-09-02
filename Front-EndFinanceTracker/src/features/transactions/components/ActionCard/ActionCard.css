@@ -1,23 +1,35 @@
 .ActionCard {
-    padding: 24px;
-    background-color: var(--bg-secondary);
-    border-radius: 12px;
-    border: var(--border);
+    padding: var(--space-3);
+    background-color: var(--wv-surface);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--wv-border);
     box-shadow: var(--shadow);
     display: flex;
-    gap: 15px;
+    gap: var(--space-2);
     cursor: pointer;
     align-items: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.ActionCard:hover {
+    background-color: var(--wv-surface-hover);
+    transform: translateY(-2px);
+}
+
+.ActionCard:active {
+    transform: translateY(0);
 }
 
 .ActionCard .iconActionCard {
     height: 50px;
     width: 50px;
-    border-radius: 10px;
+    border-radius: var(--radius-control);
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
 }
+
 .ActionCard .iconActionCard svg {
     height: 25px;
     width: 25px;
@@ -31,13 +43,14 @@
 }
 
 .ActionCard .infoActionCard h3 {
-    color: var(--text-primary);
-    font-size: 20px;
+    color: var(--wv-text);
+    font-family: var(--font-body);
+    font-size: 18px;
     font-weight: 600;
 }
 
 .ActionCard .infoActionCard p {
     font-size: 14px;
-    color: var(--gray--400);
+    color: var(--wv-text-secondary);
     font-weight: 400;
 }

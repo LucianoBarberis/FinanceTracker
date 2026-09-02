@@ -119,17 +119,40 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 });
 
 // Rate Limiter Configuration
+// Authenticated users: partitioned by JWT userId (each user gets their own quota).
+// Anonymous users: partitioned by IP (anti-brute-force for unauthenticated requests).
 builder.Services.AddRateLimiter(options =>
 {
-    // Política general para la app — PermitLimit=20 allows normal UI load + interaction
-    options.AddSlidingWindowLimiter(policyName: "fixed", options =>
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
     {
-        options.PermitLimit = 20;
-        options.Window = TimeSpan.FromSeconds(10);
-        // 1s segments smooth the reset and avoid boundary-window bypass
-        options.SegmentsPerWindow = 10;
-        options.QueueLimit = 4;
-        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        var userId = httpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (!string.IsNullOrEmpty(userId))
+        {
+            return RateLimitPartition.GetSlidingWindowLimiter(
+                partitionKey: $"user:{userId}",
+                factory: _ => new SlidingWindowRateLimiterOptions
+                {
+                    PermitLimit = 1000,
+                    Window = TimeSpan.FromMinutes(5),
+                    SegmentsPerWindow = 10,
+                    QueueLimit = 50,
+                    AutoReplenishment = true
+                });
+        }
+
+        // Anonymous (login/register, no JWT): per-IP stricter limit
+        var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+        return RateLimitPartition.GetSlidingWindowLimiter(
+            partitionKey: $"ip:{ip}",
+            factory: _ => new SlidingWindowRateLimiterOptions
+            {
+                PermitLimit = 20,
+                Window = TimeSpan.FromMinutes(1),
+                SegmentsPerWindow = 6,
+                AutoReplenishment = true
+            });
     });
 
     // Strict policy for Login and Register (anti-brute-force)
@@ -141,7 +164,25 @@ builder.Services.AddRateLimiter(options =>
         options.QueueLimit = 0;
     });
 
-    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    // Health endpoint policy — generous to allow polling every 2.5s (~24/min) without hitting anonymous limit (20/min)
+    options.AddSlidingWindowLimiter(policyName: "health", options =>
+    {
+        options.PermitLimit = 60;
+        options.Window = TimeSpan.FromMinutes(1);
+        options.SegmentsPerWindow = 6;
+        options.QueueLimit = 5;
+        options.AutoReplenishment = true;
+    });
+
+    // Friendly rejection response with a Retry-After hint
+    options.OnRejected = async (context, cancellationToken) =>
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+        context.HttpContext.Response.Headers.RetryAfter = "30";
+        await context.HttpContext.Response.WriteAsJsonAsync(
+            new { message = "Demasiadas peticiones. Intenta de nuevo en unos segundos." },
+            cancellationToken);
+    };
 });
 
 builder.Services.AddScoped<ITransactionService, TransactionService>();
@@ -220,6 +261,11 @@ app.UseAuthorization();
 app.UseRateLimiter();
 
 app.MapControllers();
+
+// Lightweight health check — no DB hit, anonymous, generous rate limit for cold-start polling
+app.MapGet("/api/health", () => Results.Ok(new { status = "ok", timestamp = DateTime.UtcNow }))
+    .AllowAnonymous()
+    .RequireRateLimiting("health");
 
 // OpenAPI + Scalar
 if (app.Environment.IsDevelopment())

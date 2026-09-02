@@ -1,29 +1,81 @@
 .BudgetCardContainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    margin-top: 40px;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
     width: 100%;
 }
 
 .addNewBudget {
-    color: var(--text-primary);
-    font-size: 22px;
-    color: #fff;
-    background: linear-gradient(to top left, var(--brand--700), var(--brand--600));
+    background-color: var(--wv-surface);
+    border: 2px dashed var(--wv-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-3);
     cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.addNewBudget:hover {
+    background-color: var(--wv-surface-hover);
+    border-color: var(--accent-500);
+}
+
+.addNewBudget h3 {
+    color: var(--wv-text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0;
+}
+
+/* Empty state */
+.budgetEmptyState {
+    background-color: var(--wv-surface);
+    border: 1px solid var(--wv-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: var(--space-1);
+    grid-column: 1 / -1;
+}
+
+.emptyTitle {
+    color: var(--wv-text);
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.emptyDescription {
+    color: var(--wv-text-secondary);
+    font-size: 14px;
 }
 
 @media (max-width: 1024px) {
     .BudgetCardContainer {
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        gap: var(--space-2);
     }
 }
 
 @media (max-width: 768px) {
     .BudgetCardContainer {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: var(--space-2);
     }
+}
+
+/* Loading state for budget section */
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    width: 100%;
+    grid-column: 1 / -1;
 }

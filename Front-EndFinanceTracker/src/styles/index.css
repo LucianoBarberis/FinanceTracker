@@ -3,6 +3,79 @@
     src: url(../assets/fonts/Inter-VariableFont_opsz\,wght.ttf);
 }
 
+@font-face {
+    font-family: "JetBrainsMono";
+    src: url(../assets/fonts/JetBrainsMono-VariableFont_wght.ttf);
+    font-weight: 100 800;
+    font-display: swap;
+}
+
+:root {
+    /* Raw palette — dark (One Dark Pro inspired) */
+    --wv-bg-dark: #282c34;
+    --wv-surface-dark: #21252b;
+    --wv-surface-hover-dark: #2c313c;
+    --wv-border-dark: #3b4048;
+    --wv-accent-dark: #61afef;
+    --wv-ok-dark: #98c379;
+    --wv-danger-dark: #e06c75;
+    --wv-text-dark: #c7d1e5;
+    --wv-text-secondary-dark: #5c6370;
+
+    /* Raw palette — light (derived, respectful of "no hard white") */
+    --wv-bg-light: #EDEFF1;
+    --wv-surface-light: #FBFBFC;
+    --wv-surface-hover-light: #E4E7EA;
+    --wv-border-light: #D4D8DD;
+    --wv-accent-light: #3685FB;
+    --wv-ok-light: #178A38;
+    --wv-danger-light: #D12520;
+    --wv-text-light: #13161A;
+    --wv-text-secondary-light: #5A6470;
+
+    /* Semantic aliases — Light (default), anchored to legacy --brand-* palette */
+    --accent-400: #5CA9FE;
+    --accent-500: #3685FB;
+    --accent-600: #155EEF;
+    --ok-500: var(--wv-ok-light);
+    --danger-500: var(--wv-danger-light);
+    --wv-text: var(--wv-text-light);
+    --wv-text-secondary: var(--wv-text-secondary-light);
+    --wv-bg: var(--wv-bg-light);
+    --wv-surface: var(--wv-surface-light);
+    --wv-surface-hover: var(--wv-surface-hover-light);
+    --wv-border: var(--wv-border-light);
+
+    /* Typography scale (spec: Inter titles 24 SB, body 14; Mono for metrics) */
+    --font-display: "Inter";
+    --font-body: "Inter";
+    --font-mono: "JetBrainsMono", "Fira Code", monospace;
+    --fs-title: 24px;
+    --fs-body: 14px;
+    --fs-metric: 32px;
+
+    /* Spacing (multiples of 8) */
+    --space-1: 8px;
+    --space-2: 16px;
+    --space-3: 24px;
+    --space-4: 32px;
+
+    /* Radii */
+    --radius-card: 16px;
+    --radius-control: 8px;
+
+    /* Chart grid + area colors */
+    --chart-grid: var(--wv-border);
+    --chart-accent: var(--accent-500);
+    --chart-ok: var(--ok-500);
+
+    /* Re-map legacy brand/gray so existing components follow the system */
+    --brand--500: #3685FB;
+    --brand--600: #155EEF;
+    --brand--400: #5CA9FE;
+    --success--500: var(--ok-500);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -48,26 +121,26 @@
     --success--950: #042A1C;
 
     --brand-color: var(--gray--950);
-    --bg-primary: var(--gray--50);
-    --bg-secondary: #ffffff;
-    --text-primary: #101828;
-    --text-secondary: var(--gray--600);
-    --border-color: var(--gray--100);
-    --table-row-hover: var(--gray--50);
-    --input-bg: #ffffff;
-    --active: #e9f0fe;
-    --active-font: var(--brand--600);
-    --input-border-color: var(--gray--300);
-    --header-bg-color: rgba(255, 255, 255, 0.58);
+    --bg-primary: var(--wv-bg-light);
+    --bg-secondary: var(--wv-surface-light);
+    --text-primary: var(--wv-text-light);
+    --text-secondary: var(--wv-text-secondary-light);
+    --border-color: var(--wv-border-light);
+    --table-row-hover: var(--wv-surface-hover-light);
+    --input-bg: var(--wv-surface-light);
+    --active: #DAEBFF;
+    --active-font: var(--wv-accent-light);
+    --input-border-color: var(--wv-border-light);
+    --header-bg-color: rgba(251, 251, 252, 0.72);
     --font--color: var(--text-primary);
-    --shadow: 0 1px 6px 1px #10182806;
+    --shadow: 0 1px 6px 1px #13161A0A;
     --border: 1px solid var(--border-color);
     --input-border: 1px solid var(--input-border-color);
-    --error-border: 1px solid #ea5e5e;
-    --sb-track-color: var(--gray--200);
-    --sb-thumb-color: var(--brand--950);
+    --error-border: 1px solid var(--danger-500);
+    --sb-track-color: var(--wv-border-light);
+    --sb-thumb-color: var(--wv-accent-light);
     --sb-size: 6px;
-    --hover-edit: var(--brand--100);
+    --hover-edit: #DAEBFF;
     --theme-swicher-bg: #c7c7c7;
     --container-padding: 8vw;
 }
@@ -84,47 +157,114 @@
     }
 }
 
-/* Dark Mode Variables */
+/* Dark Mode Variables — One Dark Pro inspired (#282c34 base, refined blue accent) */
 body.dark {
-    --bg-primary: var(--gray--950);
-    --bg-secondary: var(--gray--900);
-    --text-primary: var(--gray--50);
-    --text-secondary: var(--gray--400);
-    --border-color: var(--gray--800);
-    --input-bg: var(--gray--900);
-    --active: #1e335e;
-    --active-font: var(--text-primary);
-    --table-row-hover: var(--gray--800);
-    --input-border-color: var(--gray--700);
-    --header-bg-color: rgba(57, 61, 66, 0.68);
-    --brand-color: var(--gray--50);
+    --accent-400: #7bc2f5;
+    --accent-500: var(--wv-accent-dark);
+    --accent-600: #4a9add;
+    --ok-500: var(--wv-ok-dark);
+    --danger-500: var(--wv-danger-dark);
+    --wv-text: var(--wv-text-dark);
+    --wv-text-secondary: var(--wv-text-secondary-dark);
+    --wv-bg: var(--wv-bg-dark);
+    --wv-surface: var(--wv-surface-dark);
+    --wv-surface-hover: var(--wv-surface-hover-dark);
+    --wv-border: var(--wv-border-dark);
+    --chart-grid: var(--wv-border-dark);
+    --chart-accent: var(--wv-accent-dark);
+    --chart-ok: var(--wv-ok-dark);
+
+    --bg-primary: var(--wv-bg-dark);
+    --bg-secondary: var(--wv-surface-dark);
+    --text-primary: var(--wv-text-dark);
+    --text-secondary: var(--wv-text-secondary-dark);
+    --border-color: var(--wv-border-dark);
+    --input-bg: var(--wv-surface-dark);
+    --active: #2c313c;
+    --active-font: var(--wv-accent-dark);
+    --table-row-hover: var(--wv-surface-hover-dark);
+    --input-border-color: var(--wv-border-dark);
+    --header-bg-color: rgba(33, 37, 43, 0.85);
+    --brand-color: var(--wv-text-dark);
+    --brand--500: var(--wv-accent-dark);
+    --brand--400: #7bc2f5;
+    --brand--600: #4a9add;
+    --success--500: var(--wv-ok-dark);
     --border: 1px solid var(--border-color);
     --input-border: 1px solid var(--input-border-color);
-    --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    --sb-track-color: var(--gray--800);
-    --sb-thumb-color: var(--brand--400);
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    --sb-track-color: var(--wv-surface-dark);
+    --sb-thumb-color: var(--wv-accent-dark);
     --theme-swicher-bg: var(--bg-secondary);
-    --hover-edit: var(--brand--500)
+    --hover-edit: #2c313c;
+}
+
+/* Light Mode Variables — derived, cohesive, anchored to legacy --brand-* blue */
+body.light {
+    --bg-primary: var(--wv-bg-light);
+    --bg-secondary: var(--wv-surface-light);
+    --text-primary: var(--wv-text-light);
+    --text-secondary: var(--wv-text-secondary-light);
+    --border-color: var(--wv-border-light);
+    --input-bg: var(--wv-surface-light);
+    --active: #DAEBFF;
+    --active-font: #155EEF;
+    --table-row-hover: var(--wv-surface-hover-light);
+    --input-border-color: var(--wv-border-light);
+    --header-bg-color: rgba(251, 251, 252, 0.72);
+    --brand-color: var(--wv-text-light);
+    --shadow: 0 1px 6px 1px rgba(19, 22, 26, 0.06);
+    --sb-track-color: var(--wv-border-light);
+    --sb-thumb-color: #3685FB;
+    --theme-swicher-bg: var(--bg-secondary);
+    --hover-edit: #DAEBFF;
+    --accent-400: #5CA9FE;
+    --accent-500: #3685FB;
+    --accent-600: #155EEF;
+    --brand--500: #3685FB;
+    --brand--600: #155EEF;
+    --brand--400: #5CA9FE;
 }
 
 @media (prefers-color-scheme: dark) {
     body:not(.light) {
-        --bg-primary: var(--gray--950);
-        --bg-secondary: var(--gray--900);
-        --text-primary: var(--gray--50);
-        --text-secondary: var(--gray--400);
-        --border-color: var(--gray--800);
-        --input-bg: var(--gray--900);
-        --input-border-color: var(--gray--700);
+        --bg-primary: var(--wv-bg-dark);
+        --bg-secondary: var(--wv-surface-dark);
+        --text-primary: var(--wv-text-dark);
+        --text-secondary: var(--wv-text-secondary-dark);
+        --border-color: var(--wv-border-dark);
+        --input-bg: var(--wv-surface-dark);
+        --input-border-color: var(--wv-border-dark);
+        --active: #2c313c;
+        --active-font: var(--wv-accent-dark);
+        --table-row-hover: var(--wv-surface-hover-dark);
+        --header-bg-color: rgba(33, 37, 43, 0.85);
+        --brand-color: var(--wv-text-dark);
+        --brand--500: var(--wv-accent-dark);
+        --brand--400: #7bc2f5;
+        --brand--600: #4a9add;
+        --success--500: var(--wv-ok-dark);
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        --sb-track-color: var(--wv-surface-dark);
+        --sb-thumb-color: var(--wv-accent-dark);
+        --theme-swicher-bg: var(--bg-secondary);
+        --hover-edit: #2c313c;
 
         --border: 1px solid var(--border-color);
         --input-border: 1px solid var(--input-border-color);
-        --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        --sb-track-color: var(--gray--800);
-        --sb-thumb-color: var(--brand--400);
     }
 }
 
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#root > footer {
+    margin-top: auto;
+}
 
 body {
     background-color: var(--bg-primary);
@@ -267,4 +407,97 @@ input::placeholder {
 
 .errorInput::placeholder {
     color: #c71616b9;
+}
+
+/* ============================================================
+   GLOBAL LOADING STATES
+   Consistent, centered loading across all pages
+   ============================================================ */
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    width: 100%;
+}
+
+/* Full-screen loading (for auth pages, initial app load) */
+.loadingContainer--fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: var(--bg-primary);
+}
+
+/* Inline loading (for sections within a page) */
+.loadingContainer--inline {
+    min-height: 120px;
+}
+
+/* Page-level loading (for page transitions) */
+.loadingContainer--page {
+    min-height: calc(100vh - 200px);
+}
+
+/* ============================================================
+   SKELETON / SHIMMER LOADING
+   For content placeholders during data fetching
+   ============================================================ */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--wv-surface) 25%,
+        var(--wv-surface-hover) 50%,
+        var(--wv-surface) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--radius-control);
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.skeleton--text {
+    height: 1rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.skeleton--text:last-child {
+    width: 60%;
+}
+
+.skeleton--title {
+    height: 1.5rem;
+    width: 40%;
+    margin-bottom: 1rem;
+}
+
+.skeleton--card {
+    height: 200px;
+    width: 100%;
+    border-radius: var(--radius-card);
+}
+
+.skeleton--avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.skeleton--button {
+    height: 40px;
+    width: 120px;
+    border-radius: var(--radius-control);
+}
+
+/* Reduced motion for skeleton */
+@media (prefers-reduced-motion: reduce) {
+    .skeleton {
+        animation: none;
+        background: var(--wv-surface-hover);
+    }
 }

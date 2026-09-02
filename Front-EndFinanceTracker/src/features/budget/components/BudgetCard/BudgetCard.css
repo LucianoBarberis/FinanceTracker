@@ -4,52 +4,72 @@ progress {
     appearance: none;
     border: none;
     width: 100%;
-    height: 20px;
-}
-
-progress {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
     height: 10px;
-    /* Fondo para Firefox */
-    background-color: #ffffff;
+    background-color: var(--wv-surface-hover);
     border-radius: 10px;
-    /* Para que la barra no se salga de las esquinas */
 }
 
 /* Fondo del contenedor (Chrome/Safari) */
 progress::-webkit-progress-bar {
-    background-color: var(--text-secondary);
+    background-color: var(--wv-surface-hover);
     border-radius: 10px;
 }
 
 /* La barra que se llena (Chrome/Safari) */
 progress::-webkit-progress-value {
-    background: var(--brand--400);
+    background: var(--accent-500);
     border-radius: 10px;
     transition: width 0.3s ease;
 }
 
 progress::-moz-progress-bar {
-    background: var(--brand-400);
+    background: var(--accent-500);
     border-radius: 10px;
 }
 
 .budgetCard {
-    background-color: var(--bg-secondary);
+    background-color: var(--wv-surface);
     width: 100%;
-    padding: 20px 20px;
-    border-radius: 10px;
-    border: var(--border);
+    padding: var(--space-3);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--wv-border);
     box-shadow: var(--shadow);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Over-budget alert state */
+.budgetCard.overBudget {
+    border-left: 4px solid var(--danger-500);
+}
+
+.budgetCard.overBudget progress::-webkit-progress-value {
+    background: var(--danger-500);
+}
+
+.budgetCard.overBudget progress::-moz-progress-bar {
+    background: var(--danger-500);
+}
+
+.overBudgetLabel {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--danger-500);
+    background-color: transparent;
+    padding: 2px 8px;
+    border-radius: var(--radius-control);
+    border: 1px solid var(--danger-500);
+    margin-left: auto;
+    margin-right: 8px;
 }
 
 .budgetCardHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: var(--space-1);
     position: relative;
 }
 
@@ -75,32 +95,37 @@ progress::-moz-progress-bar {
 }
 
 .actionIcon.edit {
-    color: var(--brand--400);
+    color: var(--accent-400);
 }
 
 .actionIcon.delete {
-    color: #ea5e5e;
+    color: var(--danger-500);
 }
 
-.budgetTilte {
-    color: var(--text-primary);
+.budgetTitle {
+    color: var(--wv-text);
+    font-family: var(--font-body);
     font-weight: 600;
+    font-size: 16px;
 }
 
 .cardTitle {
-    color: var(--text-secondary);
+    color: var(--wv-text-secondary);
     font-size: 12px;
 }
 
 .progressBarData {
     display: flex;
-    gap: 10px;
+    gap: var(--space-1);
     align-items: center;
 }
 
-.progressBarData span {
+.progressAmount {
+    font-family: var(--font-mono);
     font-size: 12px;
-    color: var(--text-secondary);
+    font-weight: 500;
+    color: var(--wv-text-secondary);
+    white-space: nowrap;
 }
 
 .BudgetActionMenuBtn {

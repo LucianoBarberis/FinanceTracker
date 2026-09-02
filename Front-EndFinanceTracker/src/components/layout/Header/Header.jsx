@@ -3,8 +3,8 @@ import { Link, useLocation } from 'react-router'
 import { VscGear, VscBell, VscAccount, VscMenu, VscClose } from "react-icons/vsc";
 import ThemeToggle from '../../../features/theme/components/ThemeToggle/ThemeToggle';
 import './Header.css'
-import { useDispatch } from 'react-redux';
-import { logout } from "../../../features/loginRegister/redux/validationReducer"
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, selectIsAuthenticated } from "../../../features/loginRegister/redux/validationReducer"
 import { toast } from '@pheralb/toast';
 import { useNavigate } from 'react-router';
 
@@ -14,6 +14,7 @@ const Header = React.memo(() => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation().pathname
+    const isAuth = useSelector(selectIsAuthenticated)
     
     const handlerLogout = useCallback(() => {
         toast.info({
@@ -21,6 +22,30 @@ const Header = React.memo(() => {
         })
         dispatch(logout())
     }, [dispatch])
+    if (!isAuth) {
+        return (
+            <header>
+                <div className='logo' onClick={()=> navigate('/')} >
+                    <div className='logo-text'>Fin<span>Track</span></div>
+                </div>
+                <div className='accountMenu'>
+                    {isOpenConfig ?
+                        <div className={"ActionMenu config"}>
+                            <h4 className='titleMenu'>Opciones</h4>
+                            <div className='configOption'>
+                                <p>Tema:</p>
+                                <ThemeToggle />
+                            </div>
+                        </div>
+                    : null}
+                    <Link to="/login" className='headerAuthBtn headerAuthBtn--ghost'>Ingresar</Link>
+                    <Link to="/register" className='headerAuthBtn headerAuthBtn--primary'>Crear cuenta</Link>
+                    <button className='menuHeaderBtn' onClick={()=> setOpenConfig(isOpenConfig === false ? true : false)}><VscGear /></button>
+                </div>
+            </header>
+        )
+    }
+
     return (
         <header>
             <div className='logo' onClick={()=> navigate('/')} >
@@ -53,24 +78,6 @@ const Header = React.memo(() => {
                             className={location == "/categories" ? "active": ""}
                         >
                             Categorías
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            to={"/"}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className={location == "/accounts" ? "active": ""}
-                        >
-                            Estadísticas
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            to={"/"}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className={location == "/wallet" ? "active": ""}
-                        >
-                            Wallet
                         </Link>
                     </li>
                 </ul>

@@ -1,35 +1,34 @@
 .ActionCardsContainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    margin-top: 40px;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
     width: 100%;
 }
 
 @media (max-width: 1024px) {
     .ActionCardsContainer {
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        gap: var(--space-2);
     }
 }
 
 @media (max-width: 768px) {
     .ActionCardsContainer {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: var(--space-2);
     }
 }
 
 .FormIncome {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--space-2);
 }
-
 
 .FormIncome input {
     height: 30px;
-    border-radius: 7px;
+    border-radius: var(--radius-control);
     padding: 0 10px;
     border: var(--input-border);
     font-size: 16px;
@@ -37,7 +36,7 @@
 
 .FormIncome .formGroup {
     display: flex;
-    gap: 20px;
+    gap: var(--space-2);
 }
 
 .FormIncome .formGroup input {
@@ -45,23 +44,37 @@
 }
 
 .FormIncome .submitIncome {
-    background-color: var(--brand--600);
-    color: #fff;
+    background-color: var(--accent-500);
+    color: var(--wv-bg);
+    font-family: var(--font-body);
     font-size: 16px;
-    border-radius: 7px;
+    font-weight: 600;
+    border-radius: var(--radius-control);
     height: 35px;
-    border: var(--border);
+    border: none;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.FormIncome .submitIncome:hover {
+    background-color: var(--accent-600);
 }
 
 .FormIncome .submitEgress {
-    background-color: var(--gray--800);
-    color: #fff;
+    background-color: var(--wv-surface-hover);
+    color: var(--wv-text);
+    font-family: var(--font-body);
     font-size: 16px;
-    border-radius: 7px;
+    font-weight: 600;
+    border-radius: var(--radius-control);
     height: 35px;
-    border: var(--border);
+    border: 1px solid var(--wv-border);
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.FormIncome .submitEgress:hover {
+    background-color: var(--wv-border);
 }
 
 .FormIncome .formGroup .formField {
@@ -70,27 +83,27 @@
     width: 100%;
 }
 
-.label{
+.label {
     font-size: 12px;
     margin: 0 0 2px 4px;
     height: 15px;
-    color: var(--text-secondary);
+    color: var(--wv-text-secondary);
 }
 
 .error {
     font-size: 12px;
     margin: 0 0 2px 4px;
-    color: #ea5e5e;
+    color: var(--danger-500);
     height: 15px;
 }
 
 .errorInput {
-    border: var(--error-border) !important;
-    
+    border: 1px solid var(--danger-500) !important;
 }
 
 .errorInput::placeholder {
-    color: #c71616b9;
+    color: var(--danger-500);
+    opacity: 0.7;
 }
 
 .FormIncome .formField {

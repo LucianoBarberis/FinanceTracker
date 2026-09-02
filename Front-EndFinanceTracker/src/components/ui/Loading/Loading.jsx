@@ -1,8 +1,16 @@
 import './Loading.css'
 
-const Loading = () => {
+const Loading = ({ size = 'md', color }) => {
+    const sizeClasses = {
+        sm: 'loader--sm',
+        md: 'loader--md',
+        lg: 'loader--lg'
+    };
+    
+    const style = color ? { '--loader-color': color } : {};
+
     return (
-    <div className="loader">
+    <div className={`loader ${sizeClasses[size]}`} style={style}>
         <div className="bar1"></div>
         <div className="bar2"></div>
         <div className="bar3"></div>

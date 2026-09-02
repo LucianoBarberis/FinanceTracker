@@ -16,6 +16,7 @@ import FormSelect from '../../../../components/ui/FormSelect/FormSelect';
 import { selectTransactions, selectTransactionsLoading } from '../../redux/transactionReducer';
 import { selectCatDictionary, selectCatIncomes, selectCatEgress } from '../../../categories/redux/categoriesReducer';
 import { transactionUpdateSchema } from '../../validation/transactionUpdateSchema';
+import Loading from '../../../../components/ui/Loading/Loading';
 
 const TransactionsCard = React.memo(({transactionsToRender, data}) => {
     const reduxTransactions = useSelector(selectTransactions)
@@ -137,7 +138,11 @@ const TransactionsCard = React.memo(({transactionsToRender, data}) => {
                 <tbody>
                     {loading ? (
                         <tr>
-                            <td colSpan="6" style={{textAlign: 'center'}}>Cargando...</td>
+                            <td colSpan="6">
+                                <div className="loadingContainer loadingContainer--inline">
+                                    <Loading size="sm" />
+                                </div>
+                            </td>
                         </tr>
                     ) : transactionsList.length > 0 ? (
                         transactionsList.map((d, index) => {

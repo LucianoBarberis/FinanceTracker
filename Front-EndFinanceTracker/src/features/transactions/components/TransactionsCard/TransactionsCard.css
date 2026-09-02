@@ -2,41 +2,42 @@
     height: 100px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 24px;
-    background-color: var(--bg-secondary);
+    gap: var(--space-1);
+    padding: var(--space-3);
+    background-color: var(--wv-surface);
     position: sticky;
     top: 0;
     z-index: 101;
 }
 
 .tableBorder {
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--wv-border);
 }
 
 .CardTitle h3 {
-    color: var(--text-primary);
+    color: var(--wv-text);
+    font-family: var(--font-body);
     font-size: 20px;
     font-weight: 600;
 }
 
 .CardTitle p {
-    color: var(--text-secondary);
-    font-size: 16px;
+    color: var(--wv-text-secondary);
+    font-size: 14px;
 }
 
 .TransactionsCardContainer {
     max-height: 600px;
-    
 }
 
 .TransactionsCard {
-    background-color: var(--bg-secondary);
-    border-radius: 12px;
+    background-color: var(--wv-surface);
+    border-radius: var(--radius-card);
     box-shadow: var(--shadow);
-    border: var(--border);
+    border: 1px solid var(--wv-border);
     overflow-y: scroll;
     height: 600px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .Table {
@@ -53,34 +54,36 @@
 }
 
 .Table thead tr{
-    background-color: var(--gray--50);
+    background-color: var(--wv-bg);
     height: 40px;
 }
 
 .Table thead tr th {
-    background-color: var(--bg-secondary);
+    background-color: var(--wv-surface);
     text-align: start;
-    padding: 10px 24px;
-    font-size: 14px;
+    padding: 10px var(--space-3);
+    font-size: 12px;
     font-weight: 600;
-    color: var(--text-primary);
-    border-bottom: 1px solid var(--border-color) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--wv-text-secondary);
+    border-bottom: 1px solid var(--wv-border) !important;
 }
 
 .Table tbody tr td {
-    padding: 10px 24px;
+    padding: 10px var(--space-3);
     font-size: 13px;
-    color: var(--text-primary);
-    border-bottom: 1px solid var(--border-color) !important;
+    color: var(--wv-text);
+    border-bottom: 1px solid var(--wv-border) !important;
 }
 
 .Table tbody tr {
     height: 50px;
-    transition: background-color 0.5s;
+    transition: background-color 0.3s ease;
 }
 
 .Table tbody tr:hover {
-    background-color: var(--table-row-hover);
+    background-color: var(--wv-surface-hover);
 }
 
 .Table tbody .TableAction .TableActionBtn {
@@ -94,14 +97,14 @@
     align-items: center;
     height: 25px;
     border-radius: 6px;
-    border: var(--input-border);
-    box-shadow: 0 0 1px 1px #0000000e;
+    border: 1px solid var(--wv-border);
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05);
     position: relative;
 }
 
 .Table tbody .TableAction .TableActionBtn svg {
-    fill: var(--text-primary);
-    color: var(--text-primary);
+    fill: var(--wv-text);
+    color: var(--wv-text);
 }
 
 .Table tbody .TableAction {
@@ -112,9 +115,9 @@
     position: absolute;
     top: 10%;
     right: 0;
-    background-color: var(--bg-secondary);
-    border: var(--border);
-    border-radius: 8px;
+    background-color: var(--wv-surface);
+    border: 1px solid var(--wv-border);
+    border-radius: var(--radius-control);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 100;
     display: flex;
@@ -130,17 +133,17 @@
     cursor: pointer;
     text-align: left;
     font-size: 14px;
-    color: var(--text-primary);
-    transition: background-color 0.5s;
+    color: var(--wv-text);
+    transition: background-color 0.3s ease;
 }
 
 .ActionMenuButton.delete {
-    color: #dc2626;
-    border-top: var(--border);
+    color: var(--danger-500);
+    border-top: 1px solid var(--wv-border);
 }
 
 .ActionMenuButton.delete:hover {
-    background-color: #dc262639;
+    background-color: rgba(220, 38, 38, 0.1);
 }
 
 .ActionMenuButton.edit:hover {

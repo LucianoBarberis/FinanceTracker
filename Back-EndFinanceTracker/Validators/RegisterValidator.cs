@@ -24,7 +24,7 @@ namespace Back_EndFinanceTracker.Validators
                 .NotEmpty().WithMessage("la contraseña no puede estar vacia")
                 .Equal(x => x.ConfirmPassword).WithMessage("Las contraseñas no son iguales")
                 .MinimumLength(8).WithMessage("La contraseña debe tener mas de 8")
-                .Matches(@"^(?=.*[A-Z].*[A-Z])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,}$").WithMessage("La contraseña no es segura. Debe tener 2 caracteres en Mayuscula, 3 en minuscula, 2 numeros y mas de 8 caracteres")
+                .Matches(@"^(?=.*[A-Z])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,}$").WithMessage("La contraseña no es segura. Debe tener 1 caracter en Mayuscula, 3 en minuscula, 2 numeros y mas de 8 caracteres")
                 .Must(d => d == null || !Regex.IsMatch(d, "<.*?>"))
                 .WithMessage("La contraseña no puede contener etiquetas HTML.");
             RuleFor(t => t.Email)

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import './Transactions.css';
 import TransactionsCard from '../../features/transactions/components/TransactionsCard/TransactionsCard';
 import Header from '../../components/layout/Header/Header';
+import Footer from '../../components/layout/Footer/Footer';
 import { useTheme } from '../../features/theme/hooks/useTheme';
 import { selectIsAuthenticated } from '../../features/loginRegister/redux/validationReducer';
 import { selectTransactions } from '../../features/transactions/redux/transactionReducer';
@@ -53,9 +54,9 @@ const Transactions = () => {
     }, [catIncomes, catEgress, typeFilter]);
 
     return (
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', flex: 1 }}>
             <Header />
-            <div className="transactions-page">
+            <div className="transactions-page" style={{ flex: 1 }}>
                 <div className="transactions-header">
                     <h1>Transacciones</h1>
                 </div>
@@ -112,7 +113,8 @@ const Transactions = () => {
                     </div>
                 </section>
             </div>
-        </>
+            <Footer />
+        </div>
     );
 };
 

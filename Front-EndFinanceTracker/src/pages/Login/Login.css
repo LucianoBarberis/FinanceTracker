@@ -1,8 +1,10 @@
 .loginContainer {
-    height: 100vh;
+    min-height: 100vh;
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 40px 20px;
 }
 
 .loginContainer .loginWrapper {
@@ -89,9 +91,39 @@
 
 .loadingContainer {
     position: fixed;
-    top: 47%;
-    left: 50%;
+    inset: 0;
     z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-primary);
+}
+
+.loginLegal {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 14px;
+}
+
+.loginLegal a {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 2px;
+    text-underline-offset: 3px;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.loginLegal a:hover {
+    color: var(--accent-500);
+    border-bottom-color: var(--accent-500);
+}
+
+.loginLegal a:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+    border-radius: 2px;
 }
 
 .blur {

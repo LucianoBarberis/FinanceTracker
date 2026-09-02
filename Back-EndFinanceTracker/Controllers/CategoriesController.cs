@@ -5,12 +5,9 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
-
 namespace Back_EndFinanceTracker.Controllers
 {
     [Authorize]
-    [EnableRateLimiting("fixed")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase

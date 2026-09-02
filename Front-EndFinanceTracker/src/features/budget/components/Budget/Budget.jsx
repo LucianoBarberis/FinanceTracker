@@ -28,6 +28,12 @@ const Budget = React.memo(({budgetToRender}) => {
 
     useEffect(()=>{
         dispatch(getBudgets())
+        // NOTE: do NOT dispatch getCategories() here. When Budget lives inside
+        // the Categories page, doing so flips categories.loading -> which makes
+        // Categories show its <Loading/> -> which unmounts Budget -> remount ->
+        // effect fires again -> infinite request loop (429 spam).
+        // Categories are already loaded by useDashboardData (dashboard) or by
+        // Categories.jsx itself before Budget renders (see getCategories below).
     }, [dispatch])
 
     const handleEdit = useCallback((budget) => {
@@ -41,12 +47,19 @@ const Budget = React.memo(({budgetToRender}) => {
     }, [])
 
     const handleDeleteConfirm = useCallback(async () => {
-        const result = await dispatch(deleteBudget(selectedBudget.id))
+        const result = await dispatch(deleteBudget({
+            id: selectedBudget.id,
+            categoryId: selectedBudget.categoryId
+        }))
         if (!result.error) {
             toast.success({
                 text: "Presupuesto eliminado correctamente"
             })
             setOpenDeleteBudget(false)
+        } else {
+            toast.error({
+                text: "No se pudo eliminar el presupuesto. Intenta de nuevo."
+            })
         }
     }, [dispatch, selectedBudget])
 
@@ -57,25 +70,34 @@ const Budget = React.memo(({budgetToRender}) => {
     if(budgetsLoading || categoriesLoading) {
         return (
                 <div className='loadingContainer'>
-                    <Loading />
+                    <Loading size="md" />
                 </div>
             )
     }
 
+    const hasBudgets = budgetsToDisplay.length > 0
+
     return (
         <section className='BudgetCardContainer'>
             {
-                budgetsToDisplay.map((ele) => {
-                    return (
-                    <BudgetCard 
-                        key={ele.categoryId + "BUD-KEY"} 
-                        budgetTitle={catDictionary[ele.categoryId]}
-                        value={ele.spentAmount}
-                        total={ele.amount}
-                        onEdit={() => handleEdit(ele)}
-                        onDelete={() => handleDeleteClick(ele)}
-                    />)
-                })
+                hasBudgets ? (
+                    budgetsToDisplay.map((ele) => {
+                        return (
+                        <BudgetCard 
+                            key={ele.categoryId + "BUD-KEY"} 
+                            budgetTitle={catDictionary[ele.categoryId]}
+                            value={ele.spentAmount}
+                            total={ele.amount}
+                            onEdit={() => handleEdit(ele)}
+                            onDelete={() => handleDeleteClick(ele)}
+                        />)
+                    })
+                ) : (
+                    <div className='budgetEmptyState'>
+                        <p className='emptyTitle'>No hay presupuestos creados</p>
+                        <p className='emptyDescription'>Crea un presupuesto para controlar tus gastos por categoría.</p>
+                    </div>
+                )
             }
             <button onClick={() => setOpenNewBudget(true)} className='budgetCard addNewBudget'>
                 <h3>+ Añadir nuevo límite</h3>
@@ -101,7 +123,7 @@ const Budget = React.memo(({budgetToRender}) => {
                 title="¿Eliminar presupuesto?"
             >
                 <div className="delete-modal-content">
-                    <LuTriangleAlert size={48} color="#ea5e5e"/>
+                    <LuTriangleAlert size={48} color="var(--danger-500)"/>
                     <p>
                         Estás a punto de eliminar el presupuesto para la categoría <strong>{selectedBudget ? catDictionary[selectedBudget.categoryId] : ''}</strong>. 
                         Esta acción es permanente.

@@ -58,7 +58,9 @@ export const budgetSlice = createSlice({
             if (existing) {
                 state.byId[action.payload.categoryId] = {
                     ...existing,
-                    amount: Number(action.payload.amount)
+                    amount: Number(action.payload.amount),
+                    // Backend returns the fresh calculated spent amount
+                    spentAmount: Number(action.payload.spentAmount ?? existing.spentAmount)
                 };
             }
         })

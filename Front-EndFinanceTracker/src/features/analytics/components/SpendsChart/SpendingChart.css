@@ -4,8 +4,8 @@
 
 .recharts-legend-item-text {
     font-size: 0.875rem;
-    color: #666 !important;
-    font-family: 'Inter';
+    color: var(--wv-text-secondary) !important;
+    font-family: var(--font-body);
 }
 
 .Legend {
@@ -14,31 +14,35 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 12px;
+    padding: var(--space-1);
 }
 
 .Legend ul {
     list-style: none;
     width: 100%;
-
 }
 
 .Legend ul li {
-    color: var(--text-primary);
+    color: var(--wv-text);
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     display: flex;
     align-items: center;
     padding: 10px 5px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--wv-border);
+    transition: background-color 0.3s ease;
 }
 
 .Legend ul li:last-child {
     border-bottom: none;
 }
 
+.Legend ul li:hover {
+    background-color: var(--wv-surface-hover);
+}
+
 .Legend ul li .Icon {
-    border-radius: 8px;
+    border-radius: var(--radius-control);
     width: 25px;
     height: 25px;
     margin-right: 10px;
@@ -58,9 +62,20 @@
 
 .Legend ul li span {
     margin-left: auto;
-    color: var(--text-secondary);
-    font-size: 14px;
+    color: var(--wv-text-secondary);
+    font-family: var(--font-mono);
+    font-size: 13px;
     flex-shrink: 0;
+}
+
+/* Tooltip styling for recharts */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+    background-color: var(--wv-surface) !important;
+    border: 1px solid var(--wv-border) !important;
+    border-radius: var(--radius-control) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    font-family: var(--font-body) !important;
+    color: var(--wv-text) !important;
 }
 
 @media (max-width: 480px) {

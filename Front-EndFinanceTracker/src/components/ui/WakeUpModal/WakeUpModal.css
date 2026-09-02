@@ -1,0 +1,132 @@
+.wakeUpOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.wakeUpCard {
+  width: 100%;
+  max-width: 460px;
+  background: var(--bg-secondary, var(--wv-surface, #fff));
+  color: var(--text-primary, #13161a);
+  border: 1px solid var(--border-color, #d4d8dd);
+  border-radius: var(--radius-card, 16px);
+  box-shadow: var(--shadow, 0 10px 30px rgba(2, 6, 23, 0.2));
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  animation: wakeUpIn 240ms ease;
+}
+
+@keyframes wakeUpIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.wakeUpSpinner {
+  margin-bottom: 0.25rem;
+}
+
+.wakeUpErrorIcon {
+  font-size: 2.25rem;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.wakeUpTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-display, Inter), sans-serif;
+}
+
+.wakeUpSubtitle {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 36ch;
+}
+
+.wakeUpProgressTrack {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--wv-surface-hover, #e4e7ea);
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.wakeUpProgressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent-500, var(--brand--500, #3685fb));
+  transition: width 400ms ease;
+}
+
+.wakeUpAttempts {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0.25rem 0 0;
+  font-family: var(--font-mono, monospace);
+}
+
+.wakeUpHint {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.wakeUpRetryBtn {
+  margin-top: 0.5rem;
+  appearance: none;
+  border: none;
+  border-radius: var(--radius-control, 8px);
+  background: var(--accent-500, var(--brand--500));
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  transition: filter 150ms ease, transform 150ms ease;
+}
+
+.wakeUpRetryBtn:hover {
+  filter: brightness(1.05);
+}
+
+.wakeUpRetryBtn:active {
+  transform: scale(0.98);
+}
+
+.wakeUpRetryBtn:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wakeUpCard {
+    animation: none;
+  }
+  .wakeUpProgressFill {
+    transition: none;
+  }
+}

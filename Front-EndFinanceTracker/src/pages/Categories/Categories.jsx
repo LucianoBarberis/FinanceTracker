@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { LuTriangleAlert } from "react-icons/lu";
 import Header from '../../components/layout/Header/Header';
+import Footer from '../../components/layout/Footer/Footer';
 import CategoryCard from '../../features/categories/components/CategoryCard/CategoryCard';
 import Budget from '../../features/budget/components/Budget/Budget';
 import Modal from '../../components/ui/Modal/Modal';
@@ -120,15 +121,15 @@ const Categories = () => {
     }, [dispatch, selectedCategory]);
 
     if (catLoading || transLoading) return(
-        <div className='loadingContainer'>
-            <Loading />
+        <div className='loadingContainer loadingContainer--page'>
+            <Loading size="lg" />
         </div>
     );
 
     return (
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', flex: 1 }}>
             <Header />
-            <main className="categories-page">
+            <main className="categories-page" style={{ flex: 1 }}>
                 <div className="categories-header">
                     <h1>Mis Categorías</h1>
                 </div>
@@ -170,6 +171,7 @@ const Categories = () => {
 
                 </div>
             </main>
+            <Footer />
 
             {/* Edit Modal */}
             <Modal 
@@ -220,7 +222,7 @@ const Categories = () => {
                     </div>
                 </div>
             </Modal>
-        </>
+        </div>
     );
 };
 

@@ -7,11 +7,13 @@ import { postBudget } from "../../redux/postBudgetAction"
 import { budgetSchema } from "../../validation/budgetSchema"
 import { toast } from "@pheralb/toast"
 import { useEffect } from "react"
+import { selectCatEgress } from "../../../categories/redux/categoriesReducer"
+import { selectBudgets } from "../../redux/budgetReducer"
 
 
 const NewBudgetModal = ({isOpen, onClose, setOpen}) => {
-    const optEgress = useSelector((s) => s.categories.catEgress)
-    const budgets = useSelector((s) => s.budget.budgets)
+    const optEgress = useSelector(selectCatEgress)
+    const budgets = useSelector(selectBudgets)
 
     const opciones = optEgress?.filter(cat => 
         !budgets?.some(budget => budget.categoryId === cat.id)

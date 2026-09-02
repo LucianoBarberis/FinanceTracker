@@ -17,7 +17,9 @@ export const putBudget = createAsyncThunk("putBudget", async (budgetData, thunkA
             throw new Error(`Error HTTP: ${response.status}`);
         }
 
-        return budgetData;
+        // Return the backend response (BudgetDTO with up-to-date amount/spentAmount)
+        // instead of the stale form data.
+        return await response.json();
         
     } catch (error) {
         console.error("Error al actualizar presupuesto:", error.message);

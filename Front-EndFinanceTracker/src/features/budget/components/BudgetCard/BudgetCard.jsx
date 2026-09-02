@@ -5,6 +5,7 @@ import { LuEllipsis } from 'react-icons/lu'
 const BudgetCard = React.memo(({budgetTitle, value, total, onEdit, onDelete}) => {
     const actionMenuRef = useRef(null)
     const [isMenuOpen, setOpenMenu] = useState(false)
+    const isOverBudget = value > total
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -17,9 +18,12 @@ const BudgetCard = React.memo(({budgetTitle, value, total, onEdit, onDelete}) =>
     }, [])
 
     return (
-        <div className='budgetCard'>
+        <div className={`budgetCard${isOverBudget ? ' overBudget' : ''}`}>
             <div className='budgetCardHeader'>
-                <p className='budgetTilte'>{budgetTitle}</p>
+                <p className='budgetTitle'>{budgetTitle}</p>
+                {isOverBudget && (
+                    <span className='overBudgetLabel' role='alert'>Superado</span>
+                )}
                 <div ref={actionMenuRef}>
                     <LuEllipsis className='BudgetActionMenuBtn' onClick={() => setOpenMenu(!isMenuOpen)}>Open</LuEllipsis>
                 {
@@ -40,7 +44,7 @@ const BudgetCard = React.memo(({budgetTitle, value, total, onEdit, onDelete}) =>
             <p className='cardTitle'>Progreso del presupuesto definido:</p>    
             <div className='progressBarData'>
                 <progress max={total} value={value}></progress>
-                <span>{`$${value}/$${total}`}</span>
+                <span className='progressAmount'>${value.toLocaleString('es-ES')}/${total.toLocaleString('es-ES')}</span>
             </div>
         </div>
     )

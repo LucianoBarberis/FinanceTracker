@@ -11,6 +11,7 @@ import { selectTransactions } from '../../features/transactions/redux/transactio
 import { selectCatIncomes, selectCatEgress } from '../../features/categories/redux/categoriesReducer';
 import InfoCards from '../../features/analytics/components/InfoCards/InfoCards';
 import { lastYear } from '../../features/analytics/redux/balanceReducer';
+import { refreshDashboardData } from '../../features/analytics/redux/refreshDashboardData';
 
 const Transactions = () => {
     useTheme();
@@ -32,6 +33,7 @@ const Transactions = () => {
             return;
         }
         dispatch(lastYear())
+        dispatch(refreshDashboardData())
     }, [isAuth, dispatch, navigate]);
 
     const filteredTransactions = useMemo(() => {

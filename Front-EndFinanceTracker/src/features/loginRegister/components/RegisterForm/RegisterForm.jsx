@@ -6,7 +6,7 @@ import { registerSchema } from "../../validation/registerSchema"
 import { registerAction } from "../../redux/registerAction"
 import { useNavigate } from "react-router"
 import { refreshDashboardData } from '../../../analytics/redux/refreshDashboardData'
-import 'LoginForm.css'
+import '../LoginForm/LoginForm.css'
 
 const RegisterForm = () => {
     const dispatch = useDispatch()

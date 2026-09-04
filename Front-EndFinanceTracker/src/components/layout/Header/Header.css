@@ -273,9 +273,10 @@ header {
         top: 80px;
     }
 
-    .accountMenu {
-        height: 50px;
+    .accountMenu a {
+        font-size: 12px;
     }
+
 
     .logo{
         height: 50px;
@@ -287,6 +288,12 @@ header {
 
     .accountMenu {
         gap: 10px;
+    }
+}
+
+@media (max-width: 435px) {
+    .accountMenu a{
+        display: none;
     }
 }
 
